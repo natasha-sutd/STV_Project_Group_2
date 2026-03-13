@@ -1,0 +1,43 @@
+# Top-level primitives
+null
+true
+false
+
+# Top-level numbers
+0
+1
+
+# Top-level strings
+""
+"hello"
+"line\nbreak"
+
+# Empty containers
+{}
+[]
+
+# Flat objects
+{"key": "value"}
+{"json": "obj"}
+
+# Flat arrays
+[1, 2, 3]
+[null, true, false, 0, "", {}]
+
+# Nested structures
+{"a": {"b": {"c": 1}}}
+{"a": [1, {"b": 2}]}
+
+# Null and boolean as values
+{"a": null}
+{"a": true, "b": false}
+
+# Unicode and special string content
+{"unicode": "\u0041\u0042\u0043"}
+{"emoji_escaped": "\uD83D\uDE00"}
+
+# Number edge cases at parser boundaries
+{"int_max": 9999999999999999}
+{"float": 1.23e10}
+{"neg_float": -1.23e-10}
+{"zero_variants": [0, -0, 0.0, 0e0]}

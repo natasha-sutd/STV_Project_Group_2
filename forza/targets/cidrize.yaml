@@ -1,0 +1,24 @@
+name: cidrize
+
+buggy_cmd: ["./bin/mac-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}"]
+buggy_cwd: "../../cidrize-runner-main"
+
+# input
+input_mode: arg
+input_format: cidr
+seeds_path: "../inputs/cidrize/seeds.txt"
+
+# execution
+timeout: 60
+
+# bug detection
+detection_mode: keyword
+bug_keywords:
+  - "bug has been triggered"
+  - "syntactic"
+  - "functional"
+  - "Traceback"
+  - "Error"
+
+# coverage
+coverage_enabled: false

@@ -1,0 +1,3 @@
+bug_type,exc_type,exc_message,filename,lineno,count
+functional,FunctionalBug,1-indexing used instead of 0-indexing.,buggy_cidrize/cidrize_stv.py,240,8
+performance,PerformanceBug,Unhandled while True loop.,buggy_cidrize/cidrize_stv.py,421,10

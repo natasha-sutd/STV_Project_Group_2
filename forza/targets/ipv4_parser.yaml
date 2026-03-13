@@ -1,0 +1,22 @@
+name: ipv4_parser
+
+buggy_cmd: ["./bin/mac-ipv4-parser", "--ipstr", "{input}"]
+buggy_cwd: "../../IPv4-IPv6-parser-main"
+
+# input
+input_mode: arg
+input_format: ipv4
+seeds_path: "../inputs/ipv4_parser/seeds.txt"
+
+# execution
+timeout: 60
+
+# bug detection
+detection_mode: keyword
+bug_keywords:
+  - "invalidity"
+  - "bonus"
+  - "Traceback (most recent call last)"
+
+# coverage
+coverage_enabled: false
