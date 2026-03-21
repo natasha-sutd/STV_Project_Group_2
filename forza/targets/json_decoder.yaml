@@ -1,12 +1,15 @@
 name: json_decoder
 
-buggy_cmd: ["uv", "run", "json_decoder_stv.py", "--str-json", "{input}"]
+# buggy_cmd: ["uv", "run", "json_decoder_stv.py", "--str-json", "{input}"]
+buggy_cmd:
+  windows: ["python", "json_decoder_stv.py", "--str-json", "{input}"]
+  mac: ["uv", "run", "json_decoder_stv.py", "--str-json", "{input}"]
 buggy_cwd: "../../json-decoder"
 
 # input
 input_mode: arg
 input_format: json
-seeds_path: ../inputs/json_decoder/seeds.txt
+# seeds_path: ../inputs/json_decoder/seeds.txt
 
 # execution
 timeout: 60

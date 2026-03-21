@@ -203,8 +203,18 @@ def run_both(
         extra_flags = [config["coverage_flag"]]
 
     raw_buggy_cmd = config["buggy_cmd"]
-    if isinstance(raw_buggy_cmd[0], list):
-        buggy_cmds = raw_buggy_cmd 
+    # if isinstance(raw_buggy_cmd[0], list):
+    #     buggy_cmds = raw_buggy_cmd 
+    # else:
+    #     buggy_cmds = [raw_buggy_cmd]
+    if isinstance(raw_buggy_cmd, dict):
+        current_os = get_platform()  # This returns "windows", "mac", or "linux"
+        if current_os not in raw_buggy_cmd:
+            raise RuntimeError(
+                f"No command configured for {current_os} in YAML!")
+        buggy_cmds = [raw_buggy_cmd[current_os]]
+    elif isinstance(raw_buggy_cmd[0], list):
+        buggy_cmds = raw_buggy_cmd
     else:
         buggy_cmds = [raw_buggy_cmd]
 

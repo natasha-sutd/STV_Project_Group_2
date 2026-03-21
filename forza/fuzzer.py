@@ -71,10 +71,16 @@ Usage
 import argparse
 import sys
 import time
+import random
 from pathlib import Path
+from collections import Counter
 
+from engine.seed_generator import generate_seed
+from engine.mutation_engine import MutationEngine
 from engine.target_runner import load_config, load_seeds, run_both
 from engine.bug_oracle import BugOracle, BugType
+# from engine.coverage_tracker import CoverageTracker
+# from engine.bug_logger import BugLogger
 
 
 # ── Colour helpers (makes terminal output easier to read during demo) ─────────
@@ -99,75 +105,176 @@ BUG_TYPE_COLOURS = {
 }
 
 
-# ── Seed runner (PM1 demo mode) ───────────────────────────────────────────────
+# ── Seed runner (Don't need for PM2) ───────────────────────────────────────────────
 
-def run_seeds(config: dict, verbose: bool = False) -> dict:
-    """
-    Run all seeds for a target through the full pipeline:
-        seed → target_runner → output_parser → print result
+# def run_seeds(config: dict, num_seeds=20, verbose: bool = False) -> dict:
+#     """
+#     Run all seeds for a target through the full pipeline:
+#         seed → target_runner → output_parser → print result
 
-    Returns a summary dict with counts per BugType.
+#     Returns a summary dict with counts per BugType.
+#     """
+#     input_format = config.get("input_format", "generic")
+#     seeds = [generate_seed(input_format) for _ in range(num_seeds)]
+#     oracle = BugOracle()
+
+#     if not seeds:
+#         print(f"  {YELLOW}[WARN] No seeds found at {config['seeds_path']}{RESET}")
+#         return {}
+
+#     summary = {bt: 0 for bt in BugType}
+#     bugs_found = []
+
+#     print(f"\n  {'INPUT':<45} {'BUG TYPE':<14} {'KEY'}")
+#     print(f"  {'-'*45} {'-'*14} {'-'*40}")
+
+#     for seed in seeds:
+#         buggy_results, ref_result = run_both(config, seed, strategy="seed")
+
+#         for i, raw in enumerate(buggy_results):
+#             bug    = oracle.classify(raw, config)
+#             colour = BUG_TYPE_COLOURS.get(bug.bug_type, RESET)
+#             label  = f"buggy[{i}]" if len(buggy_results) > 1 else "buggy"
+
+#             key_str = str(bug.bug_key)[:40] if bug.bug_key else "-"
+#             print(
+#                 f"  {repr(seed[:43]):<45} "
+#                 + colourise(f"{bug.bug_type.value:<14}", colour)
+#                 + f" {key_str}"
+#             )
+
+#             summary[bug.bug_type] += 1
+#             if bug.bug_type != BugType.NORMAL:
+#                 bugs_found.append((seed, bug, label))
+
+#         if verbose and ref_result:
+#             ref_bug = oracle.classify(ref_result, config)
+#             print(f"    {'(ref)':<43} {ref_bug.bug_type.value:<14}")
+
+#     # Print per-target summary
+#     print(f"\n  {'─'*70}")
+#     print(f"  SUMMARY  |  Seeds: {len(seeds)}  |  ", end="")
+#     for bt, count in summary.items():
+#         if count > 0:
+#             colour = BUG_TYPE_COLOURS.get(bt, RESET)
+#             print(colourise(f"{bt.value}: {count}  ", colour), end="")
+#     print()
+
+#     # Print bug details if any found
+#     if bugs_found:
+#         print(f"\n  {BOLD}Bugs found:{RESET}")
+#         for seed, bug, label in bugs_found:
+#             colour = BUG_TYPE_COLOURS.get(bug.bug_type, RESET)
+#             print(
+#                 f"    [{label}] "
+#                 + colourise(bug.bug_type.value, colour)
+#                 + f" | input: {repr(seed[:60])}"
+#             )
+#             if bug.bug_key:
+#                 print(f"           key: {bug.bug_key}")
+
+#     return summary
+
+# ── Mutation Fuzzing ────────────────────────────────────────────────
+def run_mutation_fuzzing(config: dict, iterations: int = 1000, verbose: bool = False):
     """
-    seeds  = load_seeds(config["seeds_path"])
+    Run the full mutation fuzzing loop on a single target.
+
+    Parameters
+    ----------
+    config : dict
+        Target configuration (from YAML)
+    iterations : int
+        Number of mutation iterations
+    verbose : bool
+        Whether to print extra info
+    """
+    input_format = config.get("input_format", "*")
+    engine = MutationEngine(input_format=input_format)
     oracle = BugOracle()
+    # coverage_tracker = CoverageTracker()
+    # bug_logger = BugLogger(target_name=config.get("name", "unknown"))
 
-    if not seeds:
-        print(f"  {YELLOW}[WARN] No seeds found at {config['seeds_path']}{RESET}")
-        return {}
+    # Start with 10 auto-generated seeds
+    # corpus = [generate_seed(input_format) for _ in range(10)]
 
+    # Start with 10 auto-generated seeds + 1 guaranteed valid seed
+    corpus = [generate_seed(input_format) for _ in range(9)]
+    # Add a valid seed based on format for demonstration
+    if input_format == "cidr":
+        corpus.append("192.168.1.0/24")
+    elif input_format == "ipv4":
+        corpus.append("127.0.0.1")
+    elif input_format == "ipv6":
+        corpus.append("::1")
+    elif input_format == "json":
+        corpus.append('{"key":123}')
+    else:
+        corpus.append("test")
+
+    strategy_usage = Counter()
+    total_bugs = 0
+    
     summary = {bt: 0 for bt in BugType}
-    bugs_found = []
 
-    print(f"\n  {'INPUT':<45} {'BUG TYPE':<14} {'KEY'}")
-    print(f"  {'-'*45} {'-'*14} {'-'*40}")
+    # print(f"\n  Starting mutation fuzzing loop with {iterations} iterations...")
+    print(f"\n  {'ITER':<6} {'STRATEGY':<20} {'SEED/TRUNC':<45} {'BUG TYPE':<12}")
 
-    for seed in seeds:
-        buggy_results, ref_result = run_both(config, seed, strategy="seed")
+    for i in range(1, iterations + 1):
+        seed = random.choice(corpus)
+        # mutated = engine.mutate(seed)
+        # Soft mutation: 30% chance to keep seed unchanged → NORMAL possible
+        if random.random() < 0.3:
+            mutated = seed
+            engine._last_strategy = "seed_preserve"
+        else:
+            mutated = engine.mutate(seed)
+        strategy = engine.get_last_strategy()
+        strategy_usage[strategy] += 1
 
-        for i, raw in enumerate(buggy_results):
-            bug    = oracle.classify(raw, config)
-            colour = BUG_TYPE_COLOURS.get(bug.bug_type, RESET)
-            label  = f"buggy[{i}]" if len(buggy_results) > 1 else "buggy"
+        # Run target binary (both buggy and reference)
+        buggy_results, ref_result = run_both(config, mutated, strategy=strategy)
+        if not buggy_results:
+            continue
 
-            key_str = str(bug.bug_key)[:40] if bug.bug_key else "-"
-            print(
-                f"  {repr(seed[:43]):<45} "
-                + colourise(f"{bug.bug_type.value:<14}", colour)
-                + f" {key_str}"
-            )
+        # Classify results
+        raw = buggy_results[0]
+        # ── DEBUG (optional, can comment later) ──
+        print("DEBUG RAW:", raw)
 
-            summary[bug.bug_type] += 1
-            if bug.bug_type != BugType.NORMAL:
-                bugs_found.append((seed, bug, label))
+        bug = oracle.classify(raw, config)
+        summary[bug.bug_type] += 1
+
+        # Track coverage / new paths (simplified placeholder)
+        if random.random() < 0.2:
+            new_path_found = True
+        else:
+            new_path_found = False
+
+        if new_path_found:
+            engine.boost(strategy)
+            corpus.append(mutated)
+
+        if bug.bug_type != BugType.NORMAL:
+            total_bugs += 1
+
+        # Print iteration details
+        colour = BUG_TYPE_COLOURS.get(bug.bug_type, RESET)
+        truncated_seed = repr(mutated[:40])
+        print(f"  {i:<6} {strategy:<20} {truncated_seed:<45} {colourise(bug.bug_type.value, colour):<12}")
 
         if verbose and ref_result:
             ref_bug = oracle.classify(ref_result, config)
-            print(f"    {'(ref)':<43} {ref_bug.bug_type.value:<14}")
+            print(f"    {'(ref)':<43} {ref_bug.bug_type.value:<12}")
+    total_bugs = sum(count for bt, count in summary.items() if bt != BugType.NORMAL)
 
-    # Print per-target summary
-    print(f"\n  {'─'*70}")
-    print(f"  SUMMARY  |  Seeds: {len(seeds)}  |  ", end="")
-    for bt, count in summary.items():
-        if count > 0:
-            colour = BUG_TYPE_COLOURS.get(bt, RESET)
-            print(colourise(f"{bt.value}: {count}  ", colour), end="")
-    print()
-
-    # Print bug details if any found
-    if bugs_found:
-        print(f"\n  {BOLD}Bugs found:{RESET}")
-        for seed, bug, label in bugs_found:
-            colour = BUG_TYPE_COLOURS.get(bug.bug_type, RESET)
-            print(
-                f"    [{label}] "
-                + colourise(bug.bug_type.value, colour)
-                + f" | input: {repr(seed[:60])}"
-            )
-            if bug.bug_key:
-                print(f"           key: {bug.bug_key}")
-
-    return summary
-
+    # Summary
+    print(f"\n{BOLD}=== SUMMARY ==={RESET}")
+    print(f"Total iterations : {iterations}")
+    print(f"Corpus size      : {len(corpus)}")
+    print(f"Total bugs found : {total_bugs}")
+    print("Strategy usage   :", dict(strategy_usage))
+    print("BugType summary  :", {bt.value: count for bt, count in summary.items()})
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
@@ -250,8 +357,9 @@ Examples:
 
         if args.fuzz:
             # ── PM2+ mutation loop (placeholder) ─────────────────────────────
-            print(f"\n  {YELLOW}[INFO] Mutation fuzzing not yet implemented.{RESET}")
-            print(f"  {YELLOW}       Run without --fuzz for PM1 seed demo mode.{RESET}")
+            summary = run_mutation_fuzzing(config, iterations=args.iterations, verbose=args.verbose)
+            # print(f"\n  {YELLOW}[INFO] Mutation fuzzing not yet implemented.{RESET}")
+            # print(f"  {YELLOW}       Run without --fuzz for PM1 seed demo mode.{RESET}")
         else:
             # ── PM1 seed demo mode ────────────────────────────────────────────
             summary = run_seeds(config, verbose=args.verbose)

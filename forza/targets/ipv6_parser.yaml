@@ -1,12 +1,14 @@
 name: ipv6_parser
 
-buggy_cmd: ["./bin/mac-ipv6-parser", "--ipstr", "{input}"]
+buggy_cmd:
+  windows: ["../IPv4-IPv6-parser-main/bin/win-ipv6-parser.exe", "--ipstr", "{input}"]
+  mac: ["./bin/mac-ipv6-parser", "--ipstr", "{input}"]
 buggy_cwd: "../../IPv4-IPv6-parser-main"
 
 # input
 input_mode: arg
 input_format: ipv6
-seeds_path: "../inputs/ipv6_parser/seeds.txt"
+# seeds_path: "../inputs/ipv6_parser/seeds.txt"
 
 # execution
 timeout: 60

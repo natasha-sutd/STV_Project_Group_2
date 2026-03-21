@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, Tuple
 
-from target_runner import RawResult
+from .target_runner import RawResult
 
 class BugType(Enum):
     NORMAL = "normal"
