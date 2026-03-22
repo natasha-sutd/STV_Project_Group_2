@@ -1,0 +1,8 @@
+first_seen_iter,first_seen_time,category,exc_type,exc_msg,input
+2,0.000,mock_cat,MockExc,Sample error,b'\x00\x01\x02mock_data'
+15,0.110,mock_cat,MockExc,Sample error,b'\x00\x01\x02mock_data'
+47,0.360,mock_cat,MockExc,Sample error,b'\x00\x01\x02mock_data'
+53,0.422,mock_cat,MockExc,Sample error,b'\x00\x01\x02mock_data'
+58,0.469,mock_cat,MockExc,Sample error,b'\x00\x01\x02mock_data'
+72,0.594,mock_cat,MockExc,Sample error,b'\x00\x01\x02mock_data'
+78,0.657,mock_cat,MockExc,Sample error,b'\x00\x01\x02mock_data'

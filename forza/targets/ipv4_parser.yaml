@@ -1,6 +1,8 @@
 name: ipv4_parser
 
-buggy_cmd: ["./bin/mac-ipv4-parser", "--ipstr", "{input}"]
+buggy_cmd: 
+  windows: ["../IPv4-IPv6-parser-main/bin/win-ipv4-parser.exe", "--ipstr", "{input}"]
+  mac: ["./bin/mac-ipv4-parser", "--ipstr", "{input}"]
 buggy_cwd: "../../IPv4-IPv6-parser-main"
 
 # input

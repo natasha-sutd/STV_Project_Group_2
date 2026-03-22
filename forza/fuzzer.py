@@ -68,26 +68,29 @@ Usage
     python3 fuzzer.py --target targets/json_decoder.yaml --fuzz --iterations 1000
 """
 
-import argparse
+from random import random
 import sys
+import argparse
 import time
 from pathlib import Path
-
 from engine.target_runner import load_config, load_seeds, run_both
+from engine.bug_logger import FuzzLogger
 from engine.bug_oracle import BugOracle, BugType
 
 
 # ── Colour helpers (makes terminal output easier to read during demo) ─────────
 
-RESET  = "\033[0m"
-RED    = "\033[91m"
-GREEN  = "\033[92m"
+RESET = "\033[0m"
+RED = "\033[91m"
+GREEN = "\033[92m"
 YELLOW = "\033[93m"
-CYAN   = "\033[96m"
-BOLD   = "\033[1m"
+CYAN = "\033[96m"
+BOLD = "\033[1m"
+
 
 def colourise(text: str, colour: str) -> str:
     return f"{colour}{text}{RESET}"
+
 
 BUG_TYPE_COLOURS = {
     BugType.NORMAL:     GREEN,
@@ -108,11 +111,12 @@ def run_seeds(config: dict, verbose: bool = False) -> dict:
 
     Returns a summary dict with counts per BugType.
     """
-    seeds  = load_seeds(config["seeds_path"])
+    seeds = load_seeds(config["seeds_path"])
     oracle = BugOracle()
 
     if not seeds:
-        print(f"  {YELLOW}[WARN] No seeds found at {config['seeds_path']}{RESET}")
+        print(
+            f"  {YELLOW}[WARN] No seeds found at {config['seeds_path']}{RESET}")
         return {}
 
     summary = {bt: 0 for bt in BugType}
@@ -125,9 +129,9 @@ def run_seeds(config: dict, verbose: bool = False) -> dict:
         buggy_results, ref_result = run_both(config, seed, strategy="seed")
 
         for i, raw in enumerate(buggy_results):
-            bug    = oracle.classify(raw, config)
+            bug = oracle.classify(raw, config)
             colour = BUG_TYPE_COLOURS.get(bug.bug_type, RESET)
-            label  = f"buggy[{i}]" if len(buggy_results) > 1 else "buggy"
+            label = f"buggy[{i}]" if len(buggy_results) > 1 else "buggy"
 
             key_str = str(bug.bug_key)[:40] if bug.bug_key else "-"
             print(
@@ -245,13 +249,58 @@ Examples:
         print(f"{BOLD}TARGET  : {config['name']}{RESET}")
         print(f"CONFIG  : {yaml_file}")
         print(f"FORMAT  : {config.get('input_format', 'generic')}")
-        print(f"MODE    : {'mutation fuzzing' if args.fuzz else 'seed demo (PM1)'}")
+        print(
+            f"MODE    : {'mutation fuzzing' if args.fuzz else 'seed demo (PM1)'}")
         print(f"{'='*70}{RESET}")
 
         if args.fuzz:
-            # ── PM2+ mutation loop (placeholder) ─────────────────────────────
-            print(f"\n  {YELLOW}[INFO] Mutation fuzzing not yet implemented.{RESET}")
-            print(f"  {YELLOW}       Run without --fuzz for PM1 seed demo mode.{RESET}")
+            # ── PM2+ mutation loop ───────────────────────────────────────────
+            # 1. Initialize Components
+            oracle = BugOracle()
+            logger = FuzzLogger(output_dir="results", target=config['name'])
+
+            # Note: You will eventually need to initialize your MutationEngine here
+            # e.g., engine = MutationEngine(input_format=config.get('input_format'))
+
+            # For demo purposes, we'll use a placeholder for seeds/corpus
+            seeds = load_seeds(config["seeds_path"])
+            corpus = list(seeds) if seeds else [b"default_seed"]
+
+            print(
+                f"\n  {CYAN}[INFO] Starting fuzzing loop for {args.iterations} iterations...{RESET}")
+
+            for iteration in range(1, args.iterations + 1):
+                # 2. Select and Mutate (Placeholder logic for now)
+                current_input = random.choice(corpus)
+                # mutated_input = engine.mutate(current_input)
+                mutated_input = current_input  # replace with engine.mutate later
+
+                # 3. Run target
+                # strategy="mutation" helps track which mutation logic is working
+                buggy_results, _ = run_both(
+                    config, mutated_input, strategy="mutation")
+
+                # 4. Classify and Log
+                for raw in buggy_results:
+                    bug_result = oracle.classify(raw, config)
+
+                    # Check for novelty (this logic usually lives in a CoverageTracker)
+                    # For now, we'll mark any non-normal result as potentially interesting
+                    if bug_result.bug_type != BugType.NORMAL:
+                        bug_result.is_new_behavior = True  # Placeholder logic
+
+                    # RECORD: This writes to all_runs.csv and bugs.csv automatically
+                    logger.record(bug_result, corpus_size=len(corpus))
+
+                # 5. UI Update
+                if iteration % 10 == 0:
+                    logger.print_status(corpus_size=len(corpus))
+
+            # 6. Final Snapshot
+            logger.snapshot(corpus_size=len(corpus))
+            print(
+                f"\n  {GREEN}[DONE] Fuzzing target {config['name']} complete.{RESET}")
+            total_bugs += logger.unique_bugs
         else:
             # ── PM1 seed demo mode ────────────────────────────────────────────
             summary = run_seeds(config, verbose=args.verbose)

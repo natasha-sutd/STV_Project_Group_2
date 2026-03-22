@@ -1,0 +1,530 @@
+
+============================================================
+Iteration 1 | normal | 0.0s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 2 | crash | 0.0s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 3 | normal | 0.0s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 4 | normal | 0.0s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 5 | normal | 0.0s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 6 | normal | 0.0s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 7 | normal | 0.0s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 8 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 9 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 10 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 11 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 12 | invalidity | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 13 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 14 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 15 | invalidity | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 16 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 17 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 18 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 19 | normal | 0.1s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 20 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 21 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 22 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 23 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 24 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 25 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 26 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 27 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 28 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 29 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 30 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 31 | normal | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 32 | invalidity | 0.2s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 33 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 34 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 35 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 36 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 37 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 38 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 39 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 40 | timeout | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 41 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 42 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 43 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 44 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 45 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 46 | normal | 0.3s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 47 | invalidity | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 48 | normal | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 49 | normal | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 50 | normal | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 51 | normal | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 52 | normal | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 53 | timeout | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 54 | normal | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 55 | normal | 0.4s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 56 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 57 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 58 | invalidity | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 59 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 60 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 61 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 62 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 63 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 64 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 65 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 66 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 67 | normal | 0.5s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 68 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 69 | timeout | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 70 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 71 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 72 | timeout | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 73 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 74 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 75 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 76 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 77 | normal | 0.6s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 78 | timeout | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 79 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 80 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 81 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 82 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 83 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 84 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 85 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 86 | normal | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 87 | invalidity | 0.7s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 88 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 89 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 90 | invalidity | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 91 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 92 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 93 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 94 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 95 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 96 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 97 | crash | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 98 | crash | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+[STDERR]
+Fake error message
+
+============================================================
+Iteration 99 | normal | 0.8s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content
+
+============================================================
+Iteration 100 | normal | 0.9s
+Input: b'\x00\x01\x02mock_data'
+Fake stdout content

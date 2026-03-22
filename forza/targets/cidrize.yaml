@@ -1,6 +1,8 @@
 name: cidrize
 
-buggy_cmd: ["./bin/mac-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}"]
+buggy_cmd: 
+  windows: ["../cidrize-runner-main/bin/win-cidrize-runner.exe", "--func", "cidrize", "--ipstr", "{input}"]
+  mac: ["../cidrize-runner-main/bin/mac-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}"]
 buggy_cwd: "../../cidrize-runner-main"
 
 # input
