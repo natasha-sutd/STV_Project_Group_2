@@ -1,0 +1,4 @@
+# file: C:\Users\ASUS\Visual_Studio_Code\STV_Project_Group_2\forza\engine\mutation_engine.py
+# hypothesis_version: 6.151.9
+
+[0.0, 0.1, 0.95, 1.0, 1.5, 2.0, 128, 200, 256, 999, 1000, 10000, 65535, 99999, '\x00', '"', '" "', '""', '%00', '&&', "'", '*', ',', ', "a": 1, "a": 2}', '-1', '-1e308', '.', '.1', '/', '/../', '0', '0.0.0.0', '0.0.0.0/0', '04x', '1', '10.0.0.0/0', '192.168.1', '192.168.1.0/33', '192.168.1.1', '192.168.1.1.1', '1e308', '255.255.255.255', '256.0.0.1', '999.999.999.999', '::', '::1', '::ffff:', '<', '>', 'A', 'After 2x boost:', 'Before boost:', '[', '[]', '\\', '\\u', ']', ']}', '__main__', '_last_strategy', 'bit_flip', 'byte_insert', 'cidr', 'false', 'fn', 'ignore', 'insert_special_char', 'ip', 'ip_aware_mutate', 'ipv4', 'ipv6', 'json', 'json_aware_mutate', 'name', 'null', 'radamsa', 'repeat_chunk', 'swap_chars', 'true', 'truncate', 'unknown', 'weight', '{', '{"a":', '{}', '||', '}', 'ÿ']

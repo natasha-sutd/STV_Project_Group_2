@@ -12,6 +12,7 @@ No external libraries used — all mutation logic written from scratch.
 
 import random
 import string
+import subprocess
 
 
 # ── Constants ────────────────────────────────────────────────────────────────
@@ -220,6 +221,17 @@ def _ip_mixed_format(data: str) -> str:
     """Mix IPv4 and IPv6 notation to confuse parsers."""
     return "::ffff:" + data.split("/")[0]
 
+# ── Radamsa mutation ─────────────────────────────────────────────────────────
+
+def radamsa_mutate(data: str) -> str:
+    """Mutate data using external Radamsa."""
+    try:
+        p = subprocess.Popen(["radamsa"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        out, _ = p.communicate(data.encode())
+        return out.decode(errors="ignore")
+    except Exception:
+        return data
+
 
 # ── Strategy registry ────────────────────────────────────────────────────────
 # Each entry: (name, function, base_weight, applicable_formats)
@@ -227,7 +239,7 @@ def _ip_mixed_format(data: str) -> str:
 #                     or ["*"] for all formats.
 
 STRATEGIES = [
-    ("bit_flip",            bit_flip,            1.0, ["*"]),
+    ("bit_flip",            bit_flip,             1.0, ["*"]),
     ("truncate",            truncate,             1.0, ["*"]),
     ("insert_special_char", insert_special_char,  1.0, ["*"]),
     ("repeat_chunk",        repeat_chunk,         1.0, ["*"]),
@@ -235,6 +247,7 @@ STRATEGIES = [
     ("swap_chars",          swap_chars,           1.0, ["*"]),
     ("json_aware_mutate",   json_aware_mutate,    1.5, ["json"]),
     ("ip_aware_mutate",     ip_aware_mutate,      1.5, ["ip", "cidr", "ipv4", "ipv6"]),
+    ("radamsa",             radamsa_mutate,       2.0, ["*"]),
 ]
 
 
@@ -303,7 +316,8 @@ class MutationEngine:
 
     def get_last_strategy(self) -> str:
         """Return the name of the last strategy used (for coverage_tracker to call boost)."""
-        return self._last_strategy
+        # return self._last_strategy
+        return getattr(self, "_last_strategy", "unknown")
 
     def _weighted_choice(self) -> dict:
         """Select a strategy using weighted random sampling."""

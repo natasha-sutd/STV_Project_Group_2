@@ -92,6 +92,7 @@ import signal
 import sys
 import threading
 import time
+import random
 from pathlib import Path
 from engine.target_runner import load_config, load_seeds, run_both
 from engine.types import BugResult, BugType, classify_from_keywords

@@ -8,7 +8,7 @@ buggy_cwd: "../../cidrize-runner-main"
 # input
 input_mode: arg
 input_format: cidr
-seeds_path: "../inputs/cidrize/seeds.txt"
+# seeds_path: "../inputs/cidrize/seeds.txt"
 
 # execution
 timeout: 60

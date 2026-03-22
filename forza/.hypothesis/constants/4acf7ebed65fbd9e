@@ -1,0 +1,4 @@
+# file: C:\Users\ASUS\Visual_Studio_Code\STV_Project_Group_2\forza\fuzzer.py
+# hypothesis_version: 6.151.9
+
+[0.2, 0.3, 1000, '\x1b[0m', '\x1b[1m', '\x1b[91m', '\x1b[92m', '\x1b[93m', '\x1b[96m', '*', '*.yaml', '--all', '--fuzz', '--iterations', '--target', '--verbose', '-a', '-n', '-t', '-v', '127.0.0.1', '192.168.1.0/24', '::1', 'BugType summary  :', 'DEBUG RAW:', 'Strategy usage   :', 'YAML', '__main__', 'cidr', 'input_format', 'ipv4', 'ipv6', 'json', 'seed_preserve', 'store_true', 'targets', 'test', '{"key":123}']
