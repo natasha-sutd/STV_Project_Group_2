@@ -1,0 +1,29 @@
+# Plain IPv4 address
+1.2.3.4
+192.0.2.18
+
+# CIDR notation
+192.0.20.64/26
+0.0.0.0/0
+
+# Full range notation
+192.0.2.80-192.0.2.85
+10.0.0.1-10.0.0.10
+
+# Short range notation
+192.0.2.170-175
+10.0.0.1-10
+
+# Wildcard bracket range
+192.0.2.8[0-5]
+10.0.0.[1-9]
+
+# Character set notation
+192.0.2.[5678]
+10.0.0.[123]
+
+# Special address ranges
+127.0.0.1
+169.254.0.1
+224.0.0.1
+255.255.255.255

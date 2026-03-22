@@ -1,0 +1,2 @@
+bug_type,exc_type,exc_message,filename,lineno,count
+performance,PerformanceBug,Unhandled while True loop.,buggy_cidrize/cidrize_stv.py,421,1

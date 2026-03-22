@@ -1,0 +1,679 @@
+================================================================================
+Timestamp : 2026-03-04 14:38:18.008423+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-04 14:38:29.807637+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '.'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '.'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:38:52.706818+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '.'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '.'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:39:04.079916+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-04 14:39:15.445813+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:39:26.841203+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:39:39.599566+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:40:02.820039+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:40:14.180220+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:40:25.578626+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '.'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:41:07.753570+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '.'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '.'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:41:19.114636+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:41:42.197702+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:42:04.981499+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:42:27.785381+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4612, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-04 14:42:50.519622+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 14:43:13.295210+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-04 15:21:50.948771+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-04 15:22:16.024221+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-04 15:23:10.688152+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-04 15:23:22.071410+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-04 15:23:44.887634+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+
+================================================================================
+Timestamp : 2026-03-04 17:42:21.341525+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-04 17:42:36.573678+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-04 17:42:47.868562+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-04 17:42:59.272736+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-04 17:43:10.869522+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+
+================================================================================
+Timestamp : 2026-03-05 06:06:49.301156+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 06:07:12.085119+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 06:07:46.213192+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-05 06:07:58.075014+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-05 06:08:21.429598+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:02:41.576471+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:02:52.949277+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:03:04.311774+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:03:15.675595+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:03:31.048724+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:03:42.414904+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:03:53.772066+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:04:21.161048+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:04:32.411134+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:06:43.570511+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found end of text  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found end of text  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:30:59.334674+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:31:11.021020+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:31:22.230267+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:31:33.474281+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:31:44.703728+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:31:56.186462+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:32:07.493476+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:32:18.858959+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:32:30.120679+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-05 07:34:35.751245+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found end of text  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found end of text  (at char 2), (line:1, col:3)
+
+

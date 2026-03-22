@@ -1,0 +1,29 @@
+# Full form
+2001:0db8:0000:0000:0000:ff00:0042:8329
+0000:0000:0000:0000:0000:0000:0000:0001
+
+# Compressed form — :: 
+2001:db8::1
+2001:db8::
+2001:db8::1:2
+2001:db8::1:2:3
+2001:db8::1:2:3:4
+2001:db8::1:2:3:4:5
+2001::1:2:3:4:5:6
+
+# Special addresses
+::
+::1
+
+# Link-local and multicast
+fe80::1
+fe80::1:2:3:4
+
+# Mixed IPv4-in-IPv6 notation
+::192.0.2.33
+2001:db8::192.0.2.33
+2001:db8:0:0:0:0:192.0.2.33
+
+# Documentation range
+2001:db8:1:2:3:4:5:6
+2001:db8:ffff:ffff:ffff:ffff:ffff:ffff

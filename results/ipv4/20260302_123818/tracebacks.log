@@ -1,0 +1,2646 @@
+
+============================================================
+Iteration 1 | functional | 10.3s
+Input: 0.0.0.0
+Running the IPv4 parser with ipstr: 0.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 4 | functional | 33.5s
+Input: 127.0.0.1
+Running the IPv4 parser with ipstr: 127.0.0.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 6 | functional | 52.3s
+Input: 192.168.0.0
+Running the IPv4 parser with ipstr: 192.168.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 7 | functional | 63.2s
+Input: 10.0.0.1
+Running the IPv4 parser with ipstr: 10.0.0.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 8 | functional | 71.9s
+Input: 172.16.0.1
+Running the IPv4 parser with ipstr: 172.16.0.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 10 | timeout | 119.6s
+Input: 0.0.0.1
+Running the IPv4 parser with ipstr: 0.0.0.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 11 | functional | 130.4s
+Input: 0.0.1.0
+Running the IPv4 parser with ipstr: 0.0.1.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 12 | functional | 139.0s
+Input: 0.1.0.0
+Running the IPv4 parser with ipstr: 0.1.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 13 | functional | 146.9s
+Input: 1.0.0.0
+Running the IPv4 parser with ipstr: 1.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 14 | crash | 165.3s
+Input: 254.254.254.254
+Running the IPv4 parser with ipstr: 254.254.254.254
+A performance bug has been triggered: Performance bug has been hit!
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('performance', <class 'buggy_ipyparse.ipv4_stv.PerformanceBug'>, 'Performance bug has been hit!', 'buggy_ipyparse\\ipv4_stv.py', 91): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 91, in maybe_delay
+buggy_ipyparse.ipv4_stv.PerformanceBug: Performance bug has been hit!
+
+============================================================
+Iteration 16 | functional | 192.4s
+Input: 0.0.0.255
+Running the IPv4 parser with ipstr: 0.0.0.255
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 17 | invalidity | 203.6s
+Input: 00.01.002.000
+Running the IPv4 parser with ipstr: 00.01.002.000
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '2'  (at char 8), (line:1, col:9)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+============================================================
+Iteration 19 | invalidity | 232.5s
+Input: 001.002.003.004
+Running the IPv4 parser with ipstr: 001.002.003.004
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '1'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 20 | functional | 243.1s
+Input: 127.000.000.001
+Running the IPv4 parser with ipstr: 127.000.000.001
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 21 | invalidity | 252.5s
+Input: 192.168.001.001
+Running the IPv4 parser with ipstr: 192.168.001.001
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '1'  (at char 10), (line:1, col:11)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+============================================================
+Iteration 23 | invalidity | 269.6s
+Input: 256.0.0.0
+Running the IPv4 parser with ipstr: 256.0.0.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '6'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '6'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 24 | invalidity | 277.5s
+Input: 0.256.0.0
+Running the IPv4 parser with ipstr: 0.256.0.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '6'  (at char 4), (line:1, col:5)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '6'  (at char 4), (line:1, col:5)
+
+============================================================
+Iteration 25 | invalidity | 285.5s
+Input: 0.0.256.0
+Running the IPv4 parser with ipstr: 0.0.256.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '6'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '6'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 26 | functional | 293.8s
+Input: 0.0.0.256
+Running the IPv4 parser with ipstr: 0.0.0.256
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 27 | invalidity | 303.4s
+Input: 300.1.2.3
+Running the IPv4 parser with ipstr: 300.1.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 28 | invalidity | 311.8s
+Input: 1.300.2.3
+Running the IPv4 parser with ipstr: 1.300.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 4), (line:1, col:5)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 4), (line:1, col:5)
+
+============================================================
+Iteration 29 | invalidity | 322.3s
+Input: 1.2.300.3
+Running the IPv4 parser with ipstr: 1.2.300.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 30 | invalidity | 333.0s
+Input: 1.2.3.300
+Running the IPv4 parser with ipstr: 1.2.3.300
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected end of text, found '0'  (at char 8), (line:1, col:9)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '0'  (at char 8), (line:1, col:9)
+
+============================================================
+Iteration 31 | invalidity | 345.8s
+Input: 999.999.999.999
+Running the IPv4 parser with ipstr: 999.999.999.999
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '9'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '9'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 32 | invalidity | 361.8s
+Input: 1.2.3
+Running the IPv4 parser with ipstr: 1.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 5), (line:1, col:6)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 33 | invalidity | 374.8s
+Input: 1.2
+Running the IPv4 parser with ipstr: 1.2
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 3), (line:1, col:4)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 3), (line:1, col:4)
+
+============================================================
+Iteration 34 | invalidity | 383.2s
+Input: 1
+Running the IPv4 parser with ipstr: 1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 35 | invalidity | 391.3s
+Input: 1.2.3.4.5
+Running the IPv4 parser with ipstr: 1.2.3.4.5
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected end of text, found '.'  (at char 7), (line:1, col:8)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 7), (line:1, col:8)
+
+============================================================
+Iteration 36 | invalidity | 400.1s
+Input: 1,2,3,4
+Running the IPv4 parser with ipstr: 1,2,3,4
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found ','  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ','  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 37 | invalidity | 407.8s
+Input: 1:2:3:4
+Running the IPv4 parser with ipstr: 1:2:3:4
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found ':'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ':'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 38 | invalidity | 415.8s
+Input: 1/2/3/4
+Running the IPv4 parser with ipstr: 1/2/3/4
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '/'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '/'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 40 | invalidity | 437.3s
+Input:  1.2.3.4
+Running the IPv4 parser with ipstr:  1.2.3.4
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 41 | invalidity | 453.5s
+Input: 1.2.3. 4
+Running the IPv4 parser with ipstr: 1.2.3. 4
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 281, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 42 | invalidity | 472.9s
+Input: a.b.c.d
+Running the IPv4 parser with ipstr: a.b.c.d
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 43 | invalidity | 483.1s
+Input: 1.2.3.x
+Running the IPv4 parser with ipstr: 1.2.3.x
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 281, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 44 | invalidity | 490.0s
+Input: 
+Running the IPv4 parser with ipstr: 
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 45 | invalidity | 497.4s
+Input: .
+Running the IPv4 parser with ipstr: .
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 46 | invalidity | 505.2s
+Input: 12345.1.2.3
+Running the IPv4 parser with ipstr: 12345.1.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '45'  (at char 3), (line:1, col:4)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '45'  (at char 3), (line:1, col:4)
+
+============================================================
+Iteration 47 | invalidity | 512.8s
+Input: 1.2.3.12345
+Running the IPv4 parser with ipstr: 1.2.3.12345
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected end of text, found '45'  (at char 9), (line:1, col:10)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '45'  (at char 9), (line:1, col:10)
+
+============================================================
+Iteration 48 | invalidity | 520.5s
+Input: ff.ff.ff.ff
+Running the IPv4 parser with ipstr: ff.ff.ff.ff
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 50 | functional | 534.1s
+Input: 127.00.0.1
+Running the IPv4 parser with ipstr: 127.00.0.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 52 | invalidity | 548.3s
+Input: 1.2
+Running the IPv4 parser with ipstr: 1.2
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 3), (line:1, col:4)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 3), (line:1, col:4)
+
+============================================================
+Iteration 53 | bonus | 555.5s
+Input: 0�0.0.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 37: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+
+============================================================
+Iteration 54 | bonus | 562.1s
+Input: 0�0.0V0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 37: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+
+============================================================
+Iteration 55 | invalidity | 570.1s
+Input: 256.0.0.0
+Running the IPv4 parser with ipstr: 256.0.0.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '6'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '6'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 56 | bonus | 577.2s
+Input: 255.255.2�5-255
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 45: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 45: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 45: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 45: character maps to <undefined>
+
+============================================================
+Iteration 57 | invalidity | 584.0s
+Input: 192.168.0\.0
+Running the IPv4 parser with ipstr: 192.168.0\.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '\\'  (at char 9), (line:1, col:10)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '\'  (at char 9), (line:1, col:10)
+
+============================================================
+Iteration 59 | bonus | 599.0s
+Input: 249.250.OU�.252
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 46: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 46: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 46: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 46: character maps to <undefined>
+
+============================================================
+Iteration 60 | bonus | 606.8s
+Input: 1.��2.3
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 39-40: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+
+============================================================
+Iteration 61 | invalidity | 614.3s
+Input: 300 1.2.3
+Running the IPv4 parser with ipstr: 300 1.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 63 | bonus | 626.9s
+Input: 1�`168.0.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 37: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+
+============================================================
+Iteration 64 | functional | 634.0s
+Input: 128.0.0.0
+Running the IPv4 parser with ipstr: 128.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 65 | functional | 640.9s
+Input: 192.128.0.0
+Running the IPv4 parser with ipstr: 192.128.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 66 | invalidity | 649.8s
+Input: 0_0.0.0
+Running the IPv4 parser with ipstr: 0_0.0.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '_'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '_'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 67 | bonus | 659.8s
+Input: 12345.1.�.3
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 44: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 44: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 44: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 44: character maps to <undefined>
+
+============================================================
+Iteration 68 | invalidity | 670.6s
+Input: 1.2.3.3.300
+Running the IPv4 parser with ipstr: 1.2.3.3.300
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected end of text, found '.'  (at char 7), (line:1, col:8)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 7), (line:1, col:8)
+
+============================================================
+Iteration 69 | bonus | 680.4s
+Input: 1/2��/3/4
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 39-40: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+
+============================================================
+Iteration 70 | bonus | 692.8s
+Input: 1.�2.3
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 39: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+
+============================================================
+Iteration 71 | invalidity | 701.8s
+Input: 10.0.0".1
+Running the IPv4 parser with ipstr: 10.0.0".1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, 'Expected \'.\', found \'"\'  (at char 6), (line:1, col:7)', 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '"'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 72 | functional | 713.6s
+Input: 01.0.0.0
+Running the IPv4 parser with ipstr: 01.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 73 | invalidity | 730.1s
+Input: 1:2.3.4
+Running the IPv4 parser with ipstr: 1:2.3.4
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found ':'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ':'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 74 | invalidity | 738.2s
+Input: 1.300.300.2.3
+Running the IPv4 parser with ipstr: 1.300.300.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 4), (line:1, col:5)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 4), (line:1, col:5)
+
+============================================================
+Iteration 75 | invalidity | 745.7s
+Input: 0.0.256.0
+Running the IPv4 parser with ipstr: 0.0.256.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '6'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '6'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 76 | invalidity | 753.5s
+Input: 1 2.3.300
+Running the IPv4 parser with ipstr: 1 2.3.300
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found ' '  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ' '  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 77 | functional | 762.3s
+Input: 0.0.0.0.1
+Running the IPv4 parser with ipstr: 0.0.0.0.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 78 | bonus | 771.6s
+Input: 0g	j&��.0
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 41-42: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+
+============================================================
+Iteration 79 | invalidity | 780.9s
+Input: 0.01.0/.0
+Running the IPv4 parser with ipstr: 0.01.0/.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '/'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '/'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 80 | invalidity | 790.9s
+Input: 12.3.4
+Running the IPv4 parser with ipstr: 12.3.4
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 81 | invalidity | 799.6s
+Input: 192.168.001.01
+Running the IPv4 parser with ipstr: 192.168.001.01
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '1'  (at char 10), (line:1, col:11)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+============================================================
+Iteration 82 | functional | 810.6s
+Input: 0.1.0.0
+Running the IPv4 parser with ipstr: 0.1.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 84 | functional | 826.7s
+Input: 0.0.0.0
+Running the IPv4 parser with ipstr: 0.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 85 | invalidity | 833.7s
+Input: /{1.2.3.12345
+Running the IPv4 parser with ipstr: /{1.2.3.12345
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 86 | bonus | 841.2s
+Input: 0.0.�x�
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 40: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 40: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 40: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 40: character maps to <undefined>
+
+============================================================
+Iteration 87 | bonus | 848.0s
+Input: 12345.�1.Kp&
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 42: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 42: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 42: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 42: character maps to <undefined>
+
+============================================================
+Iteration 88 | bonus | 854.6s
+Input: 0_�P�0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 38: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 38: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 38: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 38: character maps to <undefined>
+
+============================================================
+Iteration 89 | functional | 861.2s
+Input: 0.1.0.0.0
+Running the IPv4 parser with ipstr: 0.1.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 91 | invalidity | 875.8s
+Input: 001.2.300.3
+Running the IPv4 parser with ipstr: 001.2.300.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '1'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 92 | functional | 882.9s
+Input: 0.0.0.0.0
+Running the IPv4 parser with ipstr: 0.0.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 94 | bonus | 898.3s
+Input: �0.0.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 37: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+
+============================================================
+Iteration 95 | bonus | 908.8s
+Input: 1-��2.3
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 39-40: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+
+============================================================
+Iteration 96 | invalidity | 917.0s
+Input: 192.8.001.001
+Running the IPv4 parser with ipstr: 192.8.001.001
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '1'  (at char 8), (line:1, col:9)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 8), (line:1, col:9)
+
+============================================================
+Iteration 97 | functional | 925.6s
+Input: 0.0.0.0.0
+Running the IPv4 parser with ipstr: 0.0.0.0.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 98 | invalidity | 933.5s
+Input: 1.b.c.d
+Running the IPv4 parser with ipstr: 1.b.c.d
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 281, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 100 | invalidity | 949.9s
+Input: 1.0.0,0
+Running the IPv4 parser with ipstr: 1.0.0,0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found ','  (at char 5), (line:1, col:6)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ','  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 101 | invalidity | 957.8s
+Input: 12345.1.001.3
+Running the IPv4 parser with ipstr: 12345.1.001.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '45'  (at char 3), (line:1, col:4)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '45'  (at char 3), (line:1, col:4)
+
+============================================================
+Iteration 102 | bonus | 965.2s
+Input: 1.�2.3
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 39: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+
+============================================================
+Iteration 103 | functional | 972.4s
+Input: 00.01.01.002.000
+Running the IPv4 parser with ipstr: 00.01.01.002.000
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 104 | invalidity | 979.5s
+Input: 9
+Running the IPv4 parser with ipstr: 9
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 105 | bonus | 990.1s
+Input: � 0.1.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 36: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+
+============================================================
+Iteration 106 | invalidity | 997.9s
+Input: 1.2.3.300
+Running the IPv4 parser with ipstr: 1.2.3.300
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected end of text, found '0'  (at char 8), (line:1, col:9)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '0'  (at char 8), (line:1, col:9)
+
+============================================================
+Iteration 107 | invalidity | 1007.2s
+Input: 1.2.300
+Running the IPv4 parser with ipstr: 1.2.300
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 108 | bonus | 1013.9s
+Input: 192���8.0.0
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 39-41: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 39-41: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-41: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-41: character maps to <undefined>
+
+============================================================
+Iteration 109 | invalidity | 1022.4s
+Input: 0.P.0.0
+Running the IPv4 parser with ipstr: 0.P.0.0
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4634, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 281, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 110 | bonus | 1031.1s
+Input: 12345��1.Kp&
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 41-42: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+
+============================================================
+Iteration 111 | bonus | 1039.7s
+Input: 0g	j��&��.0
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 40-41: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 40-41: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 40-41: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 40-41: character maps to <undefined>
+
+============================================================
+Iteration 113 | bonus | 1054.7s
+Input: � 0.1.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 36: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+
+============================================================
+Iteration 114 | bonus | 1061.0s
+Input: 1.��2.3
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 39-40: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+
+============================================================
+Iteration 115 | bonus | 1067.4s
+Input: 0_0�+A
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 39: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+
+============================================================
+Iteration 116 | bonus | 1074.4s
+Input: 0�0.\0.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 37: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+
+============================================================
+Iteration 117 | functional | 1081.0s
+Input: 10.0.0000.1
+Running the IPv4 parser with ipstr: 10.0.0000.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 118 | invalidity | 1087.4s
+Input: 0_.0
+Running the IPv4 parser with ipstr: 0_.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '_'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '_'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 119 | invalidity | 1094.3s
+Input: 0_0.0_0.0.0
+Running the IPv4 parser with ipstr: 0_0.0_0.0.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '_'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '_'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 120 | invalidity | 1101.3s
+Input: 300.2.3
+Running the IPv4 parser with ipstr: 300.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 122 | bonus | 1115.7s
+Input: � 0.1.0.256
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 36: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 36: character maps to <undefined>
+
+============================================================
+Iteration 123 | invalidity | 1123.0s
+Input: 1.0.0,0.1
+Running the IPv4 parser with ipstr: 1.0.0,0.1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found ','  (at char 5), (line:1, col:6)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ','  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 124 | bonus | 1129.5s
+Input: 255.255. �255
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 46: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 46: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 46: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 46: character maps to <undefined>
+
+============================================================
+Iteration 125 | functional | 1135.8s
+Input: 0.0.1.300
+Running the IPv4 parser with ipstr: 0.0.1.300
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 126 | invalidity | 1141.4s
+Input: 192.168.0,0
+Running the IPv4 parser with ipstr: 192.168.0,0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found ','  (at char 9), (line:1, col:10)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ','  (at char 9), (line:1, col:10)
+
+============================================================
+Iteration 127 | invalidity | 1147.6s
+Input: 0.00.0
+Running the IPv4 parser with ipstr: 0.00.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 128 | functional | 1153.5s
+Input: 192.168.0.9
+Running the IPv4 parser with ipstr: 192.168.0.9
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 129 | invalidity | 1159.9s
+Input:  1.2.3.001
+Running the IPv4 parser with ipstr:  1.2.3.001
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 130 | functional | 1165.9s
+Input: 0.0.0.256
+Running the IPv4 parser with ipstr: 0.0.0.256
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 131 | invalidity | 1174.9s
+Input: 100.01.0/.0
+Running the IPv4 parser with ipstr: 100.01.0/.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '/'  (at char 8), (line:1, col:9)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '/'  (at char 8), (line:1, col:9)
+
+============================================================
+Iteration 132 | invalidity | 1181.9s
+Input:  1.2.#3.4
+Running the IPv4 parser with ipstr:  1.2.#3.4
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 133 | invalidity | 1189.0s
+Input: 1.2.3
+Running the IPv4 parser with ipstr: 1.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 5), (line:1, col:6)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 134 | invalidity | 1195.5s
+Input: 1.2.3
+Running the IPv4 parser with ipstr: 1.2.3
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 5), (line:1, col:6)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 135 | invalidity | 1203.3s
+Input: 1.1.2.3.300
+Running the IPv4 parser with ipstr: 1.1.2.3.300
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected end of text, found '.'  (at char 7), (line:1, col:8)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 7), (line:1, col:8)
+
+============================================================
+Iteration 136 | bonus | 1210.9s
+Input: 1.�2.3/
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 39: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+
+============================================================
+Iteration 137 | invalidity | 1218.3s
+Input: 192.168.001/001
+Running the IPv4 parser with ipstr: 192.168.001/001
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '1'  (at char 10), (line:1, col:11)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+============================================================
+Iteration 138 | invalidity | 1225.3s
+Input: 0.01.0/.8
+Running the IPv4 parser with ipstr: 0.01.0/.8
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '/'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '/'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 139 | bonus | 1232.1s
+Input: 0_0�0.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 39: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 39: character maps to <undefined>
+
+============================================================
+Iteration 140 | bonus | 1239.2s
+Input: 0.0.��x�
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 40-41: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 40-41: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 40-41: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 40-41: character maps to <undefined>
+
+============================================================
+Iteration 141 | invalidity | 1248.1s
+Input: 1?.0.:0".1
+Running the IPv4 parser with ipstr: 1?.0.:0".1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '?'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '?'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 142 | functional | 1257.6s
+Input: 0.127.1.0
+Running the IPv4 parser with ipstr: 0.127.1.0
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calculation.', 'buggy_ipyparse\\ipv4_stv.py', 134): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+============================================================
+Iteration 143 | invalidity | 1266.5s
+Input: 0.0.1
+Running the IPv4 parser with ipstr: 0.0.1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found end of text  (at char 5), (line:1, col:6)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 144 | invalidity | 1274.0s
+Input: 192.168.0\.?
+Running the IPv4 parser with ipstr: 192.168.0\.?
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '\\'  (at char 9), (line:1, col:10)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '\'  (at char 9), (line:1, col:10)
+
+============================================================
+Iteration 145 | bonus | 1282.8s
+Input: 0�0.0.0.0
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 37: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 37: character maps to <undefined>
+
+============================================================
+Iteration 146 | bonus | 1289.1s
+Input: 99�99�.999.999
+An unknown exception has been triggered. 'charmap' codec can't encode character '\ufffd' in position 38: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode character '\\ufffd' in position 38: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 38: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode character '\ufffd' in position 38: character maps to <undefined>
+
+============================================================
+Iteration 148 | invalidity | 1301.9s
+Input: ac.d.255
+Running the IPv4 parser with ipstr: ac.d.255
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 149 | invalidity | 1309.6s
+Input: :10.00.0".1
+Running the IPv4 parser with ipstr: :10.00.0".1
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.InvalidityBug'>, 'One of the octets are empty', 'buggy_ipyparse\\ipv4_stv.py', 80): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 5155, in parseImpl
+  File "pyparsing\core.py", line 950, in _parseNoCache
+  File "pyparsing\core.py", line 4612, in parseImpl
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+============================================================
+Iteration 150 | invalidity | 1316.5s
+Input: 300.1.0.099.100
+Running the IPv4 parser with ipstr: 300.1.0.099.100
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '0'  (at char 2), (line:1, col:3)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 151 | invalidity | 1323.4s
+Input: 1928.0,0
+Running the IPv4 parser with ipstr: 1928.0,0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '8'  (at char 3), (line:1, col:4)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '8'  (at char 3), (line:1, col:4)
+
+============================================================
+Iteration 152 | invalidity | 1329.7s
+Input: 10.0.0".03
+Running the IPv4 parser with ipstr: 10.0.0".03
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, 'Expected \'.\', found \'"\'  (at char 6), (line:1, col:7)', 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '"'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 153 | invalidity | 1336.1s
+Input: 100.001.0/.0
+Running the IPv4 parser with ipstr: 100.001.0/.0
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '1'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 6), (line:1, col:7)
+
+============================================================
+Iteration 154 | bonus | 1343.2s
+Input: 0g	j&��.0
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 41-42: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 41-42: character maps to <undefined>
+
+============================================================
+Iteration 155 | bonus | 1349.7s
+Input: 1.J��,0
+An unknown exception has been triggered. 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnicodeEncodeError'>, "'charmap' codec can't encode characters in position 39-40: character maps to <undefined>", 'encodings\\cp1252.py', 19): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 219, in <module>
+  File "encodings\cp1252.py", line 19, in encode
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 39-40: character maps to <undefined>
+
+============================================================
+Iteration 156 | invalidity | 1357.0s
+Input: 0_0.00.1
+Running the IPv4 parser with ipstr: 0_0.00.1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '_'  (at char 1), (line:1, col:2)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '_'  (at char 1), (line:1, col:2)
+
+============================================================
+Iteration 157 | invalidity | 1363.4s
+Input: 254.25.254.254|
+Running the IPv4 parser with ipstr: 254.25.254.254|
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '\\x01'  (at char 6), (line:1, col:7)", 'pyparsing\\core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '\x01'  (at char 6), (line:1, col:7)

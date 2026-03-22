@@ -1,0 +1,272 @@
+================================================================================
+Timestamp : 2026-03-04 13:00:25.723619+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 13:06:17.903260+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 13:09:37.424651+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 13:12:13.896683+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 14:21:55.816163+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 14:31:32.001248+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 14:38:06.639699+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 15:09:00.031363+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 15:14:17.869043+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 15:17:46.500472+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-04 15:21:39.474808+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-05 06:06:37.801488+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-05 06:59:49.938309+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:00:48.013442+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:00:59.624040+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:01:10.968663+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:01:22.338666+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:23:48.308678+00:00
+Bug Type  : performance
+Exception: PerformanceBug: Unhandled while True loop.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:24:46.958636+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:24:58.238972+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:25:09.501595+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
+================================================================================
+Timestamp : 2026-03-05 07:25:20.766115+00:00
+Bug Type  : functional
+Exception: FunctionalBug: 1-indexing used instead of 0-indexing.
+
+Traceback:
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+
