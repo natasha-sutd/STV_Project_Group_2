@@ -68,14 +68,17 @@ class BugType(Enum):
     PERFORMANCE = auto()
     FUNCTIONAL  = auto()
     BOUNDARY    = auto()
-    RELIABILITY = auto()
+    RELIABILITY = auto()   # covers bug_oracle's CRASH too (unexpected non-zero exit)
+
+    # ── cidrize-specific seeded type ──────────────────────────────────────
+    SYNTACTIC   = auto()   # AddrFormatError / SyntaxError in cidrize target
 
     # ── bonus / untracked bugs ────────────────────────────────────────────
-    BONUS       = auto()
+    BONUS       = auto()   # JSONDecodeError, CidrizeError, ParseException(StringEnd), etc.
 
     # ── infrastructure results ────────────────────────────────────────────
     TIMEOUT     = auto()   # process killed by timeout
-    DIFF        = auto()   # differential divergence (no named exception)
+    MISMATCH    = auto()   # normalised output differs from reference (was DIFF)
     NORMAL      = auto()   # clean run
     ERROR       = auto()   # fuzzer-level failure
 
@@ -83,14 +86,14 @@ class BugType(Enum):
 # ---------------------------------------------------------------------------
 # Keyword → BugType mapping
 #
-# output_parser.classify() should scan stdout+stderr for these strings
-# (in priority order) to determine which seeded bug was triggered.
-# Keys are checked as substrings (case-sensitive).
+# classify_from_keywords() scans stdout+stderr for these strings in order.
+# First match wins — so higher-specificity strings must come first.
+# Used by both fuzzer.py (_classify_inline) and bug_oracle.py.
 # ---------------------------------------------------------------------------
 KEYWORD_TO_BUGTYPE: list[tuple[str, BugType]] = [
     # Seeded exception class names (highest specificity — check first)
     ("ValidityBug",             BugType.VALIDITY),
-    ("invalidity bug",          BugType.INVALIDITY),   # json_decoder keyword
+    ("invalidity bug",          BugType.INVALIDITY),   # json_decoder lowercase keyword
     ("InvalidityBug",           BugType.INVALIDITY),
     ("InvalidCidrFormatError",  BugType.INVALIDITY),
     ("PerformanceBug",          BugType.PERFORMANCE),
@@ -99,10 +102,14 @@ KEYWORD_TO_BUGTYPE: list[tuple[str, BugType]] = [
     ("ReliabilityBug",          BugType.RELIABILITY),
     ("bug has been triggered",  BugType.RELIABILITY),  # json_decoder keyword
 
-    # Bonus / untracked exceptions (lower priority — check after seeded)
+    # Cidrize-specific syntax/format errors → SYNTACTIC
+    ("AddrFormatError",         BugType.SYNTACTIC),
+    ("syntactic",               BugType.SYNTACTIC),    # bug_oracle lowercase match
+    ("syntax error",            BugType.SYNTACTIC),
+
+    # Bonus / untracked exceptions (after all seeded types)
     ("JSONDecodeError",         BugType.BONUS),
     ("CidrizeError",            BugType.BONUS),
-    ("AddrFormatError",         BugType.BONUS),
     ("Traceback (most recent",  BugType.BONUS),        # any unhandled exception
 ]
 
@@ -111,9 +118,11 @@ def classify_from_keywords(stdout: str, stderr: str) -> BugType | None:
     """
     Scan stdout+stderr for known exception strings and return the matching
     BugType. Returns None if no keyword matches (caller should fall through
-    to crash/timeout/diff/normal detection).
+    to crash/timeout/mismatch/normal detection).
 
     Checks KEYWORD_TO_BUGTYPE in order — first match wins.
+    Note: checks are case-sensitive. Lower-case entries in KEYWORD_TO_BUGTYPE
+    (e.g. "invalidity bug", "syntactic") handle targets that print lowercase.
     """
     combined = stdout + stderr
     for keyword, bug_type in KEYWORD_TO_BUGTYPE:
@@ -129,8 +138,11 @@ def classify_from_keywords(stdout: str, stderr: str) -> BugType | None:
 @dataclass
 class BugResult:
     """
-    Output of output_parser.classify(raw, ref, config).
-    Input to bug_logger.log() and coverage_tracker.update().
+    The single classification type used across the entire pipeline.
+
+    Produced by  : BugOracle.classify()  (engine/bug_oracle.py)
+    Consumed by  : fuzzer.py, bug_logger.log(), coverage_tracker.update(),
+                   report_generator (via CSV)
 
     Fields
     ------
@@ -139,10 +151,10 @@ class BugResult:
                              avoid logging the same bug twice:
                              hashlib.md5(f"{bug_type.name}:{input[:80]}".encode())
                              .hexdigest()[:12]
-    input_data   : str     — the input that triggered this result
+    input_data   : str     — the input that triggered this result (decoded to str)
     target       : str     — target name from config["name"]
     strategy     : str     — mutation strategy that produced input_data;
-                             left blank by output_parser, stamped by fuzzer.py
+                             left blank by BugOracle, stamped by fuzzer.py
     stdout       : str     — captured stdout from the buggy binary
     stderr       : str     — captured stderr from the buggy binary
     returncode   : int     — process return code (-1 for timeout/infra error)
@@ -152,7 +164,7 @@ class BugResult:
                              revealed new edges/paths; used by fuzzer.py for
                              corpus growth and energy boosting
     exec_time_ms : float   — wall-clock execution time in milliseconds;
-                             used by output_parser to detect PERFORMANCE bugs
+                             used by BugOracle to detect PERFORMANCE bugs
                              (execution time significantly above baseline)
     """
     bug_type    : BugType
@@ -169,11 +181,14 @@ class BugResult:
     exec_time_ms: float      = 0.0
 
     def is_bug(self) -> bool:
-        """True for any result that should be logged (everything except NORMAL)."""
+        """True for any result that should be logged (everything except NORMAL and ERROR)."""
         return self.bug_type not in (BugType.NORMAL, BugType.ERROR)
 
     def is_seeded(self) -> bool:
-        """True for the 6 explicitly seeded bug types from the project PDF."""
+        """
+        True for the seeded bug types from the project PDF + SYNTACTIC
+        (cidrize-specific). These are the types that earn graded marks.
+        """
         return self.bug_type in (
             BugType.VALIDITY,
             BugType.INVALIDITY,
@@ -181,6 +196,7 @@ class BugResult:
             BugType.FUNCTIONAL,
             BugType.BOUNDARY,
             BugType.RELIABILITY,
+            BugType.SYNTACTIC,
         )
 
     def label(self) -> str:

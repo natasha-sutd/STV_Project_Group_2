@@ -1,0 +1,4 @@
+# file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/engine/coverage_tracker.py
+# hypothesis_version: 6.151.9
+
+[2.0, 100.0, '%Y-%m-%d %H:%M:%S', 'Coverage_Metric', 'Iteration', 'New_Paths_Found', 'Timestamp', 'a', 'behavioral', 'code_execution', 'coverage:', 'covered_lines', 'executed_lines', 'lines', 'name', 'results', 'tracking_mode', 'unknown', 'utf-8', 'w']

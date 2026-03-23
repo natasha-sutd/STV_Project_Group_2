@@ -9,7 +9,7 @@ buggy_cwd: "../../json-decoder"
 # input
 input_mode: arg
 input_format: json
-# seeds_path: ../inputs/json_decoder/seeds.txt
+seeds_path: ../inputs/json_decoder/seeds.txt
 
 # execution
 timeout: 60
@@ -21,9 +21,12 @@ bug_keywords:
   - "invalidity bug"
   - "Traceback (most recent call last)"
 
-# {value} marks the capture group for _extract_output() in bug_oracle.py
+# differential output comparison
 output_pattern: "Output decoded data: {value} of type"
 
 # coverage
 coverage_enabled: true
 coverage_flag: "--show-coverage"
+
+tracking_mode: code_execution
+seed_count: 30

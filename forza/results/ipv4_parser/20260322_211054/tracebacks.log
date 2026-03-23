@@ -1,0 +1,113 @@
+
+============================================================
+Iteration 1 | 2 | 0.0s
+Input: '814.846.99999.882'
+Running the IPv4 parser with ipstr: 814.846.99999.882
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '4'  (at char 2), (line:1, col:3)", 'pyparsing/core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 2 | 2 | 12.1s
+Input: '808.782.34'
+Running the IPv4 parser with ipstr: 808.782.34
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '8'  (at char 2), (line:1, col:3)", 'pyparsing/core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '8'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 3 | 2 | 24.1s
+Input: '36.87®37.206'
+Running the IPv4 parser with ipstr: 36.87®37.206
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '®'  (at char 5), (line:1, col:6)", 'pyparsing/core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '®'  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 4 | 2 | 36.1s
+Input: '404.'
+Running the IPv4 parser with ipstr: 404.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '4'  (at char 2), (line:1, col:3)", 'pyparsing/core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 5 | 2 | 47.8s
+Input: '652.880.686.820'
+Running the IPv4 parser with ipstr: 652.880.686.820
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '2'  (at char 2), (line:1, col:3)", 'pyparsing/core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 2), (line:1, col:3)
+
+============================================================
+Iteration 6 | 6 | 59.5s
+Input: '10.255.255.25'
+Running the IPv4 parser with ipstr: 10.255.255.25
+============================================================
+TRACEBACK
+============================================================
+============================================================
+A validity bug has been triggered: Expected '.', found '5'  (at char 5), (line:1, col:6)
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('validity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '5'  (at char 5), (line:1, col:6)", 'pyparsing/core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+============================================================
+Iteration 7 | 2 | 83.1s
+Input: '36.87®37.2.87®37.2.87®37.2.87®37.206'
+Running the IPv4 parser with ipstr: 36.87®37.2.87®37.2.87®37.2.87®37.206
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, "Expected '.', found '®'  (at char 5), (line:1, col:6)", 'pyparsing/core.py', 1340): 1})
+[STDERR]
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '®'  (at char 5), (line:1, col:6)

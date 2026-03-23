@@ -1,0 +1,32 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,"'""line'",INVALIDITY,0,0
+2,0.264,'nwll',INVALIDITY,0,0
+3,0.533,"'{""a"": [1, {""b""} 2}]:'",INVALIDITY,0,0
+4,1.054,"'{""emoji_escaped"": ""\\uD83D3D\\uDE00""}'",INVALIDITY,0,0
+5,1.324,'falsssse',INVALIDITY,0,0
+6,2.124,"'{""a"": true, ""b"": false}""b"": false}""b"": false}""b"": false}'",INVALIDITY,0,0
+7,2.392,'n',INVALIDITY,0,0
+8,2.653,'t\\rue',INVALIDITY,0,0
+9,2.920,'00',INVALIDITY,0,0
+10,3.190,"'{""emoji_escaped"": ""\\uD83D\\ ""\\uD83D\\ ""\\uD83D\\uDE00""}'",INVALIDITY,0,0
+11,3.717,'trud',INVALIDITY,0,0
+12,3.985,"'{""a"": {""b"": {""c""/../: 1}}}'",INVALIDITY,0,0
+13,4.259,'{',INVALIDITY,0,0
+14,4.805,"'{""zero\x1fvariants"": [0, -0, 0.0, 0e0]}'",INVALIDITY,0,0
+15,5.081,"'{""a"": t&rue, ""b"": false}'",INVALIDITY,0,0
+16,5.616,'n]ull',INVALIDITY,0,0
+17,6.399,'\x10',INVALIDITY,0,0
+18,6.661,"'[1, 2, 3]2, 3]2, 3]2, 3]2, 3]2, 3]2, 3]2, 3]2, 3]2, 3]'",INVALIDITY,0,0
+19,7.445,"'{""emoji_escaped"": ""\\u}83D\\uDE00""D'",INVALIDITY,0,0
+20,8.242,"'""li""e\\nbreakn'",INVALIDITY,0,0
+21,8.430,'-1e308',RELIABILITY,0,2
+22,8.696,"'{""neg_float"": -1.23e----------10}'",INVALIDITY,0,0
+23,8.697,"'{""int_max"": 99999\x0099999999999}'",RELIABILITY,0,-1
+24,9.781,"'{""emoji_escaped"": ""\\uD83D\\uDE00000000""}'",INVALIDITY,0,0
+25,10.044,'Y]',INVALIDITY,0,0
+26,11.108,'>1',INVALIDITY,0,0
+27,11.371,'[]]]]',INVALIDITY,0,0
+28,11.896,"'{""a"": true, ""b"":!false}'",INVALIDITY,0,0
+29,12.161,"'{""a"":  rue, ""b"":tfalse}'",INVALIDITY,0,0
+30,12.426,'null?',INVALIDITY,0,0
+31,12.694,"'{""ne'",INVALIDITY,0,0

@@ -8,7 +8,7 @@ buggy_cwd: "../../IPv4-IPv6-parser-main"
 # input
 input_mode: arg
 input_format: ipv4
-# seeds_path: "../inputs/ipv4_parser/seeds.txt"
+seeds_path: "../inputs/ipv4_parser/seeds.txt"
 
 # execution
 timeout: 60
@@ -20,5 +20,10 @@ bug_keywords:
   - "bonus"
   - "Traceback (most recent call last)"
 
+# differential output comparison
+output_pattern: "Output: [{value}]"
+
 # coverage
 coverage_enabled: false
+tracking_mode: behavioral
+seed_count: 30

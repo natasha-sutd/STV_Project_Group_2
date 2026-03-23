@@ -1,0 +1,20 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,"'{2""a"": true, ""b"": false}'",INVALIDITY,1,0
+2,0.267,"'||""""'",INVALIDITY,1,0
+3,1.383,"'{""unicode"": ""\\u0041\\u0042\\u0043""\\uceb4}'",INVALIDITY,1,0
+4,2.019,'true{',INVALIDITY,1,0
+5,2.311,'0\\u96ff',INVALIDITY,1,0
+6,2.579,"'{""neg_'",INVALIDITY,1,0
+7,3.129,"'{""a"": true, ""b"": false}\\u56ed'",INVALIDITY,1,0
+8,4.256,"'||""""'",INVALIDITY,0,0
+9,4.523,'][',INVALIDITY,0,0
+10,4.809,"'{2""a"": true: ""b"", false}'",INVALIDITY,0,0
+11,5.343,"'[null, true, kfalse, 0, """", {}]'",INVALIDITY,1,0
+12,5.610,"'{""a"": nu\\u0d81ll}'",INVALIDITY,1,0
+13,5.875,'[]i',INVALIDITY,1,0
+14,7.223,"'{""a"": true, ""b"": false1}\\u56ed'",INVALIDITY,1,0
+15,7.491,"'{""a"": true, ""b"": false}\\u56ed'",INVALIDITY,0,0
+16,7.762,"'[1, 2, 3'",INVALIDITY,1,0
+17,8.042,'\\ub5370',INVALIDITY,0,0
+18,9.151,'[\\u3074]i',INVALIDITY,1,0
+19,9.431,'\\udc39{}',INVALIDITY,0,0

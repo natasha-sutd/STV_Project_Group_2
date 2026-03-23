@@ -1,0 +1,81 @@
+target,bug_type,bug_key,input_data,stdout,stderr,returncode,timed_out,crashed,strategy,timestamp
+cidrize,RELIABILITY,c920ae616677,1k92.0.2.18,"Running cidrize function with the arguments: ipstr: 1k92.0.2.18 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1k92.0.2.18']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,False,False,byte_insert,2026-03-22 18:34:59
+cidrize,FUNCTIONAL,651cb9cf081a,10.0.0O.[1-9],"Running cidrize function with the arguments: ipstr: 10.0.0O.[1-9] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used ins","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize/cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize/cidrize_stv.py"", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+",0,False,False,byte_insert,2026-03-22 18:37:32
+cidrize,RELIABILITY,c0ed0232ba5f,-1.2.3.4,,"usage: cidrize [-h] [--func FUNC] [--ipstr IPSTR] [--threshold THRESHOLD]
+               [--verbose VERBOSE] [--strict] [--raise-errors]
+cidrize: error: argument --ipstr: expected one argument
+",2,False,False,ip_aware_mutate,2026-03-22 18:41:47
+cidrize,INVALIDITY,bb72478dd243,192.0.20.64/2/2/2/2/2/2/26,"Running cidrize function with the arguments: ipstr: 192.0.20.64/2/2/2/2/2/2/26 strict: False raise-errors: False
+An invalidity bug has been triggered: There are too many /
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'There are too ","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize/cidrize_stv.py"", line 444, in cidrize
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: There are too many /
+",0,False,False,repeat_chunk,2026-03-22 18:43:10
+cidrize,INVALIDITY,8c334cc930aa,192.0.208.-192.0.2.85,"Running cidrize function with the arguments: ipstr: 192.0.208.-192.0.2.85 strict: False raise-errors: False
+An invalidity bug has been triggered: Missing digit before hyphen.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'Missing dig","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize/cidrize_stv.py"", line 451, in cidrize
+  File ""buggy_cidrize/cidrize_stv.py"", line 274, in parse_range
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: Missing digit before hyphen.
+",0,False,False,swap_chars,2026-03-22 18:47:15
+cidrize,RELIABILITY,c920ae616677,59.29.153.151/20,"Running cidrize function with the arguments: ipstr: 59.29.153.151/20 strict: False raise-errors: False
+Output: [IPNetwork('59.29.144.0/20')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,False,False,radamsa,2026-03-22 20:23:00
+cidrize,RELIABILITY,c920ae616677,99999.828.577.331/1,"Running cidrize function with the arguments: ipstr: 99999.828.577.331/1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 99999.828.577.331/1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,False,False,ip_aware_mutate,2026-03-22 21:08:21
+cidrize,FUNCTIONAL,651cb9cf081a,!92.0.2.8[0-5],"Running cidrize function with the arguments: ipstr: !92.0.2.8[0-5] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used in","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize/cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize/cidrize_stv.py"", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+",0,False,False,bit_flip,2026-03-22 21:08:45
+cidrize,PERFORMANCE,d77bd78a0d64,0.0.0.0/0,"Running cidrize function with the arguments: ipstr: 0.0.0.0/0 strict: False raise-errors: False
+A performance bug has been triggered: Unhandled while True loop.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('performance', <class 'buggy_cidrize.cidrize_stv.PerformanceBug'>, 'Unhandled while True loop.', 'bu","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize/cidrize_stv.py"", line 421, in cidrize
+buggy_cidrize.cidrize_stv.PerformanceBug: Unhandled while True loop.
+",0,False,False,radamsa,2026-03-22 21:09:09

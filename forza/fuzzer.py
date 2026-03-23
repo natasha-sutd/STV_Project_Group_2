@@ -1,7 +1,6 @@
 """
 The orchestrator that wires everything together into the main fuzzing loop.
-"""
-"""
+
 # Pseudocode of the main loop
 config = load_config("targets/json_decoder.yaml")
 seeds  = load_seeds(config["seeds_path"])
@@ -32,17 +31,15 @@ fuzzer.py
             │
             ▼
     report_generator.generate()              →  report.html
-"""
 
-"""
 fuzzer.py
 =========
 Main entry point. Wires the full pipeline together:
 
     seed / mutated input
         └─► target_runner.run_both()      →  [RawResult], RawResult | None
-        └─► output_parser.classify()      →  BugResult
-        └─► coverage_tracker.update()     →  bool  (new paths?)
+        └─► BugOracle.classify()          →  BugResult
+        └─► CoverageTracker.update()      →  bool  (new paths?)
         └─► bug_logger.log()              →  CSV + crash file
         └─► report_generator  (background, every REPORT_INTERVAL seconds)
 
@@ -65,8 +62,10 @@ Seed mode (--seed):
     python3 fuzzer.py --target targets/json_decoder.yaml --seed
     python3 fuzzer.py --all --seed
 
-Interface contracts 
+Interface contracts (for teammates)
 ------------------------------------
+See INTERFACES.md for full details. Quick summary:
+
     MutationEngine(input_format: str)
         .mutate(seed: str) -> str
         .get_last_strategy() -> str
@@ -92,8 +91,11 @@ import signal
 import sys
 import threading
 import time
-import random
 from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# Core imports (always available — no teammate dependencies)
+# ---------------------------------------------------------------------------
 from engine.target_runner import load_config, load_seeds, run_both
 from engine.types import BugResult, BugType, classify_from_keywords
 
@@ -102,7 +104,7 @@ from engine.types import BugResult, BugType, classify_from_keywords
 # ---------------------------------------------------------------------------
 def _import_fuzz_pipeline():
     """
-    Import all teammate modules. Called once at the start of fuzz mode.
+    Import all engine modules. Called once at the start of fuzz mode.
     Raises ImportError with a clear message if a module is missing.
     """
     try:
@@ -113,12 +115,11 @@ def _import_fuzz_pipeline():
             "Expected: class MutationEngine with mutate(), "
             "get_last_strategy(), boost() — see INTERFACES.md"
         )
+
     try:
-        from engine import output_parser
-        if not hasattr(output_parser, "classify"):
-            raise ImportError("output_parser.py is missing classify()")
+        from engine.bug_oracle import BugOracle
     except ImportError as e:
-        raise ImportError(f"engine/output_parser.py: {e}\nSee INTERFACES.md")
+        raise ImportError(f"engine/bug_oracle.py: {e}\nSee INTERFACES.md")
 
     try:
         from engine import coverage_tracker
@@ -139,7 +140,7 @@ def _import_fuzz_pipeline():
     except ImportError as e:
         raise ImportError(f"engine/report_generator.py: {e}")
 
-    return MutationEngine, output_parser, coverage_tracker, bug_logger, report_generator
+    return MutationEngine, BugOracle, coverage_tracker, bug_logger, report_generator
 
 
 def _import_report_generator():
@@ -235,7 +236,8 @@ def print_banner(config: dict, mode: str, duration: float | None, max_iters: int
 
     print()
     print(_div())
-    print(f"  {C.bold(C.cyan('greybox fuzzer'))}  ·  "f"target: {C.green(name)}  ·  mode: {C.yellow(mode)}")
+    print(f"  {C.bold(C.cyan('greybox fuzzer'))}  ·  "
+          f"target: {C.green(name)}  ·  mode: {C.yellow(mode)}")
     print(_div())
     print(_kv("target name",   C.green(name)))
     print(_kv("input format",  C.cyan(fmt)))
@@ -344,7 +346,7 @@ def print_seed_result(
         BugType.FUNCTIONAL  : C.magenta("  FUNCTIONAL "),
         BugType.BOUNDARY    : C.magenta("  BOUNDARY   "),
         BugType.BONUS       : C.cyan("  BONUS      "),
-        BugType.DIFF        : C.yellow("  DIFF       "),
+        BugType.SYNTACTIC   : C.yellow("  SYNTACTIC  "),
         BugType.ERROR       : C.red("  ERROR      "),
     }.get(bug.bug_type, C.dim("  ?           "))
 
@@ -584,7 +586,7 @@ def run_fuzz_mode(
         ReportRefresher regenerates report.html every REPORT_INTERVAL seconds
         in a daemon thread. Final refresh happens on shutdown.
     """
-    MutationEngine, output_parser, coverage_tracker, bug_logger, report_generator = (
+    MutationEngine, BugOracle, coverage_tracker, bug_logger, report_generator = (
         _import_fuzz_pipeline()
     )
 
@@ -594,9 +596,31 @@ def run_fuzz_mode(
         return
 
     engine     = MutationEngine(input_format=config.get("input_format", "text"))
+    oracle     = BugOracle()
     corpus     = list(seeds)
     target     = config.get("name", "unknown")
     out_path   = report_generator.RESULTS_DIR / "report.html"
+
+    # ── seed corpus initialisation ────────────────────────────────────────
+    # Augment static seeds.txt with dynamically generated seeds.
+    # seed_count in the YAML controls how many to add (0 = static only).
+    seed_count   = config.get("seed_count", 0)
+    input_format = config.get("input_format", "")
+    if seed_count > 0 and input_format:
+        try:
+            from engine.seed_generator import generate_seed
+            generated = [generate_seed(input_format) for _ in range(seed_count)]
+            corpus.extend(generated)
+            print(C.dim(
+                f"  corpus: {len(seeds)} static seeds "
+                f"+ {seed_count} generated = {len(corpus)} total"
+            ))
+        except Exception as e:
+            print(C.yellow(f"  [warn] seed_generator failed: {e} — using static seeds only"))
+
+    # Reset per-target state in module-level wrappers
+    bug_logger.reset()
+    coverage_tracker.reset()
 
     print_banner(config, mode="fuzz", duration=duration, max_iters=max_iters)
 
@@ -647,7 +671,15 @@ def run_fuzz_mode(
             )
 
             # ── 3. classify ───────────────────────────────────────────────
-            bug          = output_parser.classify(buggy_results, ref, config)
+            raw        = buggy_results[0]
+            ref_stdout = ref.stdout if ref else None
+            bug        = oracle.classify(
+                raw        = raw,
+                input_data = mutated,
+                target     = target,
+                config     = config,
+                ref_stdout = ref_stdout,
+            )
             bug.strategy = strategy  # stamp strategy (classify leaves it blank)
 
             # ── 4. coverage tracking ──────────────────────────────────────
@@ -658,6 +690,9 @@ def run_fuzz_mode(
                 corpus.append(mutated)
                 engine.boost(strategy)
                 new_paths += 1
+
+            # AFL-style energy decay — prevents one strategy dominating
+            engine.decay()
 
             # ── 6. log bugs ───────────────────────────────────────────────
             if bug.is_bug():

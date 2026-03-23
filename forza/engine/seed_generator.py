@@ -1,3 +1,8 @@
+'''
+Generates seeds for inital corpus based on the input format specified in the target's YAML config.
+'''
+
+
 from hypothesis import strategies as st
 import random
 

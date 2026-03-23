@@ -1,0 +1,6 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,':>::::',BONUS,1,0
+2,11.610,'728b:bbb8:52ea:3897:d3a9:3605:ae9c>:1bfa',BONUS,1,0
+3,23.274,'g',BONUS,0,0
+4,34.811,'gggg::1/999',BONUS,0,0
+5,46.295,':>::::',BONUS,0,0

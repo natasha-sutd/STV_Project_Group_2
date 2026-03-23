@@ -1,0 +1,11 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,'trrrue',INVALIDITY,1,0
+2,1.053,'[][][][]',INVALIDITY,1,0
+3,1.574,"'{""neg_float"": -1.23e-1float"": -1.23e-1float"": -1.23e-1float"": -1.23e-10}'",INVALIDITY,1,0
+4,1.840,"'{""a""; null}'",INVALIDITY,1,0
+5,2.626,"'{""a""'",INVALIDITY,0,0
+6,3.412,"'""""""""'",INVALIDITY,0,0
+7,3.674,"'{""int_max"": 9999999999999999999999999999999999}9}9}9}9}9}9}9}9}9}'",INVALIDITY,1,0
+8,5.762,"'{""a"": [1, {""b"": 2}}]'",INVALIDITY,1,0
+9,7.106,'[]]]',INVALIDITY,0,0
+10,11.586,"'{""a"": [1, {""b"": 2}}]'",INVALIDITY,0,0

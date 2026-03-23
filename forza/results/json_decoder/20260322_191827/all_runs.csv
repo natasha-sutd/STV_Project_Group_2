@@ -1,0 +1,8 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,"'{""a"": [1, {""b"": 2}]}p'",INVALIDITY,1,0
+2,0.524,'fal/../se',INVALIDITY,1,0
+3,1.311,'fal/../se',INVALIDITY,0,0
+4,1.836,"'""hel'",INVALIDITY,1,0
+5,11.888,"'{""a"": [1, {""b"": 2}]}p'",INVALIDITY,0,0
+6,13.753,"'""hel'",INVALIDITY,0,0
+7,15.766,"'[null, true, false, 0, """", {}]'",BONUS,1,130

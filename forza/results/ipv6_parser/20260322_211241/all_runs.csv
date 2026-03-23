@@ -1,0 +1,8 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,'200',BONUS,1,0
+2,24.232,'grggg::1',BONUS,1,0
+3,41.327,'eaf7:782e:548c:780a',BONUS,1,0
+4,65.845,'14cd:7755:24dd:c3M:3644:206a:9c58:f94a',BONUS,1,0
+5,77.906,'::ffff:::1',BONUS,1,0
+6,90.005,'cad0:c86fC:ba75:5104:c641:4658:2eaf:2e96',INVALIDITY,1,0
+7,102.058,'12dd:;931:8846:733b:803e:bd01:88ec:8725',BONUS,1,0

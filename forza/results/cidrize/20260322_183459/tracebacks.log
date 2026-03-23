@@ -1,0 +1,1072 @@
+
+============================================================
+Iteration 1 | 6 | 0.0s
+Input: '1k92.0.2.18'
+Running cidrize function with the arguments: ipstr: 1k92.0.2.18 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1k92.0.2.18']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 2 | 6 | 11.4s
+Input: '16'
+Running cidrize function with the arguments: ipstr: 16 strict: False raise-errors: False
+Output: ['invalid IPNetwork 16']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 3 | 6 | 22.8s
+Input: '1k92.8.2.18'
+Running cidrize function with the arguments: ipstr: 1k92.8.2.18 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1k92.8.2.18']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 4 | 6 | 34.3s
+Input: '10.0.0.[1-9].1'
+Running cidrize function with the arguments: ipstr: 10.0.0.[1-9].1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.[1-9].1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 5 | 6 | 45.8s
+Input: '10.0.0.L1-10.0.0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.L1-10.0.0.10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.L1-10.0.0.10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 6 | 6 | 57.2s
+Input: '127.0.0.&&1'
+Running cidrize function with the arguments: ipstr: 127.0.0.&&1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 127.0.0.&&1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 7 | 6 | 68.6s
+Input: '256.0.0.1'
+Running cidrize function with the arguments: ipstr: 256.0.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 256.0.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 8 | 6 | 79.9s
+Input: '.00.0.0/0'
+Running cidrize function with the arguments: ipstr: .00.0.0/0 strict: False raise-errors: False
+Output: ['invalid IPNetwork .00.0.0/0']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 9 | 6 | 91.3s
+Input: '192.0.2.2.2.2.2.2.2.18'
+Running cidrize function with the arguments: ipstr: 192.0.2.2.2.2.2.2.2.18 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2.2.2.2.2.2.2.18']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 10 | 6 | 102.7s
+Input: '0.0.0.0/9999999999999999999999990'
+Running cidrize function with the arguments: ipstr: 0.0.0.0/9999999999999999999999990 strict: False raise-errors: False
+Output: ['invalid IPNetwork 0.0.0.0/9999999999999999999999990']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 11 | 6 | 114.2s
+Input: '192.168.1.1.1'
+Running cidrize function with the arguments: ipstr: 192.168.1.1.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.168.1.1.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 12 | 6 | 126.8s
+Input: '224.0.0.1.1.1.1.1.1.1.1'
+Running cidrize function with the arguments: ipstr: 224.0.0.1.1.1.1.1.1.1.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 224.0.0.1.1.1.1.1.1.1.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 13 | 6 | 141.2s
+Input: '10.0.0.1-10.0n0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-10.0n0.10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.1-10.0n0.10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 14 | 4 | 152.6s
+Input: '10.0.0O.[1-9]'
+Running cidrize function with the arguments: ipstr: 10.0.0O.[1-9] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 15 | 6 | 164.0s
+Input: '127\x0e0.0.1'
+Running cidrize function with the arguments: ipstr: 1270.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 127\x0e0.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 16 | 6 | 175.4s
+Input: '25g5.255.255.255'
+Running cidrize function with the arguments: ipstr: 25g5.255.255.255 strict: False raise-errors: False
+Output: ['invalid IPNetwork 25g5.255.255.255']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 17 | 6 | 186.9s
+Input: '192.0.2.8[0-5]/-1'
+Running cidrize function with the arguments: ipstr: 192.0.2.8[0-5]/-1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2.8[0-5]/-1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 18 | 6 | 198.4s
+Input: '192.0.Q20.64/26'
+Running cidrize function with the arguments: ipstr: 192.0.Q20.64/26 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.Q20.64/26']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 19 | 6 | 209.8s
+Input: '192.0.2.80-192.0.2.85'
+Running cidrize function with the arguments: ipstr: 192.0.2.80-192.0.2.85 strict: False raise-errors: False
+Output: [IPNetwork('192.0.2.80/29')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 20 | 6 | 221.2s
+Input: '192.0.2'
+Running cidrize function with the arguments: ipstr: 192.0.2 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 21 | 4 | 232.6s
+Input: '10.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.[1-9]'
+Running cidrize function with the arguments: ipstr: 10.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.[1-9] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 22 | 6 | 244.0s
+Input: '10.°.0.1-10'
+Running cidrize function with the arguments: ipstr: 10.°.0.1-10 strict: False raise-errors: False
+Output: ["failed to detect a valid IP address from '10.°.0.1'"]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 23 | 6 | 255.4s
+Input: '10.0.0O.[1-9].1'
+Running cidrize function with the arguments: ipstr: 10.0.0O.[1-9].1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0O.[1-9].1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 24 | 4 | 266.7s
+Input: '{10.0.0.[123]'
+Running cidrize function with the arguments: ipstr: {10.0.0.[123] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 25 | 6 | 278.1s
+Input: '16952.4.0.1'
+Running cidrize function with the arguments: ipstr: 16952.4.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 16952.4.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 26 | 6 | 305.4s
+Input: '1k92.0..218'
+Running cidrize function with the arguments: ipstr: 1k92.0..218 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1k92.0..218']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 27 | 6 | 316.8s
+Input: '192.0.2.80-/../192.0.2.85'
+Running cidrize function with the arguments: ipstr: 192.0.2.80-/../192.0.2.85 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2.80-/../192.0.2.85']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 28 | 4 | 328.2s
+Input: 'j192.0.2.[5678]'
+Running cidrize function with the arguments: ipstr: j192.0.2.[5678] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 29 | 6 | 339.6s
+Input: 'r55.255.255.255'
+Running cidrize function with the arguments: ipstr: r55.255.255.255 strict: False raise-errors: False
+Output: ['invalid IPNetwork r55.255.255.255']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 30 | 6 | 351.0s
+Input: "10.0.0O.[1-9]'"
+Running cidrize function with the arguments: ipstr: 10.0.0O.[1-9]' strict: False raise-errors: False
+Output: ["invalid IPNetwork 10.0.0O.[1-9]'"]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 31 | 6 | 362.4s
+Input: '.k92.0.2118'
+Running cidrize function with the arguments: ipstr: .k92.0.2118 strict: False raise-errors: False
+Output: ['invalid IPNetwork .k92.0.2118']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 32 | 6 | 373.7s
+Input: '1y0.0.0.1-10'
+Running cidrize function with the arguments: ipstr: 1y0.0.0.1-10 strict: False raise-errors: False
+Output: ["failed to detect a valid IP address from '1y0.0.0.1'"]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 33 | 6 | 385.1s
+Input: '192.0.20.64/26'
+Running cidrize function with the arguments: ipstr: 192.0.20.64/26 strict: False raise-errors: False
+Output: [IPNetwork('192.0.20.64/26')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 34 | 6 | 396.5s
+Input: '0.0.0.00/'
+Running cidrize function with the arguments: ipstr: 0.0.0.00/ strict: False raise-errors: False
+Output: ['invalid IPNetwork 0.0.0.00/']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 35 | 6 | 407.9s
+Input: '-1.2.3.4'
+[STDERR]
+usage: cidrize [-h] [--func FUNC] [--ipstr IPSTR] [--threshold THRESHOLD]
+               [--verbose VERBOSE] [--strict] [--raise-errors]
+cidrize: error: argument --ipstr: expected one argument
+
+============================================================
+Iteration 36 | 6 | 419.2s
+Input: '"127.0.0.1'
+Running cidrize function with the arguments: ipstr: "127.0.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork "127.0.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 37 | 6 | 431.3s
+Input: '192.0.20.64/26'
+Running cidrize function with the arguments: ipstr: 192.0.20.64/26 strict: False raise-errors: False
+Output: [IPNetwork('192.0.20.64/26')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 38 | 6 | 445.8s
+Input: '10.0.0.[1-9].1'
+Running cidrize function with the arguments: ipstr: 10.0.0.[1-9].1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.[1-9].1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 39 | 4 | 457.3s
+Input: '10.0.0.1[1-9]'
+Running cidrize function with the arguments: ipstr: 10.0.0.1[1-9] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 40 | 4 | 468.6s
+Input: '192.0\r.2.8[0-5]'
+Running cidrize function with the arguments: ipstr: 192.0.2.8[0-5] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 41 | 6 | 480.0s
+Input: '10.0.0.1-10.0.0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-10.0.0.10 strict: False raise-errors: False
+Output: [IPNetwork('10.0.0.0/28')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 42 | 2 | 491.4s
+Input: '192.0.20.64/2/2/2/2/2/2/26'
+Running cidrize function with the arguments: ipstr: 192.0.20.64/2/2/2/2/2/2/26 strict: False raise-errors: False
+An invalidity bug has been triggered: There are too many /
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'There are too many /', 'buggy_cidrize/cidrize_stv.py', 444): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 444, in cidrize
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: There are too many /
+
+============================================================
+Iteration 43 | 6 | 502.8s
+Input: '1k92.0.2.18'
+Running cidrize function with the arguments: ipstr: 1k92.0.2.18 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1k92.0.2.18']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 44 | 6 | 514.2s
+Input: '192.0.20.64/2/2/2/2/a2/2/26'
+Running cidrize function with the arguments: ipstr: 192.0.20.64/2/2/2/2/a2/2/26 strict: False raise-errors: False
+Output: ['IPAddress() does not support netmasks or subnet prefixes! See documentation for details.']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 45 | 6 | 525.6s
+Input: '192.0.2.80-192'
+Running cidrize function with the arguments: ipstr: 192.0.2.80-192 strict: False raise-errors: False
+Output: [IPNetwork('192.0.2.0/24')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 46 | 4 | 537.0s
+Input: '10.0.0000000000.[123]'
+Running cidrize function with the arguments: ipstr: 10.0.0000000000.[123] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 47 | 6 | 548.4s
+Input: '10.0.0.1-10.0.2.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-10.0.2.10 strict: False raise-errors: False
+Output: [IPNetwork('10.0.0.0/22')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 48 | 6 | 559.7s
+Input: '192.0.2.80-192.0.2.85'
+Running cidrize function with the arguments: ipstr: 192.0.2.80-192.0.2.85 strict: False raise-errors: False
+Output: [IPNetwork('192.0.2.80/29')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 49 | 6 | 571.1s
+Input: '::ffff:192.0.20.64'
+Running cidrize function with the arguments: ipstr: ::ffff:192.0.20.64 strict: False raise-errors: False
+Output: [IPNetwork('::ffff:192.0.20.64/128')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 50 | 4 | 582.5s
+Input: '10.0.0O.[1-9]}'
+Running cidrize function with the arguments: ipstr: 10.0.0O.[1-9]} strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 51 | 6 | 609.7s
+Input: '192.0.2.18/-1'
+Running cidrize function with the arguments: ipstr: 192.0.2.18/-1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2.18/-1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 52 | 2 | 621.1s
+Input: '192.0.20.64/2/2/2/2/2/2/26'
+Running cidrize function with the arguments: ipstr: 192.0.20.64/2/2/2/2/2/2/26 strict: False raise-errors: False
+An invalidity bug has been triggered: There are too many /
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'There are too many /', 'buggy_cidrize/cidrize_stv.py', 444): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 444, in cidrize
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: There are too many /
+
+============================================================
+Iteration 53 | 6 | 632.5s
+Input: '10.0.0O*[1-9]'
+Running cidrize function with the arguments: ipstr: 10.0.0O*[1-9] strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0O*[1-9]']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 54 | 4 | 643.9s
+Input: '192.0.2.[5678]'
+Running cidrize function with the arguments: ipstr: 192.0.2.[5678] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 55 | 6 | 655.3s
+Input: '10.0.0.1-10.0.0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-10.0.0.10 strict: False raise-errors: False
+Output: [IPNetwork('10.0.0.0/28')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 56 | 6 | 666.7s
+Input: '-1.2.3.4'
+[STDERR]
+usage: cidrize [-h] [--func FUNC] [--ipstr IPSTR] [--threshold THRESHOLD]
+               [--verbose VERBOSE] [--strict] [--raise-errors]
+cidrize: error: argument --ipstr: expected one argument
+
+============================================================
+Iteration 57 | 6 | 678.1s
+Input: '1.4.3.2'
+Running cidrize function with the arguments: ipstr: 1.4.3.2 strict: False raise-errors: False
+Output: [IPNetwork('1.4.3.2/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 58 | 4 | 689.4s
+Input: '10.0&0.[123]'
+Running cidrize function with the arguments: ipstr: 10.0&0.[123] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 59 | 6 | 700.9s
+Input: '10.0.0'
+Running cidrize function with the arguments: ipstr: 10.0.0 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 60 | 6 | 712.3s
+Input: '192.00.2.18'
+Running cidrize function with the arguments: ipstr: 192.00.2.18 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.00.2.18']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 61 | 6 | 723.7s
+Input: '1k92.0.2.18'
+Running cidrize function with the arguments: ipstr: 1k92.0.2.18 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1k92.0.2.18']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 62 | 2 | 735.6s
+Input: '192.0.208.-192.0.2.85'
+Running cidrize function with the arguments: ipstr: 192.0.208.-192.0.2.85 strict: False raise-errors: False
+An invalidity bug has been triggered: Missing digit before hyphen.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'Missing digit before hyphen.', 'buggy_cidrize/cidrize_stv.py', 274): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 451, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 274, in parse_range
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: Missing digit before hyphen.
+
+============================================================
+Iteration 63 | 4 | 750.1s
+Input: '10.0.8.[1-9]'
+Running cidrize function with the arguments: ipstr: 10.0.8.[1-9] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 64 | 6 | 761.4s
+Input: '10.0.0.1-10.0c.0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-10.0c.0.10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.1-10.0c.0.10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 65 | 6 | 772.8s
+Input: '255.255.'
+Running cidrize function with the arguments: ipstr: 255.255. strict: False raise-errors: False
+Output: ['invalid IPNetwork 255.255.']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 66 | 4 | 784.2s
+Input: '19j2.0.2.[5678]'
+Running cidrize function with the arguments: ipstr: 19j2.0.2.[5678] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 67 | 6 | 795.6s
+Input: '1.2.3.1.2.3.1.2.3.1.2.3.1.2.3.4'
+Running cidrize function with the arguments: ipstr: 1.2.3.1.2.3.1.2.3.1.2.3.1.2.3.4 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1.2.3.1.2.3.1.2.3.1.2.3.1.2.3.4']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 68 | 6 | 807.0s
+Input: '10.0.0.1-1q0.0.0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-1q0.0.0.10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.1-1q0.0.0.10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 69 | 6 | 818.4s
+Input: '192.0.2.170-177777777775'
+Running cidrize function with the arguments: ipstr: 192.0.2.170-177777777775 strict: False raise-errors: False
+Output: ["base address '192.0.2.177777777775' is not IPv4"]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 70 | 6 | 829.8s
+Input: '10.0...1-1000.0.10'
+Running cidrize function with the arguments: ipstr: 10.0...1-1000.0.10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0...1-1000.0.10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 71 | 6 | 841.1s
+Input: '10'
+Running cidrize function with the arguments: ipstr: 10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 72 | 6 | 852.6s
+Input: '192.0.25170-17.'
+Running cidrize function with the arguments: ipstr: 192.0.25170-17. strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.25170-17.']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 73 | 4 | 864.0s
+Input: '::ffff:10.0.0.[1-9]'
+Running cidrize function with the arguments: ipstr: ::ffff:10.0.0.[1-9] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 74 | 6 | 875.5s
+Input: '10.0.0.H1-10.0.0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.H1-10.0.0.10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.H1-10.0.0.10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 75 | 6 | 886.9s
+Input: '255.255.255.2.255.2.255.2.255.2.255.2.255.2.255.255'
+Running cidrize function with the arguments: ipstr: 255.255.255.2.255.2.255.2.255.2.255.2.255.2.255.255 strict: False raise-errors: False
+Output: ['invalid IPNetwork 255.255.255.2.255.2.255.2.255.2.255.2.255.2.255.255']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 76 | 6 | 914.2s
+Input: '1.2.3.44444444'
+Running cidrize function with the arguments: ipstr: 1.2.3.44444444 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1.2.3.44444444']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 77 | 6 | 925.6s
+Input: '224.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.1'
+Running cidrize function with the arguments: ipstr: 224.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 224.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.14.0.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 78 | 4 | 936.9s
+Input: '10.0.0i.[123]'
+Running cidrize function with the arguments: ipstr: 10.0.0i.[123] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 79 | 6 | 948.3s
+Input: '1.;2.3.4'
+Running cidrize function with the arguments: ipstr: 1.;2.3.4 strict: False raise-errors: False
+Output: ['invalid IPNetwork 1.;2.3.4']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 80 | 6 | 959.6s
+Input: '192.0.208.-192.0'
+Running cidrize function with the arguments: ipstr: 192.0.208.-192.0 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.208.-192.0']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 81 | 6 | 971.0s
+Input: '10.0.0.1-10.0.0.100.0.100.0.100.0.100.0.100.0.100.0.100.0.100.0.10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-10.0.0.100.0.100.0.100.0.100.0.100.0.100.0.100.0.100.0.10 strict: False raise-errors: False
+Output: ['invalid IPNetwork 10.0.0.1-10.0.0.100.0.100.0.100.0.100.0.100.0.100.0.100.0.100.0.10']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 82 | 4 | 982.4s
+Input: '192.0.2.[5678]'
+Running cidrize function with the arguments: ipstr: 192.0.2.[5678] strict: False raise-errors: False
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-indexing used instead of 0-indexing.', 'buggy_cidrize/cidrize_stv.py', 240): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 474, in cidrize
+  File "buggy_cidrize/cidrize_stv.py", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+
+============================================================
+Iteration 83 | 6 | 993.8s
+Input: '10.0.0.1-1000000000'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-1000000000 strict: False raise-errors: False
+Output: ["base address '10.0.0.1000000000' is not IPv4"]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 84 | 6 | 1005.2s
+Input: '-1.2 .3.4'
+Running cidrize function with the arguments: ipstr: -1.2 .3.4 strict: False raise-errors: False
+Output: ['invalid IPNetwork -1.2 .3.4']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 85 | 6 | 1016.5s
+Input: '22t.0.0.1'
+Running cidrize function with the arguments: ipstr: 22t.0.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 22t.0.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 86 | 6 | 1027.9s
+Input: '169.2555554.0.1'
+Running cidrize function with the arguments: ipstr: 169.2555554.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 169.2555554.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 87 | 2 | 1039.7s
+Input: '192.0.20.64/2/2/2/2/2/2/26'
+Running cidrize function with the arguments: ipstr: 192.0.20.64/2/2/2/2/2/2/26 strict: False raise-errors: False
+An invalidity bug has been triggered: There are too many /
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'There are too many /', 'buggy_cidrize/cidrize_stv.py', 444): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 444, in cidrize
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: There are too many /
+
+============================================================
+Iteration 88 | 6 | 1054.1s
+Input: '127.0.0.1.1'
+Running cidrize function with the arguments: ipstr: 127.0.0.1.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 127.0.0.1.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 89 | 6 | 1065.5s
+Input: '160.254.9.1'
+Running cidrize function with the arguments: ipstr: 160.254.9.1 strict: False raise-errors: False
+Output: [IPNetwork('160.254.9.1/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 90 | 6 | 1076.9s
+Input: '192.0.2.8'
+Running cidrize function with the arguments: ipstr: 192.0.2.8 strict: False raise-errors: False
+Output: [IPNetwork('192.0.2.8/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 91 | 2 | 1088.2s
+Input: '192.0.20.64/2/2/2/2/2/2/26'
+Running cidrize function with the arguments: ipstr: 192.0.20.64/2/2/2/2/2/2/26 strict: False raise-errors: False
+An invalidity bug has been triggered: There are too many /
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'There are too many /', 'buggy_cidrize/cidrize_stv.py', 444): 1})
+Saved bug count report and tracebacks for the bugs encountered!
+[STDERR]
+Traceback (most recent call last):
+  File "cidrize_runner_stv.py", line 247, in <module>
+  File "buggy_cidrize/cidrize_stv.py", line 444, in cidrize
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: There are too many /
+
+============================================================
+Iteration 92 | 6 | 1099.5s
+Input: '192.0.2>80-192.0.2.85'
+Running cidrize function with the arguments: ipstr: 192.0.2>80-192.0.2.85 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2>80-192.0.2.85']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 93 | 6 | 1110.9s
+Input: '192.0.2.18.1'
+Running cidrize function with the arguments: ipstr: 192.0.2.18.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2.18.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 94 | 6 | 1122.3s
+Input: '192.0.2.'
+Running cidrize function with the arguments: ipstr: 192.0.2. strict: False raise-errors: False
+Output: ["not a recognised IP glob range: '192.0.2.'!"]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 95 | 6 | 1133.7s
+Input: '10.0.0.1-10'
+Running cidrize function with the arguments: ipstr: 10.0.0.1-10 strict: False raise-errors: False
+Output: [IPNetwork('10.0.0.0/28')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 96 | 6 | 1145.0s
+Input: '224.0.0.1G'
+Running cidrize function with the arguments: ipstr: 224.0.0.1G strict: False raise-errors: False
+Output: ['invalid IPNetwork 224.0.0.1G']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 97 | 6 | 1156.4s
+Input: '169.254.0.1'
+Running cidrize function with the arguments: ipstr: 169.254.0.1 strict: False raise-errors: False
+Output: [IPNetwork('169.254.0.1/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 98 | 6 | 1167.8s
+Input: '-)1.2.3.4'
+[STDERR]
+usage: cidrize [-h] [--func FUNC] [--ipstr IPSTR] [--threshold THRESHOLD]
+               [--verbose VERBOSE] [--strict] [--raise-errors]
+cidrize: error: argument --ipstr: expected one argument
+
+============================================================
+Iteration 99 | 6 | 1179.2s
+Input: '256.0.0.1'
+Running cidrize function with the arguments: ipstr: 256.0.0.1 strict: False raise-errors: False
+Output: ['invalid IPNetwork 256.0.0.1']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+
+============================================================
+Iteration 100 | 6 | 1190.7s
+Input: '-1.6.3.4'
+[STDERR]
+usage: cidrize [-h] [--func FUNC] [--ipstr IPSTR] [--threshold THRESHOLD]
+               [--verbose VERBOSE] [--strict] [--raise-errors]
+cidrize: error: argument --ipstr: expected one argument

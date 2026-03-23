@@ -1,0 +1,1031 @@
+
+============================================================
+Iteration 1 | 2 | 0.0s
+Input: 'trrrue'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Expecting value: line 1 column 1 (char 0)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, 'Expecting value: line 1 column 1 (char 0)', '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 384): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     94     78     21    59%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 194-196, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 369, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    159    138     27    51%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 50.77% (164/323)
+branch coverage   : 50.00% (69/138)
+combined coverage : 50.54%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 194-196, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 369, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 194: missing branch to line 196
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 369: missing branch to exit
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 384, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+buggy_json.decoder_stv.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+============================================================
+Iteration 2 | 2 | 1.1s
+Input: '[][][][]'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Extra data: line 1 column 3 (char 2)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, 'Extra data: line 1 column 3 (char 2)', '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 369): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     93     78     20    59%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 194-196, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    158    138     26    51%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 51.08% (165/323)
+branch coverage   : 50.72% (70/138)
+combined coverage : 50.98%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 194-196, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 194: missing branch to line 196
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 369, in decode
+    raise JSONDecodeError("Extra data", s, end)
+buggy_json.decoder_stv.JSONDecodeError: Extra data: line 1 column 3 (char 2)
+
+============================================================
+Iteration 3 | 2 | 1.6s
+Input: '{"neg_float": -1.23e-1float": -1.23e-1float": -1.23e-1float": -1.23e-10}'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Expecting ',' delimiter: line 1 column 23 (char 22)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, "Expecting ',' delimiter: line 1 column 23 (char 22)", '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 224): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     93     78     20    59%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 194-196, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    158    138     26    51%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 51.08% (165/323)
+branch coverage   : 50.72% (70/138)
+combined coverage : 50.98%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 194-196, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 194: missing branch to line 196
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 382, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 63, in scan_once
+    return _scan_once(string, idx)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 33, in _scan_once
+    return parse_object((string, idx + 1), strict,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 224, in JSONObject
+    raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
+buggy_json.decoder_stv.JSONDecodeError: Expecting ',' delimiter: line 1 column 23 (char 22)
+
+============================================================
+Iteration 4 | 2 | 1.8s
+Input: '{"a"; null}'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Expecting ':' delimiter: line 1 column 5 (char 4)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, "Expecting ':' delimiter: line 1 column 5 (char 4)", '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 196): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     90     78     20    61%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 195->197, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    155    138     26    52%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 52.01% (168/323)
+branch coverage   : 52.17% (72/138)
+combined coverage : 52.06%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 382, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 63, in scan_once
+    return _scan_once(string, idx)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 33, in _scan_once
+    return parse_object((string, idx + 1), strict,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 196, in JSONObject
+    raise JSONDecodeError("Expecting ':' delimiter", s, end)
+buggy_json.decoder_stv.JSONDecodeError: Expecting ':' delimiter: line 1 column 5 (char 4)
+
+============================================================
+Iteration 5 | 2 | 2.6s
+Input: '{"a"'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Expecting ':' delimiter: line 1 column 5 (char 4)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, "Expecting ':' delimiter: line 1 column 5 (char 4)", '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 196): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     90     78     20    61%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 195->197, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    155    138     26    52%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 52.01% (168/323)
+branch coverage   : 52.17% (72/138)
+combined coverage : 52.06%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+2026-03-22 18:17:50.592 uv[16207:795292] CFPropertyListCreateFromXMLData(): Old-style plist parser: missing semicolon or value in dictionary on line 1. Parsing will be abandoned. Break on _CFPropertyListMissingSemicolonOrValue to debug.
+2026-03-22 18:17:50.593 uv[16207:795292] CFPropertyListCreateFromXMLData(): Old-style plist parser: missing semicolon or value in dictionary on line 1. Parsing will be abandoned. Break on _CFPropertyListMissingSemicolonOrValue to debug.
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 382, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 63, in scan_once
+    return _scan_once(string, idx)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 33, in _scan_once
+    return parse_object((string, idx + 1), strict,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 196, in JSONObject
+    raise JSONDecodeError("Expecting ':' delimiter", s, end)
+buggy_json.decoder_stv.JSONDecodeError: Expecting ':' delimiter: line 1 column 5 (char 4)
+
+============================================================
+Iteration 6 | 2 | 3.4s
+Input: '""""'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Extra data: line 1 column 3 (char 2)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, 'Extra data: line 1 column 3 (char 2)', '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 369): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     90     78     20    61%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 195->197, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    155    138     26    52%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 52.01% (168/323)
+branch coverage   : 52.17% (72/138)
+combined coverage : 52.06%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 369, in decode
+    raise JSONDecodeError("Extra data", s, end)
+buggy_json.decoder_stv.JSONDecodeError: Extra data: line 1 column 3 (char 2)
+
+============================================================
+Iteration 7 | 2 | 3.7s
+Input: '{"int_max": 9999999999999999999999999999999999}9}9}9}9}9}9}9}9}9}'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Extra data: line 1 column 48 (char 47)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, 'Extra data: line 1 column 48 (char 47)', '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 369): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     90     78     20    61%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 195->197, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    155    138     26    52%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 52.01% (168/323)
+branch coverage   : 52.17% (72/138)
+combined coverage : 52.06%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 369, in decode
+    raise JSONDecodeError("Extra data", s, end)
+buggy_json.decoder_stv.JSONDecodeError: Extra data: line 1 column 48 (char 47)
+
+============================================================
+Iteration 8 | 2 | 5.8s
+Input: '{"a": [1, {"b": 2}}]'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Expecting ',' delimiter: line 1 column 19 (char 18)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, "Expecting ',' delimiter: line 1 column 19 (char 18)", '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 267): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     90     78     20    61%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 195->197, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    155    138     26    52%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 52.01% (168/323)
+branch coverage   : 52.17% (72/138)
+combined coverage : 52.06%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 382, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 63, in scan_once
+    return _scan_once(string, idx)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 33, in _scan_once
+    return parse_object((string, idx + 1), strict,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 208, in JSONObject
+    value, end = scan_once(s, end)
+                 ^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 36, in _scan_once
+    return parse_array((string, idx + 1), _scan_once)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 267, in JSONArray
+    raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
+buggy_json.decoder_stv.JSONDecodeError: Expecting ',' delimiter: line 1 column 19 (char 18)
+
+============================================================
+Iteration 9 | 2 | 7.1s
+Input: '[]]]'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Extra data: line 1 column 3 (char 2)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, 'Extra data: line 1 column 3 (char 2)', '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 369): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     90     78     20    61%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 195->197, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    155    138     26    52%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 52.01% (168/323)
+branch coverage   : 52.17% (72/138)
+combined coverage : 52.06%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 369, in decode
+    raise JSONDecodeError("Extra data", s, end)
+buggy_json.decoder_stv.JSONDecodeError: Extra data: line 1 column 3 (char 2)
+
+============================================================
+Iteration 10 | 2 | 11.6s
+Input: '{"a": [1, {"b": 2}}]'
+Loading existing coverage data from .coverage_buggy_json
+
+An invalidity bug has been triggered: Expecting ',' delimiter: line 1 column 19 (char 18)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_json.decoder_stv.JSONDecodeError'>, "Expecting ',' delimiter: line 1 column 19 (char 18)", '/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py', 267): 1})
+
+============================================================
+COVERAGE REPORT (ACCUMULATED)
+============================================================
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+buggy_json/__init__.py         47     43     38      3     8%   43-86, 123-129, 135-147
+buggy_json/decoder_stv.py     224     90     78     20    61%   3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 143->146, 152-158, 165, 173-174, 178-179, 182, 184-185, 195->197, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+buggy_json/scanner_stv.py      52     22     22      3    66%   3-24, 53, 55, 57, 61, 67-69
+-----------------------------------------------------------------------
+TOTAL                         323    155    138     26    52%
+
+============================================================
+detailed coverage summary
+============================================================
+line coverage     : 52.01% (168/323)
+branch coverage   : 52.17% (72/138)
+combined coverage : 52.06%
+============================================================
+
+============================================================
+uncovered branches
+============================================================
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py
+missing_branches 43-86, 123-129, 135-147
+ line 43: missing branch to line 86
+ line 123: missing branch to line 129
+ line 135: missing branch to line 147
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py
+missing_branches 3-38, 49-71, 77, 80-85, 101, 112-118, 121-122, 127-131, 134-136, 152-158, 165, 173-174, 178-179, 182, 184-185, 203, 215-216, 230-232, 235-236, 239, 242, 247-248, 256-257, 261-262, 273, 275-276, 283-361, 372
+ line 3: missing branch to line 38
+ line 49: missing branch to line 71
+ line 77: missing branch to exit
+ line 80: missing branch to line 85
+ line 101: missing branch to exit
+ line 112: missing branch to line 118
+ line 121: missing branch to line 122
+ line 127: missing branch to line 131
+ line 134: missing branch to line 136
+ line 152: missing branch to line 158
+ line 165: missing branch to exit
+ line 173: missing branch to line 174
+ line 178: missing branch to line 179
+ line 182: missing branch to exit
+ line 184: missing branch to line 185
+ line 203: missing branch to exit
+ line 215: missing branch to line 216
+ line 230: missing branch to line 232
+ line 235: missing branch to line 236
+ line 239: missing branch to exit
+ line 242: missing branch to exit
+ line 247: missing branch to line 248
+ line 256: missing branch to line 257
+ line 261: missing branch to line 262
+ line 273: missing branch to exit
+ line 275: missing branch to line 276
+ line 283: missing branch to line 361
+ line 372: missing branch to exit
+
+file: /Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py
+missing_branches 3-24, 53, 55, 57, 61, 67-69
+ line 3: missing branch to line 24
+ line 53: missing branch to exit
+ line 55: missing branch to exit
+ line 57: missing branch to exit
+ line 61: missing branch to exit
+ line 67: missing branch to line 69
+Coverage data saved to: .coverage_buggy_json
+[STDERR]
+warning: `VIRTUAL_ENV=/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/forza/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+Traceback (most recent call last):
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/json_decoder_stv.py", line 262, in <module>
+    data = loads(args.str_json)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/__init__.py", line 134, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 382, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 63, in scan_once
+    return _scan_once(string, idx)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 33, in _scan_once
+    return parse_object((string, idx + 1), strict,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 208, in JSONObject
+    value, end = scan_once(s, end)
+                 ^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/scanner_stv.py", line 36, in _scan_once
+    return parse_array((string, idx + 1), _scan_once)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/weiyang/Documents/SUTD/Term 6/Software Testing and Verification/STV_Project_Group_2/json-decoder/buggy_json/decoder_stv.py", line 267, in JSONArray
+    raise JSONDecodeError("Expecting ',' delimiter", s, end - 1)
+buggy_json.decoder_stv.JSONDecodeError: Expecting ',' delimiter: line 1 column 19 (char 18)

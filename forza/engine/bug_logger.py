@@ -17,9 +17,13 @@ import os
 import csv
 import time
 from pathlib import Path
-from bug_oracle import BugType, BugResult
+from engine.types import BugResult, BugType
 from typing import Optional
 
+_ENGINE_DIR  = Path(__file__).resolve().parent
+_PROJECT_DIR = _ENGINE_DIR.parent
+_RESULTS_DIR = _PROJECT_DIR / "results"
+_CRASHES_DIR = _PROJECT_DIR / "crashes"
 
 class FuzzLogger:
     """
@@ -31,32 +35,37 @@ class FuzzLogger:
 
     RUNS_FIELDS = ["iteration", "timestamp",
                    "input", "bug_type", "is_new", "exit_code"]
-    BUGS_FIELDS = ["first_seen_iter", "first_seen_time",
-                   "category", "exc_type", "exc_msg", "input"]
+    BUGS_FIELDS = ["target", "bug_type", "bug_key", "input_data",
+                   "stdout", "stderr", "returncode", "timed_out",
+                   "crashed", "strategy", "timestamp"]
     STATS_FIELDS = ["iteration", "elapsed_s", "runs_total",
                     "bugs_unique", "corpus_size", "runs_per_sec"]
 
-    def __init__(self, output_dir: str, target: str) -> None:
+    def __init__(self, target: str) -> None:
         run_id = time.strftime("%Y%m%d_%H%M%S")
-        self.out_dir = Path(output_dir) / target / run_id
-        self.out_dir.mkdir(parents=True, exist_ok=True)
+        self.target = target
 
-        self._run_path = self.out_dir / "all_runs.csv"
-        self._bug_path = self.out_dir / "bugs.csv"
-        self._stat_path = self.out_dir / "stats.csv"
-        self._tb_path = self.out_dir / "tracebacks.log"
+        run_dir = _RESULTS_DIR / target / run_id
+        run_dir.mkdir(parents=True, exist_ok=True)
+ 
+        self._bug_path  = _RESULTS_DIR / f"{target}_bugs.csv"
+        self._run_path  = run_dir / "all_runs.csv"
+        self._stat_path = run_dir / "stats.csv"
+        self._tb_path   = run_dir / "tracebacks.log"
 
         self._init_csv(self._run_path, self.RUNS_FIELDS)
-        self._init_csv(self._bug_path, self.BUGS_FIELDS)
         self._init_csv(self._stat_path, self.STATS_FIELDS)
+        if not self._bug_path.exists():
+            self._init_csv(self._bug_path, self.BUGS_FIELDS)
 
         self._iteration = 0
         self._unique_bugs = 0
+        self._seen_keys: set[str] = set()
         self._start_time = time.monotonic()
         self._last_snapshot_iter = 0
         self._snapshot_interval = 50  # write stats row every N runs
 
-        print(f"[logger] Writing results to: {self.out_dir}")
+        print(f"[logger] Writing results to: {run_dir}")
 
     # ------------------------------------------------------------------
     # Public API
@@ -74,22 +83,50 @@ class FuzzLogger:
                 self._iteration,
                 f"{now:.3f}",
                 input_repr,
-                result.bug_type.value,
-                "1" if result.is_new_behavior else "0",
-                result.exit_code,
+                result.bug_type.name,
+                "1" if result.new_coverage else "0",
+                result.returncode,
             ])
 
-        if result.is_new_behavior:
+        # if result.is_new_behavior:
+        #     self._unique_bugs += 1
+        #     cat, exc, msg = result.bug_key if result.bug_key else ("", "", "")
+        #     with open(self._bug_path, "a", newline="", encoding="utf-8") as f:
+        #         writer = csv.writer(f)
+        #         writer.writerow([
+        #             self._iteration,
+        #             f"{now:.3f}",
+        #             cat, exc, msg,
+        #             input_repr,
+        #         ])
+
+        if result.bug_key and result.bug_key not in self._seen_keys:
+            self._seen_keys.add(result.bug_key)
             self._unique_bugs += 1
-            cat, exc, msg = result.bug_key if result.bug_key else ("", "", "")
+ 
             with open(self._bug_path, "a", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerow([
-                    self._iteration,
-                    f"{now:.3f}",
-                    cat, exc, msg,
-                    input_repr,
-                ])
+                writer = csv.DictWriter(f, fieldnames=self.BUGS_FIELDS)
+                writer.writerow({
+                    "target"     : self.target,
+                    "bug_type"   : result.bug_type.name,
+                    "bug_key"    : result.bug_key,
+                    "input_data" : result.input_data,
+                    "stdout"     : result.stdout[:500],
+                    "stderr"     : result.stderr[:500],
+                    "returncode" : result.returncode,
+                    "timed_out"  : result.timed_out,
+                    "crashed"    : result.crashed,
+                    "strategy"   : result.strategy,
+                    "timestamp"  : time.strftime("%Y-%m-%d %H:%M:%S"),
+                })
+ 
+            # Save crash input to crashes/<target>/
+            if result.crashed or result.timed_out:
+                crash_dir = _CRASHES_DIR / self.target
+                crash_dir.mkdir(parents=True, exist_ok=True)
+                (crash_dir / f"{result.bug_key}.txt").write_text(
+                    result.input_data, encoding="utf-8", errors="replace"
+                )
 
         if result.bug_type not in (BugType.NORMAL,):
             with open(self._tb_path, "a", encoding="utf-8") as f:
@@ -152,3 +189,40 @@ class FuzzLogger:
     @property
     def unique_bugs(self) -> int:
         return self._unique_bugs
+
+# ---------------------------------------------------------------------------
+# Module-level interface — called by fuzzer.py
+#
+# fuzzer.py calls:  bug_logger.log(bug, config)
+#                   bug_logger.reset()
+#
+# A single FuzzLogger instance is created per target and reused across
+# all iterations for that target. reset() creates a fresh instance for
+# the next target when running --all.
+# ---------------------------------------------------------------------------
+ 
+_logger: FuzzLogger | None = None
+ 
+ 
+def log(bug: BugResult, config: dict) -> None:
+    """
+    Log one bug result. Creates a FuzzLogger for the target on first call.
+    Delegates to FuzzLogger.record() — all the real logic lives there.
+    """
+    global _logger
+    target = bug.target or config.get("name", "unknown")
+ 
+    if _logger is None or _logger.target != target:
+        _logger = FuzzLogger(target=target)
+ 
+    _logger.record(bug)
+ 
+ 
+def reset() -> None:
+    """
+    Drop the current FuzzLogger instance.
+    Call this between targets when running --all so each target gets a
+    fresh logger with its own run directory and clean dedup set.
+    """
+    global _logger
+    _logger = None

@@ -1204,3 +1204,1746 @@ Traceback (most recent call last):
 pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
 
 
+================================================================================
+Timestamp : 2026-03-22 10:26:49.983351+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 10:27:04.503259+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:27:16.072102+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 10:27:27.643254+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:27:39.225569+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 10:27:50.617907+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:28:02.016269+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 10:28:28.181373+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:28:39.574578+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:30:45.624276+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found end of text  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found end of text  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:55:16.833686+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '999'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '999'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:55:28.249415+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:55:39.685886+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '{'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '{'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:55:51.109284+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '0'  (at char 4), (line:1, col:5)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 4), (line:1, col:5)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:56:02.543247+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:56:13.946800+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '{'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '{'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:56:25.351309+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '0'  (at char 4), (line:1, col:5)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '0'  (at char 4), (line:1, col:5)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:56:36.745615+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:56:48.201014+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:56:59.727878+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:57:11.208458+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 10:57:22.971270+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:57:37.490538+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 10:57:48.915634+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:58:00.597328+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4612, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 10:58:12.019468+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:58:23.435329+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:58:34.850145+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4612, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 10:58:46.270942+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:59:09.141533+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:59:20.725926+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 10:59:32.150229+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 7), (line:1, col:8)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 7), (line:1, col:8)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:59:43.544520+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '999'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '999'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-22 10:59:54.950892+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:00:22.131587+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:00:33.533414+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:00:44.926392+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:01:07.478291+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:01:30.099657+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:01:41.507778+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 11:01:52.910102+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:02:04.367070+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:02:15.810417+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:02:27.704775+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 12), (line:1, col:13)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 12), (line:1, col:13)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:02:42.211651+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:02:53.652608+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:03:05.075528+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found ';'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ';'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:03:16.503342+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:03:27.926496+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:03:39.303924+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:03:50.721513+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:04:02.121061+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:04:13.532991+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 11:04:24.934688+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 9), (line:1, col:10)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 9), (line:1, col:10)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:04:36.329306+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:04:47.756702+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:04:59.157575+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:05:27.587736+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111111111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:05:39.015862+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:05:50.404830+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4612, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 11:06:01.798998+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:06:13.218305+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:06:24.673985+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:06:36.059947+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 6), (line:1, col:7)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:06:47.454791+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:06:58.840435+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 10), (line:1, col:11)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:07:10.269502+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:07:21.663783+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 11:07:33.521332+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:07:47.769774+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:07:59.195396+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 12), (line:1, col:13)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 12), (line:1, col:13)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:08:10.583498+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found ';'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ';'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:08:21.980391+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:08:33.379255+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 15), (line:1, col:16)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 15), (line:1, col:16)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:08:44.756159+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:08:56.154945+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 15), (line:1, col:16)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 15), (line:1, col:16)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:09:07.565346+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:09:18.982303+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1168'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1168'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:09:30.402738+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 11:09:41.818857+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '}'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:09:53.241769+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found 'E'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'E'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:10:04.606028+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 11:10:30.691430+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 11:10:42.081470+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '111111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '111111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:10:53.514638+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 9), (line:1, col:10)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 9), (line:1, col:10)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:11:04.908303+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 11:11:16.344115+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '111111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '111111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:11:27.715179+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '100100'  (at char 12), (line:1, col:13)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '100100'  (at char 12), (line:1, col:13)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:11:39.092655+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 11:11:50.507174+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 11), (line:1, col:12)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:12:01.874230+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 7), (line:1, col:8)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 7), (line:1, col:8)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:12:13.283911+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '11'  (at char 13), (line:1, col:14)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '11'  (at char 13), (line:1, col:14)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:12:24.652662+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found ';'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ';'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:12:36.496200+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 11:12:50.668670+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1168'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1168'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:13:02.210282+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 11:13:13.803205+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ']'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:13:25.573347+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '11'  (at char 13), (line:1, col:14)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '11'  (at char 13), (line:1, col:14)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:13:37.359405+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found 'm111111'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'm111111'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:13:48.889958+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:14:00.590666+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-03-22 11:14:12.243160+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 12), (line:1, col:13)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 12), (line:1, col:13)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:14:23.841484+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 11:14:35.547330+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:14:47.075770+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 15), (line:1, col:16)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 15), (line:1, col:16)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:14:58.558588+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '\n'  (at char 1), (line:1, col:2)
+
+
+================================================================================
+Timestamp : 2026-03-22 11:15:10.015855+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: One of the octets are empty
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 80, in convert_octet
+buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
+
+
+================================================================================
+Timestamp : 2026-03-22 12:23:46.170491+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found end of text  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found end of text  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:24:09.329574+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '9'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '9'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:24:20.879617+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected end of text, found '.'  (at char 14), (line:1, col:15)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 14), (line:1, col:15)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:24:32.460594+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:24:44.079856+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found ':'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ':'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:24:55.762060+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found ':'  (at char 0), (line:1, col:1)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found ':'  (at char 0), (line:1, col:1)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:25:07.373952+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '>'  (at char 34), (line:1, col:35)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '>'  (at char 34), (line:1, col:35)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:25:19.033579+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found 'g'  (at char 0), (line:1, col:1)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found 'g'  (at char 0), (line:1, col:1)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:25:30.582686+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found 'gggg'  (at char 0), (line:1, col:1)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found 'gggg'  (at char 0), (line:1, col:1)
+
+
+================================================================================
+Timestamp : 2026-03-22 12:25:42.056813+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found ':'  (at char 0), (line:1, col:1)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found ':'  (at char 0), (line:1, col:1)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:10:54.061565+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:11:06.164045+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '8'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '8'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:11:18.145448+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '®'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '®'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:11:30.144083+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '4'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:11:41.902169+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:11:53.595822+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:12:17.191482+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '®'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '®'  (at char 5), (line:1, col:6)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:12:41.426059+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found end of text  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:13:05.647977+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found 'grggg'  (at char 0), (line:1, col:1)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} [W:(0-9A-Fa-f){1,5} Suppress:(':')] W:(0-9A-Fa-f){1,5} ^ {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]]] {'::' ^ ':::'}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} W:(0-9A-Fa-f){1,5} Suppress:(':') W:(0-9A-Fa-f){1,5} Suppress:(':') Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}]] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})} ^ {W:(0-9A-Fa-f){1,5} [Suppress:(':') W:(0-9A-Fa-f){1,5}] {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {W:(0-9A-Fa-f){1,5} {'::' ^ ':::'} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} W:(0-9A-Fa-f){1,5}} ^ {'::' ^ ':::'} [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':') [W:(0-9A-Fa-f){1,5} Suppress:(':')]]]]]] {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}}, found 'grggg'  (at char 0), (line:1, col:1)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:13:22.737816+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found end of text  (at char 19), (line:1, col:20)
+
+Traceback:
+Traceback (most recent call last):
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 19), (line:1, col:20)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:13:47.254774+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found 'M'  (at char 17), (line:1, col:18)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found 'M'  (at char 17), (line:1, col:18)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:13:59.326172+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found ':'  (at char 7), (line:1, col:8)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}}) {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})} {Suppress:('.') Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(['0']) '25' (0-4)}})}})}, found ':'  (at char 7), (line:1, col:8)
+
+
+================================================================================
+Timestamp : 2026-03-22 13:14:11.411776+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: Hex of length more than 4 found.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4754, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4612, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 281, in wrapper
+  File "buggy_ipyparse/ipv6_mstv.py", line 93, in convert_short
+buggy_ipyparse.ipv6_mstv.InvalidityBug: Hex of length more than 4 found.
+
+
+================================================================================
+Timestamp : 2026-03-22 13:14:23.483678+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected W:(0-9A-Fa-f){1,5}, found ';'  (at char 5), (line:1, col:6)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected W:(0-9A-Fa-f){1,5}, found ';'  (at char 5), (line:1, col:6)
+
+

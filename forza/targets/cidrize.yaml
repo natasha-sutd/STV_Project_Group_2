@@ -8,7 +8,7 @@ buggy_cwd: "../../cidrize-runner-main"
 # input
 input_mode: arg
 input_format: cidr
-# seeds_path: "../inputs/cidrize/seeds.txt"
+seeds_path: "../inputs/cidrize/seeds.txt"
 
 # execution
 timeout: 60
@@ -21,6 +21,12 @@ bug_keywords:
   - "functional"
   - "Traceback"
   - "Error"
+  - "invalidity bug"
+  - "InvalidCidrFormatError"
+  - "AddrFormatError"
+  - "Traceback (most recent call last)"
 
 # coverage
 coverage_enabled: false
+tracking_mode: behavioral
+seed_count: 30

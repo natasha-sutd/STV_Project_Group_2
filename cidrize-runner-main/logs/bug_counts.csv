@@ -1,5 +1,7 @@
 bug_type,exc_type,exc_message,filename,lineno,count
-functional,FunctionalBug,1-indexing used instead of 0-indexing.,buggy_cidrize/cidrize_stv.py,240,8
+functional,FunctionalBug,1-indexing used instead of 0-indexing.,buggy_cidrize/cidrize_stv.py,240,28
 functional,FunctionalBug,1-indexing used instead of 0-indexing.,buggy_cidrize\cidrize_stv.py,240,8
-performance,PerformanceBug,Unhandled while True loop.,buggy_cidrize/cidrize_stv.py,421,10
+invalidity,InvalidCidrFormatError,Missing digit before hyphen.,buggy_cidrize/cidrize_stv.py,274,1
+invalidity,InvalidCidrFormatError,There are too many /,buggy_cidrize/cidrize_stv.py,444,4
+performance,PerformanceBug,Unhandled while True loop.,buggy_cidrize/cidrize_stv.py,421,12
 performance,PerformanceBug,Unhandled while True loop.,buggy_cidrize\cidrize_stv.py,421,2

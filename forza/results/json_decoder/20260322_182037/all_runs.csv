@@ -1,0 +1,32 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,"'""\n""'",INVALIDITY,1,0
+2,0.267,"'{rzero_va""iants"": [0, -0, 0.0, 0e0]}'",INVALIDITY,1,0
+3,0.531,"'{""json"": ""obj""v}'",INVALIDITY,1,0
+4,0.803,"'{""a"": true, ""rue, ""rue, ""rue, ""rue, ""b"": false}'",INVALIDITY,1,0
+5,1.589,"'{""neg_float"": -1.23e-10}0}0}0}0}'",INVALIDITY,1,0
+6,6.026,"'{""neg_float"": -1.23e-10}0}0}0}0}'",INVALIDITY,0,0
+7,7.592,"'{""a"": true, ""rue, ""rue, ""rue, ""rue, ""b"": false}'",INVALIDITY,0,0
+8,8.116,"'{""json"": ""obj""v}'",INVALIDITY,0,0
+9,13.073,"'{""a"": true, ""rue, ""rue, ""rue, ""rue, ""b"": false}'",INVALIDITY,0,0
+10,13.595,"'""\n""'",INVALIDITY,0,0
+11,14.635,"'{""neg_float"": -1.23e-10}0}0}0}0}'",INVALIDITY,0,0
+12,19.588,"'{""neg_float"": -1.23e-10}0}0}0}0}'",INVALIDITY,0,0
+13,20.116,"'{""json"": ""obj""v}'",INVALIDITY,0,0
+14,20.654,"'{""json"": ""obj""v}'",INVALIDITY,0,0
+15,26.713,"'{""json"": ""obj""v}'",INVALIDITY,0,0
+16,27.840,"'""\n""'",INVALIDITY,0,0
+17,34.600,"'{""neg_float"": -1.23e-10}0}0}0}0}'",INVALIDITY,0,0
+18,37.746,"'{""json"": ""obj""v}'",INVALIDITY,0,0
+19,38.794,"'""lin'",INVALIDITY,1,0
+20,39.583,"'{""json"": ""obj""v}'",INVALIDITY,0,0
+21,41.152,"'{""neg_float"": -1.23e-10}0}0}0}0}'",INVALIDITY,0,0
+22,41.940,"'{rzero_va""iants"": [0, -0, 0.0, 0e0]}'",INVALIDITY,0,0
+23,42.730,"'""\n""'",INVALIDITY,0,0
+24,43.772,'z1',INVALIDITY,1,0
+25,44.298,"'{""neg_float"": -1.23e-10}0}0}0}0}'",INVALIDITY,0,0
+26,45.082,"'{""a"": true, ""b"": false}}}'",INVALIDITY,1,0
+27,46.391,"'{""a"": true, ""rue, ""rue, ""rue, ""rue, ""b"": false}'",INVALIDITY,0,0
+28,47.179,'fa\nlse',INVALIDITY,0,0
+29,47.444,"'{""a"": true, ""rue, ""rue, ""rue, ""rue, ""b"": false}'",INVALIDITY,0,0
+30,50.053,'\x001',RELIABILITY,1,-1
+31,51.630,"'{""json"": ""obj""v}'",INVALIDITY,0,0

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Fuzzer Report — 2026-03-22 21:14:23</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c0f;--surface:#111318;--border:#1e2330;
+  --accent:#00ff88;--accent2:#ff4757;--accent3:#ffd32a;--accent4:#45aaf2;
+  --muted:#4a5568;--text:#c8d6e5;--text-dim:#718096;
+  --mono:'Share Tech Mono',monospace;--sans:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:9999}
+.header{border-bottom:1px solid var(--border);padding:2.5rem 3rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:relative;overflow:hidden}
+.header::after{content:'FUZZER';position:absolute;right:-1rem;top:-1.5rem;font-family:var(--sans);font-weight:800;font-size:9rem;color:rgba(255,255,255,.018);user-select:none;letter-spacing:-4px;white-space:nowrap}
+.label{font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
+h1{font-family:var(--sans);font-weight:800;font-size:2.2rem;color:#fff;line-height:1.1}
+.header-right{font-family:var(--mono);font-size:.75rem;color:var(--text-dim);text-align:right;line-height:1.8}
+.header-right span{color:var(--text)}
+.container{max-width:1300px;margin:0 auto;padding:2rem 3rem 4rem}
+.section-title{font-family:var(--mono);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin:3rem 0 1rem;display:flex;align-items:center;gap:.75rem}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.global-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2rem}
+.stat-cell{background:var(--surface);padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:.25rem}
+.stat-cell .val{font-family:var(--mono);font-size:2.2rem;color:#fff;line-height:1}
+.stat-cell .val.danger{color:var(--accent2)}.stat-cell .val.warn{color:var(--accent3)}.stat-cell .val.info{color:var(--accent4)}.stat-cell .val.ok{color:var(--accent)}
+.stat-cell .lbl{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(540px,1fr));gap:1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column}
+.card-accent-bar{height:3px;background:var(--accent)}
+.card.has-bugs .card-accent-bar{background:var(--accent2)}
+.card.no-data .card-accent-bar{background:var(--muted)}
+.card-header{padding:1.2rem 1.5rem .8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--border)}
+.card-title{font-weight:700;font-size:1rem;color:#fff}
+.card-target-id{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-top:.2rem}
+.badge{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border:1px solid currentColor;white-space:nowrap;align-self:flex-start}
+.badge.danger{color:var(--accent2)}.badge.warn{color:var(--accent3)}.badge.ok{color:var(--accent)}.badge.muted{color:var(--muted)}
+.card-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.cs{background:var(--surface);padding:.8rem 1rem;display:flex;flex-direction:column;gap:.15rem}
+.cs .v{font-family:var(--mono);font-size:1.3rem;color:#fff}
+.cs .v.d{color:var(--accent2)}.cs .v.w{color:var(--accent3)}
+.cs .l{font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.breakdown{padding:1rem 1.5rem;flex:1}
+.breakdown-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.55rem;font-family:var(--mono);font-size:.72rem}
+.breakdown-key{color:var(--text-dim);min-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breakdown-bar-wrap{flex:1;height:4px;background:var(--border)}
+.breakdown-bar{height:100%;background:var(--accent)}
+.card.has-bugs .breakdown-bar{background:var(--accent2)}
+.breakdown-count{color:var(--text-dim);min-width:24px;text-align:right}
+.no-data-msg{padding:2rem 1.5rem;font-family:var(--mono);font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:.6rem}
+.no-data-msg::before{content:'//';color:var(--border)}
+.ablation-wrap{background:var(--surface);border:1px solid var(--border);padding:1.5rem}
+.coverage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:1.5rem}
+.chart-box{background:var(--surface);border:1px solid var(--border);padding:1.2rem 1.5rem}
+.chart-label{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+.no-coverage-msg{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--muted);padding:1.5rem 2rem;display:flex;align-items:flex-start;gap:1.5rem;font-family:var(--mono);font-size:.75rem}
+.nc-icon{font-size:1.5rem;color:var(--muted);flex-shrink:0;margin-top:.1rem}
+.nc-title{color:var(--text);margin-bottom:.4rem;font-size:.8rem}
+.nc-sub{color:var(--muted);line-height:1.7}
+.nc-sub code{color:var(--text-dim)}
+.table-wrap{overflow-x:auto;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.72rem}
+thead tr{background:#0d1017;border-bottom:1px solid var(--border)}
+thead th{padding:.6rem 1rem;text-align:left;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:400;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+tbody td{padding:.55rem 1rem;color:var(--text);vertical-align:top}
+.num{text-align:right}.mono{font-family:var(--mono)}
+.no-data-msg-td{color:var(--muted);padding:1.2rem 1rem;font-family:var(--mono);font-size:.72rem}
+.pill{display:inline-block;padding:.1rem .45rem;font-size:.6rem;border-radius:2px;letter-spacing:.05em;font-family:var(--mono)}
+.pill-crash{background:rgba(255,71,87,.15);color:var(--accent2)}
+.pill-timeout{background:rgba(255,211,42,.12);color:var(--accent3)}
+.pill-keyword{background:rgba(0,255,136,.1);color:var(--accent)}
+.pill-diff{background:rgba(69,170,242,.12);color:var(--accent4)}
+.pill-error{background:rgba(100,100,100,.15);color:var(--muted)}
+.input-cell{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-dim)}
+.ts-cell{color:var(--muted);white-space:nowrap}
+.bug-reports-list{display:flex;flex-direction:column;gap:1.5rem}
+.bug-report-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent2)}
+.bug-report-card .br-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);gap:1rem}
+.br-num{font-family:var(--mono);font-size:.7rem;color:var(--accent2);letter-spacing:.1em;margin-right:.75rem}
+.br-target{font-family:var(--mono);font-size:.7rem;color:var(--text-dim)}
+.br-field{display:flex;align-items:baseline;gap:1rem;padding:.7rem 1.5rem;border-bottom:1px solid var(--border)}
+.br-field:last-child{border-bottom:none}
+.br-field.col{flex-direction:column;gap:.5rem}
+.br-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;min-width:180px;flex-shrink:0}
+.br-value{font-family:var(--mono);font-size:.75rem;color:var(--text)}
+.br-desc{font-family:var(--mono);font-size:.75rem;color:var(--text);display:flex;flex-direction:column;gap:.5rem;width:100%}
+.impact{color:var(--text-dim);font-size:.7rem}
+.code-block{background:#0d1017;border:1px solid var(--border);padding:.6rem 1rem;font-family:var(--mono);font-size:.7rem;color:var(--text-dim);word-break:break-all;white-space:pre-wrap;max-height:120px;overflow-y:auto}
+.poc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;width:100%}
+.poc-label{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+code{font-family:var(--mono);font-size:.75rem;color:var(--text-dim);background:#0d1017;padding:.05rem .35rem;border:1px solid var(--border)}
+.dim{color:var(--muted)}
+em{color:var(--accent4);font-style:normal}
+.footer{border-top:1px solid var(--border);padding:1.5rem 3rem;font-family:var(--mono);font-size:.65rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="header">
+  <div>
+    <div class="label">// fuzzer output</div>
+    <h1>Bug Report</h1>
+  </div>
+  <div class="header-right">
+    generated &nbsp;<span>2026-03-22 21:14:23</span><br/>
+    targets &nbsp;&nbsp;&nbsp;<span>ipv6_parser</span><br/>
+    total bugs&nbsp;<span>9</span>
+  </div>
+</header>
+<main class="container">
+  <div class="section-title">overview</div>
+  
+<div class="global-stats">
+  <div class="stat-cell"><div class="val danger" data-count="9">9</div><div class="lbl">total bugs</div></div>
+  <div class="stat-cell"><div class="val ok" data-count="0">0</div><div class="lbl">crash files</div></div>
+  <div class="stat-cell"><div class="val ok" data-count="0">0</div><div class="lbl">timeouts</div></div>
+  <div class="stat-cell"><div class="val info" data-count="1">1</div><div class="lbl">targets with data</div></div>
+  <div class="stat-cell"><div class="val" data-count="1">1</div><div class="lbl">targets total</div></div>
+</div>
+  <div class="section-title">per-target summary</div>
+  <div class="cards">
+<div class="card has-bugs">
+  <div class="card-accent-bar"></div>
+  <div class="card-header">
+    <div>
+      <div class="card-title">Ipv6 Parser</div>
+      <div class="card-target-id">ipv6_parser</div>
+    </div>
+    <span class="badge warn">9 bugs</span>
+  </div>
+  <div class="card-stats">
+    <div class="cs"><div class="v d" data-count="9">9</div><div class="l">bugs</div></div><div class="cs"><div class="v " data-count="0">0</div><div class="l">crashes</div></div><div class="cs"><div class="v " data-count="0">0</div><div class="l">timeouts</div></div><div class="cs"><div class="v" data-count="8">8</div><div class="l">unique</div></div><div class="cs"><div class="v" data-count="0">0</div><div class="l">files saved</div></div>
+  </div>
+  <div class="breakdown"><div class="breakdown-row">  <span class="breakdown-key">BONUS</span>  <div class="breakdown-bar-wrap">    <div class="breakdown-bar" style="width:100%"></div>  </div>  <span class="breakdown-count">8</span></div><div class="breakdown-row">  <span class="breakdown-key">INVALIDITY</span>  <div class="breakdown-bar-wrap">    <div class="breakdown-bar" style="width:12%"></div>  </div>  <span class="breakdown-count">1</span></div></div>
+</div></div>
+  
+<div class="section-title">ablation study — strategy effectiveness</div>
+<div class="ablation-wrap">
+  <div class="chart-box" style="border:none;padding:0;margin-bottom:1.5rem;">
+    <div class="chart-label">bugs found per mutation strategy (stacked by target)</div>
+    <div style="position:relative;height:260px;">
+      <canvas id="ablationChart"></canvas>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>target</th><th>strategy</th><th>bugs found</th><th>% of target bugs</th></tr></thead>
+      <tbody><tr><td>Ipv6 Parser</td><td class='mono'>byte_insert</td><td class='mono num'>3</td><td class='mono num'>33%</td></tr><tr><td>Ipv6 Parser</td><td class='mono'>bit_flip</td><td class='mono num'>2</td><td class='mono num'>22%</td></tr><tr><td>Ipv6 Parser</td><td class='mono'>truncate</td><td class='mono num'>2</td><td class='mono num'>22%</td></tr><tr><td>Ipv6 Parser</td><td class='mono'>insert_special_char</td><td class='mono num'>1</td><td class='mono num'>11%</td></tr><tr><td>Ipv6 Parser</td><td class='mono'>ip_aware_mutate</td><td class='mono num'>1</td><td class='mono num'>11%</td></tr></tbody>
+    </table>
+  </div>
+</div>
+<script>
+(function(){
+  var ctx = document.getElementById('ablationChart');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: ["byte_insert", "bit_flip", "truncate", "insert_special_char", "ip_aware_mutate"], datasets: [{"label": "Ipv6 Parser", "data": [3, 2, 2, 1, 1], "backgroundColor": "#00ff88cc", "borderColor": "#00ff88", "borderWidth": 1}] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#c8d6e5', font: { family: "'Share Tech Mono'" }, boxWidth: 12 } }
+      },
+      scales: {
+        x: { stacked: true, ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 11 } }, grid: { color: '#1e2330' } },
+        y: { stacked: true, beginAtZero: true, ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 11 }, stepSize: 1 }, grid: { color: '#1e2330' } }
+      }
+    }
+  });
+})();
+</script>
+  
+<div class="section-title">coverage over time</div>
+<div class="coverage-grid">
+<div class="chart-box">
+  <div class="chart-label">statement coverage (%) vs inputs tested</div>
+  <div style="position:relative;height:220px;">
+    <canvas id="cov_statement_coverage"></canvas>
+  </div>
+</div>
+<script>
+(function(){
+  var ctx = document.getElementById('cov_statement_coverage');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'line',
+    data: { datasets: [{"label": "Ipv6 Parser", "data": [{"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}], "borderColor": "#00ff88", "backgroundColor": "#00ff8822", "fill": true, "tension": 0.35, "pointRadius": 2, "borderWidth": 1.5}] },
+    options: {
+      responsive: true, maintainAspectRatio: false, parsing: false,
+      plugins: {
+        legend: { labels: { color: '#c8d6e5', font: { family: "'Share Tech Mono'" }, boxWidth: 12 } }
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          title: { display: true, text: 'inputs tested', color: '#4a5568', font: { family: "'Share Tech Mono'", size: 10 } },
+          ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 10 } },
+          grid:  { color: '#1e2330' }
+        },
+        y: {
+          min: 0, max: 100,
+          ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 10 }, callback: function(v){ return v+'%'; } },
+          grid:  { color: '#1e2330' }
+        }
+      }
+    }
+  });
+})();
+</script>
+<div class="chart-box">
+  <div class="chart-label">branch coverage (%) vs inputs tested</div>
+  <div style="position:relative;height:220px;">
+    <canvas id="cov_branch_coverage"></canvas>
+  </div>
+</div>
+<script>
+(function(){
+  var ctx = document.getElementById('cov_branch_coverage');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'line',
+    data: { datasets: [{"label": "Ipv6 Parser", "data": [{"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}], "borderColor": "#00ff88", "backgroundColor": "#00ff8822", "fill": true, "tension": 0.35, "pointRadius": 2, "borderWidth": 1.5}] },
+    options: {
+      responsive: true, maintainAspectRatio: false, parsing: false,
+      plugins: {
+        legend: { labels: { color: '#c8d6e5', font: { family: "'Share Tech Mono'" }, boxWidth: 12 } }
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          title: { display: true, text: 'inputs tested', color: '#4a5568', font: { family: "'Share Tech Mono'", size: 10 } },
+          ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 10 } },
+          grid:  { color: '#1e2330' }
+        },
+        y: {
+          min: 0, max: 100,
+          ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 10 }, callback: function(v){ return v+'%'; } },
+          grid:  { color: '#1e2330' }
+        }
+      }
+    }
+  });
+})();
+</script>
+<div class="chart-box">
+  <div class="chart-label">function coverage (%) vs inputs tested</div>
+  <div style="position:relative;height:220px;">
+    <canvas id="cov_function_coverage"></canvas>
+  </div>
+</div>
+<script>
+(function(){
+  var ctx = document.getElementById('cov_function_coverage');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'line',
+    data: { datasets: [{"label": "Ipv6 Parser", "data": [{"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}, {"x": 0.0, "y": 0.0}], "borderColor": "#00ff88", "backgroundColor": "#00ff8822", "fill": true, "tension": 0.35, "pointRadius": 2, "borderWidth": 1.5}] },
+    options: {
+      responsive: true, maintainAspectRatio: false, parsing: false,
+      plugins: {
+        legend: { labels: { color: '#c8d6e5', font: { family: "'Share Tech Mono'" }, boxWidth: 12 } }
+      },
+      scales: {
+        x: {
+          type: 'linear',
+          title: { display: true, text: 'inputs tested', color: '#4a5568', font: { family: "'Share Tech Mono'", size: 10 } },
+          ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 10 } },
+          grid:  { color: '#1e2330' }
+        },
+        y: {
+          min: 0, max: 100,
+          ticks: { color: '#718096', font: { family: "'Share Tech Mono'", size: 10 }, callback: function(v){ return v+'%'; } },
+          grid:  { color: '#1e2330' }
+        }
+      }
+    }
+  });
+})();
+</script></div>
+  <div class="section-title">recent bugs by target</div>
+  
+<div class="section-title">Ipv6 Parser — recent bugs (last 9 of 9)</div>
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>type</th><th>input</th><th>strategy</th><th>rc</th><th>timestamp</th></tr></thead>
+    <tbody><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title="12dd:;931:8846:733b:803e:bd01:88ec:8725">12dd:;931:8846:733b:803e:bd01:88ec:8725</td><td class='mono'>bit_flip</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 21:14:23</td></tr><tr><td><span class="pill pill-error">INVALIDITY</span></td><td class="input-cell mono" title="cad0:c86fC:ba75:5104:c641:4658:2eaf:2e96">cad0:c86fC:ba75:5104:c641:4658:2eaf:2e96</td><td class='mono'>byte_insert</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 21:14:11</td></tr><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title="::ffff:::1">::ffff:::1</td><td class='mono'>ip_aware_mutate</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 21:13:59</td></tr><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title="14cd:7755:24dd:c3M:3644:206a:9c58:f94a">14cd:7755:24dd:c3M:3644:206a:9c58:f94a</td><td class='mono'>byte_insert</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 21:13:47</td></tr><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title="eaf7:782e:548c:780a">eaf7:782e:548c:780a</td><td class='mono'>truncate</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 21:13:22</td></tr><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title="grggg::1">grggg::1</td><td class='mono'>byte_insert</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 21:13:05</td></tr><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title="200">200</td><td class='mono'>truncate</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 21:12:41</td></tr><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title="728b:bbb8:52ea:3897:d3a9:3605:ae9c&gt;:1bfa">728b:bbb8:52ea:3897:d3a9:3605:ae9c&gt;:1bfa</td><td class='mono'>insert_special_char</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 20:25:07</td></tr><tr><td><span class="pill pill-error">BONUS</span></td><td class="input-cell mono" title=":&gt;::::">:&gt;::::</td><td class='mono'>bit_flip</td><td class='mono num'>0</td><td class="ts-cell mono">2026-03-22 20:24:55</td></tr></tbody>
+  </table>
+</div>
+  
+<div class="section-title">appendix — structured bug reports (first 8 unique bugs)</div>
+<div class="bug-reports-list">
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-001</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">BONUS</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — BONUS via <em>bit_flip</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">BONUS</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 20:24:55</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>bit_flip</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;:&amp;gt;::::&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">:&gt;::::</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: :&gt;::::
+An unknown exception has been triggered. Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppre</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, line 219, in &lt;module&gt;
+  File &quot;pyparsing/core.py&quot;, line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {{W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(0-9A-Fa-f){1,5} Suppress:(':')} {W:(</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div>
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-002</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">BONUS</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — BONUS via <em>insert_special_char</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">BONUS</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 20:25:07</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>insert_special_char</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;728b:bbb8:52ea:3897:d3a9:3605:ae9c&amp;gt;:1bfa&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">728b:bbb8:52ea:3897:d3a9:3605:ae9c&gt;:1bfa</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: 728b:bbb8:52ea:3897:d3a9:3605:ae9c&gt;:1bfa
+An unknown exception has been triggered. Expected ':', found '&gt;'  (at char 34), (line:1, col:35)
+============================================================
+TRACEBACK
+=======================================================</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, line 219, in &lt;module&gt;
+  File &quot;pyparsing/core.py&quot;, line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '&gt;'  (at char 34), (line:1, col:35)
+Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, li</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div>
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-003</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">BONUS</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — BONUS via <em>truncate</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">BONUS</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 21:12:41</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>truncate</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;200&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">200</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: 200
+An unknown exception has been triggered. Expected ':', found end of text  (at char 3), (line:1, col:4)
+============================================================
+TRACEBACK
+============================================================
+=========================</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;pyparsing/core.py&quot;, line 950, in _parseNoCache
+  File &quot;pyparsing/core.py&quot;, line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &quot;ipv6_pa</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div>
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-004</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">BONUS</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — BONUS via <em>truncate</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">BONUS</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 21:13:22</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>truncate</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;eaf7:782e:548c:780a&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">eaf7:782e:548c:780a</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: eaf7:782e:548c:780a
+An unknown exception has been triggered. Expected ':', found end of text  (at char 19), (line:1, col:20)
+============================================================
+TRACEBACK
+============================================================
+=======</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;pyparsing/core.py&quot;, line 950, in _parseNoCache
+  File &quot;pyparsing/core.py&quot;, line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &quot;ipv6_pa</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div>
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-005</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">BONUS</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — BONUS via <em>byte_insert</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">BONUS</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 21:13:47</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>byte_insert</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;14cd:7755:24dd:c3M:3644:206a:9c58:f94a&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">14cd:7755:24dd:c3M:3644:206a:9c58:f94a</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: 14cd:7755:24dd:c3M:3644:206a:9c58:f94a
+An unknown exception has been triggered. Expected ':', found 'M'  (at char 17), (line:1, col:18)
+============================================================
+TRACEBACK
+=========================================================</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, line 219, in &lt;module&gt;
+  File &quot;pyparsing/core.py&quot;, line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found 'M'  (at char 17), (line:1, col:18)
+Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, li</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div>
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-006</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">BONUS</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — BONUS via <em>ip_aware_mutate</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">BONUS</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 21:13:59</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>ip_aware_mutate</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;::ffff:::1&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">::ffff:::1</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: ::ffff:::1
+An unknown exception has been triggered. Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} ^ {Suppress:(['0']) '1' W:(0-9){2}} ^ {Suppress:(['0']) '2' W:(0-4, 0-9){2}} ^ {Suppress:(</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, line 219, in &lt;module&gt;
+  File &quot;pyparsing/core.py&quot;, line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected {W:(0-9A-Fa-f){1,5} ^ Group:({Combine:({['0']... ^ {Suppress:(['0']) (1-9)} ^ {Suppress:(['0']) W:(1-9, 0-9){2}} </div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div>
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-007</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">INVALIDITY</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — INVALIDITY via <em>byte_insert</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">INVALIDITY</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 21:14:11</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>byte_insert</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;cad0:c86fC:ba75:5104:c641:4658:2eaf:2e96&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">cad0:c86fC:ba75:5104:c641:4658:2eaf:2e96</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: cad0:c86fC:ba75:5104:c641:4658:2eaf:2e96
+An invalidity bug has been triggered: Hex of length more than 4 found.
+============================================================
+TRACEBACK
+============================================================
+====================</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, line 219, in &lt;module&gt;
+  File &quot;pyparsing/core.py&quot;, line 1328, in parse_string
+  File &quot;pyparsing/core.py&quot;, line 950, in _parseNoCache
+  File &quot;pyparsing/core.py&quot;, line 4754, in parseImpl
+  File &quot;pyparsing/core.py&quot;, line 950, in _parseNoCac</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div>
+<div class="bug-report-card">
+  <div class="br-header">
+    <div>
+      <span class="br-num">BUG-008</span>
+      <span class="br-target">Ipv6 Parser</span>
+    </div>
+    <span class="pill pill-error">BONUS</span>
+  </div>
+  <div class="br-field">
+    <span class="br-label">1. bug title</span>
+    <span class="br-value">Ipv6 Parser — BONUS via <em>bit_flip</em></span>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">2. bug description</span>
+    <div class="br-desc">
+      <div>Type: <span class="pill pill-error">BONUS</span> &nbsp;|&nbsp; Return code: <code>0</code> &nbsp;|&nbsp; Detected: <code>2026-03-22 21:14:23</code></div>
+      <div class="impact">Output keyword matched a known bug signature.</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">3. reproduction steps</span>
+    <div class="br-desc">
+      <div>Strategy used: <code>bit_flip</code></div>
+      <div class="code-block">python3 fuzzer.py --target ipv6_parser --input &quot;12dd:;931:8846:733b:803e:bd01:88ec:8725&quot;</div>
+    </div>
+  </div>
+  <div class="br-field col">
+    <span class="br-label">4. proof of concept (PoC)</span>
+    <div class="br-desc">
+      <div class="poc-grid">
+        <div><div class="poc-label">input</div><div class="code-block">12dd:;931:8846:733b:803e:bd01:88ec:8725</div></div>
+        <div><div class="poc-label">stdout</div><div class="code-block">Running the IPv6 parser with ipstr: 12dd:;931:8846:733b:803e:bd01:88ec:8725
+An unknown exception has been triggered. Expected W:(0-9A-Fa-f){1,5}, found ';'  (at char 5), (line:1, col:6)
+============================================================
+TRACEBACK
+===========================================</div></div>
+        <div><div class="poc-label">stderr</div><div class="code-block">Traceback (most recent call last):
+  File &quot;ipv6_parser_stv.py&quot;, line 219, in &lt;module&gt;
+  File &quot;pyparsing/core.py&quot;, line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected W:(0-9A-Fa-f){1,5}, found ';'  (at char 5), (line:1, col:6)
+Traceback (most recent call last):
+  File &quot;ipv6_parse</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="br-field">
+    <span class="br-label">5. attachments</span>
+    <span class="br-value dim">See <code>crashes/ipv6_parser/</code> for saved input files.</span>
+  </div>
+</div></div>
+</main>
+<footer class="footer">
+  <span>fuzzer report — generated 2026-03-22 21:14:23</span>
+  <span>results/ → report.html</span>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count, 10);
+    if (isNaN(target) || target === 0) return;
+    let start = 0;
+    const step = Math.ceil(target / 24);
+    const id = setInterval(() => {
+      start = Math.min(start + step, target);
+      el.textContent = start;
+      if (start >= target) clearInterval(id);
+    }, 30);
+  });
+});
+</script>
+</body>
+</html>
