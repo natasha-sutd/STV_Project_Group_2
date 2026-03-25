@@ -166,3 +166,50 @@ def upload_crash(
     except Exception as e:
         print(f"[firestore] Failed to upload crash: {e}")
         return None
+
+
+def upload_coverage(
+    target: str,
+    run_id: str,
+    iteration: int,
+    total_inputs: int,
+    tracking_mode: str,
+    statement_coverage: float,
+    branch_coverage: float,
+    function_coverage: float,
+    new_path_found: bool,
+    behavioral_metric: float = 0.0,
+    execution_metric: float = 0.0,
+    coverage_source: str = "proxy",
+) -> Optional[str]:
+    """
+    Upload one coverage snapshot to Firestore.
+
+    Collection: 'coverage'
+    """
+    db = get_db()
+    if db is None:
+        return None
+
+    try:
+        doc_data = {
+            "target": target,
+            "run_id": run_id,
+            "iteration": iteration,
+            "total_inputs": total_inputs,
+            "tracking_mode": tracking_mode,
+            "statement_coverage": float(statement_coverage),
+            "branch_coverage": float(branch_coverage),
+            "function_coverage": float(function_coverage),
+            "behavioral_metric": float(behavioral_metric),
+            "execution_metric": float(execution_metric),
+            "coverage_source": str(coverage_source),
+            "new_path_found": bool(new_path_found),
+            "timestamp": firestore.SERVER_TIMESTAMP,
+        }
+
+        doc_ref = db.collection("coverage").add(doc_data)
+        return doc_ref[1].id
+    except Exception as e:
+        print(f"[firestore] Failed to upload coverage: {e}")
+        return None
