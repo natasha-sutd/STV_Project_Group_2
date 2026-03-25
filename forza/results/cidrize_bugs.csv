@@ -210,3 +210,17 @@ Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidriz
   File ""buggy_cidrize/cidrize_stv.py"", line 254, in parse_hyphen
 buggy_cidrize.cidrize_stv.InvalidCidrFormatError: More than permitted number of '-'
 ",0,False,False,repeat_chunk,2026-03-24 15:30:00
+cidrize,BONUS,069cfd354014,192.1.2.170-075,,"Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 6, in <module>
+  File ""<frozen importlib._bootstrap>"", line 1360, in _find_and_load
+  File ""<frozen importlib._bootstrap>"", line 1331, in _find_and_load_unlocked
+  File ""<frozen importlib._bootstrap>"", line 935, in _load_unlocked
+  File ""pyimod02_importers.py"", line 457, in exec_module
+  File ""pandas/__init__.py"", line 49, in <module>
+  File ""<frozen importlib._bootstrap>"", line 1360, in _find_and_load
+  File ""<frozen import",1,False,False,swap_chars,2026-03-25 21:58:34
+cidrize,BONUS,00454ab289c9,100.103.193.217/26,,"[PYI-61062:ERROR] Module object for pyimod01_archive is NULL!
+Traceback (most recent call last):
+  File ""pyimod01_archive.py"", line 20, in <module>
+KeyboardInterrupt
+",255,False,False,swap_chars,2026-03-25 22:05:07

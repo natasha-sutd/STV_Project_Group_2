@@ -1,0 +1,49 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,"'{""daPKvMFaczAEhSiq"": ""eMAhDRBnM'",INVALIDITY,1,0
+2,1.876,"'{""unclosed"": '",INVALIDITY,1,0
+3,5.358,"'{""lQatMNRBXF"": ""False"", ""iJ"": ""[\'90\', \'null\', \'KpDZGfIbZtbrdBtRSGSJGPGLeDIhbrBgnzHRelDACZzOhyUDmrJej\', \'66\', \'",INVALIDITY,0,0
+4,12.585,"'{""a"": }'",INVALIDITY,1,0
+5,14.164,"'{""unclosed"": '",INVALIDITY,0,0
+6,17.545,"'""""{'",INVALIDITY,1,0
+7,20.515,"'{""a"": [1, "": [1, "": [1, "": [1, "": [1, "": [1, "": [1, "": [1, "": [1, {""b"": 2}]}'",INVALIDITY,1,0
+8,27.067,"'{""vRHzlKAyDoXvgDwsXn"": """", ""csfTNZpgZyPrunIHxkA"": ""nFDbayzuIQIispXPLrjcreGSbKpcGwECZBEutSniNJzDjrWQVCSM"", ""opFaYDk"": ""F",INVALIDITY,1,0
+9,28.704,"'{""fDWzpUsFdaqS"": ""True"", ""DPZrHhFlGYSixHoyOlCC"": -673821691, ""QrnaMTYEIBaUuMssC"": \\""aZNPVOErDuOsOdsqmj"", ""RiEnuqXZSzsS",INVALIDITY,0,0
+10,32.097,"'{""a"": }'",INVALIDITY,0,0
+11,35.684,'{bad json}',INVALIDITY,1,0
+12,37.205,"'{""vRHzlKAyDoXv DwsXn"": """", ""csfTNZpgZyPrunIHxkA"": ""nFDbayzuIQIispXPLrjcreGSbKpcGwECZBEutSniNJzDjrWQVCSM"", ""opFaYDk"": ""F",INVALIDITY,1,0
+13,40.615,"'""line\\nbreak""""""""""""""""""'",INVALIDITY,1,0
+14,42.120,"'[1, "", 3]'",INVALIDITY,1,0
+15,44.783,"'{""LFpMfd\\lQ"": ""jBlVzStpYdeQfTOwnwliLFORsEyVLYDUvcBrXUfECIdRxApCTEW"", ""anzSFpRkjums"": 345056820, ""bUgBFebEliYA"": ""[\'lg",INVALIDITY,1,0
+16,46.114,"'{""unicode"": ""\\u0041\\u0042\\u004nicode"": ""\\u0041\\u0042\\u004nicode"": ""\\u0041\\u0042\\u0043""}'",INVALIDITY,1,0
+17,51.336,"'{""unclosed"": '",INVALIDITY,0,0
+18,52.464,"'{""A"": -69786864||5}'",INVALIDITY,0,0
+19,53.999,"'{""unclosed"": '",INVALIDITY,0,0
+20,54.821,"'{""emoji_escaped"": ""\\uD83D\\u83D\\uDE00""}'",INVALIDITY,1,0
+21,56.560,'1{}',INVALIDITY,0,0
+22,59.426,"'{""daPKvMFaczAEhSiq"": ""eMAhDRRRRRBnM'",INVALIDITY,0,0
+23,60.006,'{bad json}',INVALIDITY,0,0
+24,61.883,"'{""ixVpXphOwb"": ""iCocJhfizAlhER"", ""sadHppVR"": ""[\'0\']"", ""bsyOzvvbxNwLJewkGoKp"": -1426109987, ""BlXr"": """", ""HPFONyQt"": ""T",INVALIDITY,0,0
+25,66.255,"'{""unclosed"": '",INVALIDITY,0,0
+26,66.900,"'[1, 2, 3]]]]]]]]]'",INVALIDITY,0,0
+27,70.280,'{bad json}',INVALIDITY,0,0
+28,71.486,"'{""unclosed"": '",INVALIDITY,0,0
+29,72.124,'{bad json}',INVALIDITY,0,0
+30,73.148,"'{""sONtISGvJooXEMPHO"": ""True"", ""UeFHeFWH"": V""[\'False\', \'ChIsxBD\', \'ovGFmsoKixBpNTmDWRteRIiQZFhoCAzFOeTkBDhtapVnSpnv",INVALIDITY,0,0
+31,76.015,'{bad json}',INVALIDITY,0,0
+32,78.574,"'{""lncuosed"": '",INVALIDITY,0,0
+33,80.420,"'{""Rpzd"": -643944085, ""Rs"": 1269406683, ""IFJD"": ""iKCTffRBGukkuLAmOTFnV"", ""LkkmjxJQXHxlw"": ""False"",y ""DtpYktpFcTzUpwvn"": ",INVALIDITY,1,0
+34,81.733,"'{""KfdEcJ"": """", ""jjfwg"": ""False"", ""CYhDYluWXziqmachdhkk"": ""False"", ""ivZbbhVGPf"": ""True"", ""ygJWiroyGCP"": -959704044, ""Zri",INVALIDITY,1,0
+35,83.386,"'{""KfdEcJ"": """", ""jjfwg"": ""False"", ""CYhDYluWXziqmachdhkk"": ""False"", ""ivZbbhVGPf"": ""True"", ""ygJWiloyGCP"": -959704044, ""Zri",INVALIDITY,0,0
+36,85.792,"'{""vRHzlKAyDoXv DwsXn"": """", ""csfTNZpgZyPrunIHxkA"": ""nFDbayzuIQIispXPLrjcreGSbKpcGwECZBEutSniNJzDjrWQVCSM"", ""opFaYDk"": ""F",INVALIDITY,0,0
+37,86.368,"'{3""neg_float"": -1.23e-10}'",INVALIDITY,0,0
+38,87.495,"'{""a"": }'",INVALIDITY,0,0
+39,88.103,"'{""vVXsMBSxYFdkczTkL"": ""BLyKRLnvwyZPnHjzXyCblGI'",INVALIDITY,0,0
+40,89.055,'{bad json}',INVALIDITY,0,0
+41,89.645,"'""{}'",INVALIDITY,0,0
+42,91.129,"'{""flo'",INVALIDITY,0,0
+43,92.090,"'{""KfdEcJ"": """", ""jjfwg"": ""False"", ""CYhDYluWXziqmachdhkk"": ""False"", ""ivZbbhVGPf"": ""True"", ""ygJWiroyGCP"": -959704044, ""Zri",INVALIDITY,1,0
+44,93.225,"'{""KfdEcJ"": """", ""jjfwg"": ""False"", ""CYhDYluWXziqmachdhkk"": ""False"", ""ivZbbh'",INVALIDITY,0,0
+45,94.243,"'{""vRHzlKAyDoXv DwsXn"": """", ""csfTNZpgZyPrunIHxkA"": ""nFDbayzuIQIispXPLrjcreGSbKpcGwECZBEutSniNJzDjrWQVCSL"", ""opFaYDk"": ""F",INVALIDITY,0,0
+46,96.086,"'{""a"": nullull}'",INVALIDITY,0,0
+47,98.337,"'{""LFpMfd\\lQ"": ""jBlVzStpYdeQfTOwnwliLFORsEyVLYDUvcBrXUfECIdRxApCTEW"", ""anzSFpRkjums"": 345056820, ""bUgBFebEliYA"": ""[\'lg",INVALIDITY,0,0
+48,100.181,"'[null, true, false, 0, """", '",INVALIDITY,1,0

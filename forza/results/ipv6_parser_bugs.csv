@@ -539,3 +539,224 @@ ipv6_parser,BONUS,501ca9378768,2001:db8::1:,,"Traceback (most recent call last):
   File ""<frozen importlib._bootstrap>"", line 935, in _load_unlocked
   File ""pyimod02_importers.py"", line 457, in exec_module
   Fil",1,False,False,truncate,2026-03-24 15:55:06
+ipv6_parser,BONUS,2c28b436b855,1,"Running the IPv6 parser with ipstr: 1
+An unknown exception has been triggered. Expected ':', found end of text  (at char 1), (line:1, col:2)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.exceptions.ParseException'>, ","Traceback (most recent call last):
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 1), (line:1, col:2)
+Traceback ",0,False,False,truncate,2026-03-25 21:58:51
+ipv6_parser,BONUS,b447cdc931eb,"2001:db8::1
+:192.0.2.33","Running the IPv6 parser with ipstr: 2001:db8::1
+:192.0.2.33
+An unknown exception has been triggered. Expected end of text, found ':'  (at char 12), (line:2, col:1)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.except","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found ':'  (at char 12), (line:2, col:1)
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found ':'  (at char 12), (line:2, col:1)
+",0,False,False,insert_special_char,2026-03-25 21:59:04
+ipv6_parser,INVALIDITY,ad2fd8dfb251,2001:db001:db8::192.0.2.33,"Running the IPv6 parser with ipstr: 2001:db001:db8::192.0.2.33
+An invalidity bug has been triggered: Hex of length more than 4 found.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv6_mstv.InvalidityBug'>,","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4754, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4634, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 5943, in parseImpl
+  File ""pyparsing/core.py"", line 950, ",0,False,False,repeat_chunk,2026-03-25 21:59:17
+ipv6_parser,BONUS,ea811d7aed4a,bf9d:5d70:aa10:7d73:d21f:9d\4d:9ca1:d436,"Running the IPv6 parser with ipstr: bf9d:5d70:aa10:7d73:d21f:9d\4d:9ca1:d436
+An unknown exception has been triggered. Expected ':', found '\'  (at char 27), (line:1, col:28)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pypars","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '\'  (at char 27), (line:1, col:28)
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '\'  (at char 27), (line:1, col:28)
+",0,False,False,insert_special_char,2026-03-25 21:59:30
+ipv6_parser,BONUS,0a56ca4a8e8f,de5e*e199:2d62:4408:3b42:86a6:353e:b766,"Running the IPv6 parser with ipstr: de5e*e199:2d62:4408:3b42:86a6:353e:b766
+An unknown exception has been triggered. Expected ':', found '*'  (at char 4), (line:1, col:5)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '*'  (at char 4), (line:1, col:5)
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '*'  (at char 4), (line:1, col:5)
+",0,False,False,bit_flip,2026-03-25 21:59:43
+ipv6_parser,BONUS,9c860a239ec0,453d:3967:896b:70e3:4647:78ef:440c}:4e35,"Running the IPv6 parser with ipstr: 453d:3967:896b:70e3:4647:78ef:440c}:4e35
+An unknown exception has been triggered. Expected ':', found '}'  (at char 34), (line:1, col:35)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pypars","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '}'  (at char 34), (line:1, col:35)
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '}'  (at char 34), (line:1, col:35)
+",0,False,False,insert_special_char,2026-03-25 22:00:08
+ipv6_parser,BONUS,6cf82ea64d01,ecb,"Running the IPv6 parser with ipstr: ecb
+An unknown exception has been triggered. Expected ':', found end of text  (at char 3), (line:1, col:4)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.exceptions.ParseException'>","Traceback (most recent call last):
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 3), (line:1, col:4)
+Traceback ",0,False,False,truncate,2026-03-25 22:00:20
+ipv6_parser,BONUS,e396cade1b9e,e322:53d3:3b0d:40d:5843:be39,"Running the IPv6 parser with ipstr: e322:53d3:3b0d:40d:5843:be39
+An unknown exception has been triggered. Expected ':', found end of text  (at char 28), (line:1, col:29)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.","Traceback (most recent call last):
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 28), (line:1, col:29)
+Tracebac",0,False,False,constraint_violation,2026-03-25 22:00:33
+ipv6_parser,BONUS,3c0447133481,2001:db8::1:2':3:4,"Running the IPv6 parser with ipstr: 2001:db8::1:2':3:4
+An unknown exception has been triggered. Expected end of text, found ""'""  (at char 13), (line:1, col:14)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.exceptions","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found ""'""  (at char 13), (line:1, col:14)
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found ""'""  (at char 13), (line:1, col:14)
+",0,False,False,insert_special_char,2026-03-25 22:00:46
+ipv6_parser,BONUS,15365e23bb24,a344:82,"Running the IPv6 parser with ipstr: a344:82
+An unknown exception has been triggered. Expected ':', found end of text  (at char 7), (line:1, col:8)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.exceptions.ParseExcepti","Traceback (most recent call last):
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 7), (line:1, col:8)
+Traceback ",0,False,False,truncate,2026-03-25 22:01:35
+ipv6_parser,BONUS,46c56260e6fc,be51:3cf0:c3fe:d79a:1e1d,"Running the IPv6 parser with ipstr: be51:3cf0:c3fe:d79a:1e1d
+An unknown exception has been triggered. Expected ':', found end of text  (at char 24), (line:1, col:25)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.exce","Traceback (most recent call last):
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 24), (line:1, col:25)
+Tracebac",0,False,False,truncate,2026-03-25 22:01:48
+ipv6_parser,INVALIDITY,f0c1d4640969,2001:db8::192.0.2.,"Running the IPv6 parser with ipstr: 2001:db8::192.0.2.
+An unknown exception has been triggered. One of the octets are empty ('')
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'buggy_ipyparse.ipv4_mstv.InvalidityBug'>, ""One of t","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4754, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4634, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 5155, in parseImpl
+  File ""pyparsing/core.py"", line 950, ",0,False,False,truncate,2026-03-25 22:02:13
+ipv6_parser,BONUS,fee7e4b36ca6,93d9:66d8:1df9:b610:4c0f:3026:a592:a1c,,"Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 4, in <module>
+  File ""<frozen importlib._bootstrap>"", line 1360, in _find_and_load
+  File ""<frozen importlib._bootstrap>"", line 1331, in _find_and_load_unlocked
+  File ""<frozen importlib._bootstrap>"", line 935, in _load_unlocked
+  File ""pyimod02_importers.py"", line 457, in exec_module
+  File ""pandas/__init__.py"", line 37, in <module>
+  File ""<frozen importlib._bootstrap>"", line 1360, in _find_and_load
+  File ""<frozen importlib",1,False,False,radamsa,2026-03-25 22:04:55
+ipv6_parser,RELIABILITY,1df208f3bb24,a680:1889:790f:f3f5:5661:494,,,-2,False,True,constraint_violation,2026-03-25 22:05:11

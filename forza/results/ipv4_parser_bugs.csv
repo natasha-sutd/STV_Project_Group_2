@@ -1389,3 +1389,13 @@ Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.ex
   File ""pyparsing/core.py"", line 1340, in parse_string
 pyparsing.exceptions.ParseException: Expected '.', found '7171'  (at char 6), (line:1, col:7)
 ",0,False,False,grammar_aware_mutate,2026-03-24 15:54:39
+ipv4_parser,BONUS,1b8da01570dc,112.198.175.216<,,"Traceback (most recent call last):
+  File ""pyi_rth_inspect.py"", line 98, in <module>
+  File ""pyi_rth_inspect.py"", line 17, in _pyi_rthook
+  File ""<frozen importlib._bootstrap>"", line 1360, in _find_and_load
+  File ""<frozen importlib._bootstrap>"", line 1331, in _find_and_load_unlocked
+  File ""<frozen importlib._bootstrap>"", line 935, in _load_unlocked
+  File ""pyimod02_importers.py"", line 457, in exec_module
+  File ""zipfile/__init__.py"", line 10, in <module>
+  File ""<frozen importlib._bootstrap>"",",1,False,False,insert_special_char,2026-03-25 21:58:38
+ipv4_parser,RELIABILITY,1df208f3bb24,226.108.70.204,,,-2,False,True,radamsa,2026-03-25 22:05:09
