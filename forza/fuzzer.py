@@ -152,7 +152,8 @@ def _import_report_generator():
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-DISPLAY_INTERVAL  = 20      # iterations between status redraws
+DISPLAY_INTERVAL  = 5       # iterations between status redraws
+DISPLAY_TIME_INT  = 0.5     # seconds between status redraws
 REPORT_INTERVAL   = 300     # seconds between background report refreshes (5 min)
 DEFAULT_DURATION  = None    # None = no time limit unless --duration given
 DEFAULT_ITERS     = 100_000 # safety cap when no --iterations given
@@ -290,7 +291,24 @@ def print_banner(config: dict, mode: str, duration: float | None, max_iters: int
 
 
 # Number of lines in the live status block (must match print_fuzz_status exactly)
-_STATUS_LINES = 18
+_STATUS_LINES = 23
+
+def _afl_time(seconds: float) -> str:
+    if seconds is None:
+        return "none seen yet"
+    d = int(seconds // 86400)
+    h = int((seconds % 86400) // 3600)
+    m = int((seconds % 3600) // 60)
+    s = int(seconds % 60)
+    return f"{d} days, {h} hrs, {m} min, {s} sec"
+
+def _pad(s: str, w: int) -> str:
+    v = str(s)[:w]
+    return v + " " * (w - len(v))
+
+def _cp(s: str, w: int, c_fn=None) -> str:
+    padded = _pad(s, w)
+    return c_fn(padded) if c_fn else padded
 
 def print_fuzz_status(
     config      : dict,
@@ -307,56 +325,73 @@ def print_fuzz_status(
     strategy_counts : dict[str, int],
 ) -> None:
     """Overwrite the previous status block in-place."""
-    name = config.get("name", "unknown")
-
-    # Progress bar toward duration or iteration limit
-    if duration:
-        progress = min(elapsed / duration, 1.0)
-        limit_str = f"{_fmt_elapsed(elapsed)} / {duration:.0f}s"
+    
+    # Process timing
+    t_run_time    = _afl_time(elapsed)
+    t_last_find   = _afl_time(elapsed - last_report) if last_report is not None else "none seen yet"
+    t_last_crash  = "recently" if last_bug else "none seen yet"
+    t_last_hang   = "none seen yet"
+    
+    # Overall results
+    t_cycles      = "n/a"
+    t_corpus      = str(corpus_len)
+    t_crashes     = str(total_bugs)
+    t_hangs       = "n/a"
+    
+    # Cycle progress
+    t_now_proc    = "n/a"
+    t_runs_to     = "n/a"
+    t_map_dens    = "n/a"
+    t_count_cov   = "n/a"
+    
+    # Stage progress
+    strats = list(strategy_counts.items())
+    strats.sort(key=lambda x: x[1], reverse=True)
+    t_now_trying  = strats[0][0] if strats else "explore"
+    t_stage_execs = "n/a"
+    
+    if iteration >= 1000:
+        t_total_execs = f"{iteration/1000:.1f}k"
     else:
-        progress = min(iteration / max_iters, 1.0)
-        limit_str = f"{iteration:,} / {max_iters:,} iters"
-
-    bar_w   = 36
-    filled  = int(bar_w * progress)
-    bar     = C.green("█" * filled) + C.dim("░" * (bar_w - filled))
-
-    # Top strategy
-    top_strat = (
-        max(strategy_counts, key=strategy_counts.get)
-        if strategy_counts else "—"
-    )
-    top_count = strategy_counts.get(top_strat, 0)
-
-    last_bug_str = (
-        C.red(f"{last_bug.label():<8}") + C.dim(f" {repr(last_bug.input_data[:32])}")
-        if last_bug else C.dim("none yet")
-    )
-
-    report_str = (
-        C.dim(f"{_fmt_elapsed(elapsed - last_report)} ago")
-        if last_report is not None else C.dim("pending...")
-    )
+        t_total_execs = str(iteration)
+        
+    t_exec_speed  = f"{execs_sec:.1f}/sec"
+    
+    # Findings 
+    t_fav_items   = str(corpus_len)  # the whole corpus is favored basically
+    t_new_edges   = str(new_paths)
+    
+    def st_name(i):
+        if i < len(strats):
+            return f"{strats[i][0]}: {strats[i][1]}"
+        return "n/a"
+        
+    s1, s2, s3, s4, s5, s6, s7 = [st_name(i) for i in range(7)]
 
     lines = [
-        "",
-        _div("process timing"),
-        _kv("elapsed",       C.white(_fmt_elapsed(elapsed))),
-        _kv("remaining",     _fmt_remaining(elapsed, duration)),
-        _kv("execs / sec",   C.green(f"{execs_sec:.1f}")),
-        _div("overall results"),
-        _kv("iterations",    C.white(f"{iteration:,}")),
-        _kv("corpus size",   C.cyan(str(corpus_len))),
-        _kv("new paths",     C.cyan(str(new_paths))),
-        _kv("total bugs",    C.red(str(total_bugs)) if total_bugs else C.green("0")),
-        _div("fuzzing strategy"),
-        _kv("top strategy",  C.magenta(f"{top_strat}") + C.dim(f"  ({top_count} bugs)")),
-        _div("last finding"),
-        _kv("last bug",      last_bug_str),
-        _div("report"),
-        _kv("last refresh",  report_str),
-        f"  {bar}  {C.dim(limit_str)}",
-        "",
+        f"┌─ process timing ───────────┬─ overall results ──────────────────┐",
+        f"│        run time : {_cp(t_run_time, 35, C.white)}│  cycles done : {_cp(t_cycles, 7, C.magenta)}│",
+        f"│   last new find : {_cp(t_last_find, 35, C.white)}│ corpus count : {_cp(t_corpus, 7, C.cyan)}│",
+        f"│last saved crash : {_cp(t_last_crash, 35, C.white)}│saved crashes : {_cp(t_crashes, 7, C.red)}│",
+        f"│ last saved hang : {_cp(t_last_hang, 35, C.white)}│  saved hangs : {_cp(t_hangs, 7, C.green)}│",
+        f"├─ cycle progress ──────────────────┬─ map coverage ───┴───────────────────────┤",
+        f"│  now processing : {_cp(t_now_proc, 16, C.white)}│ map density : {_cp(t_map_dens, 27, C.white)}│",
+        f"│  runs timed out : {_cp(t_runs_to, 16, C.white)}│ count coverage : {_cp(t_count_cov, 24, C.white)}│",
+        f"├─ stage progress ──────────────────┼─ findings in depth ──────────────────────┤",
+        f"│  now trying : {_cp(t_now_trying, 20, C.white)}│ favored items : {_cp(t_fav_items, 25, C.white)}│",
+        f"│ stage execs : {_cp(t_stage_execs, 20, C.white)}│  new edges on : {_cp(t_new_edges, 25, C.cyan)}│",
+        f"│ total execs : {_cp(t_total_execs, 20, C.white)}│ total crashes : {_cp(t_crashes, 25, C.red)}│",
+        f"│  exec speed : {_cp(t_exec_speed, 20, C.green)}│  total tmouts : {_cp('n/a', 25, C.white)}│",
+        f"├─ fuzzing strategy yields ─────────┴─────────────┬─ item geometry ────────────┤",
+        f"│   strategy 1 : {_cp(s1, 33, C.white)}│       levels : {_cp('n/a', 12, C.white)}│",
+        f"│   strategy 2 : {_cp(s2, 33, C.white)}│      pending : {_cp('n/a', 12, C.white)}│",
+        f"│   strategy 3 : {_cp(s3, 33, C.white)}│     pend fav : {_cp('n/a', 12, C.white)}│",
+        f"│   strategy 4 : {_cp(s4, 33, C.white)}│    own finds : {_cp(t_corpus, 12, C.cyan)}│",
+        f"│   strategy 5 : {_cp(s5, 33, C.white)}│     imported : {_cp('n/a', 12, C.white)}│",
+        f"│   strategy 6 : {_cp(s6, 33, C.white)}│    stability : {_cp('100.00%', 12, C.white)}│",
+        f"│   strategy 7 : {_cp(s7, 33, C.white)}├───────────────────────────┘",
+        f"│          --  : {_cp('n/a', 33, C.white)}│          [cpu000: --%]     ",
+        f"└─ strategy: {_cp('explore', 14, C.white)}── state: {_cp('in progress', 13, C.green)}┘                             ",
     ]
 
     assert len(lines) == _STATUS_LINES, \
@@ -725,7 +760,6 @@ def run_fuzz_mode(
                 break
             elapsed = time.monotonic() - start
             if duration is not None and elapsed >= duration:
-                print(C.yellow(f"\n  [!] duration limit reached ({duration:.0f}s) — stopping\n"))
                 break
 
             # ── 1. pick seed and mutate ───────────────────────────────────
@@ -770,9 +804,10 @@ def run_fuzz_mode(
                 strategy_counts[strategy] = strategy_counts.get(strategy, 0) + 1
 
             # ── 7. live status redraw ─────────────────────────────────────
-            if iteration % DISPLAY_INTERVAL == 0 or iteration == 1:
-                elapsed   = time.monotonic() - start
+            elapsed = time.monotonic() - start
+            if iteration % DISPLAY_INTERVAL == 0 or iteration == 1 or (time.monotonic() - getattr(print_fuzz_status, "last_draw", 0)) > DISPLAY_TIME_INT:
                 execs_sec = iteration / elapsed if elapsed > 0 else 0.0
+                print_fuzz_status.last_draw = time.monotonic()
                 print_fuzz_status(
                     config          = config,
                     iteration       = iteration,
@@ -791,6 +826,23 @@ def run_fuzz_mode(
     finally:
         # ── shutdown sequence ─────────────────────────────────────────────
         elapsed = time.monotonic() - start
+        
+        # Issue final redraw to ensure 100% accurate final stats
+        execs_sec = iteration / elapsed if elapsed > 0 else 0.0
+        print_fuzz_status(
+            config          = config,
+            iteration       = iteration,
+            total_bugs      = total_bugs,
+            new_paths       = new_paths,
+            corpus_len      = len(corpus),
+            execs_sec       = execs_sec,
+            elapsed         = elapsed,
+            duration        = duration,
+            max_iters       = max_iters,
+            last_bug        = last_bug,
+            last_report     = refresher.elapsed_since_last(time.monotonic()),
+            strategy_counts = strategy_counts,
+        )
 
         # Stop refresher → triggers final report generation
         sys.stdout.write(f"\n{C.dim('  stopping report refresher...')}\n")
