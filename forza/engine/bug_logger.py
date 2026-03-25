@@ -48,7 +48,7 @@ class FuzzLogger:
 
         run_dir = _RESULTS_DIR / target / run_id
         run_dir.mkdir(parents=True, exist_ok=True)
- 
+
         self._bug_path  = _RESULTS_DIR / f"{target}_bugs.csv"
         self._run_path  = run_dir / "all_runs.csv"
         self._stat_path = run_dir / "stats.csv"
@@ -68,6 +68,9 @@ class FuzzLogger:
         self._run_id = run_id
 
         print(f"[logger] Writing results to: {run_dir}")
+
+        # Clear current Firestore database for new run
+        firestore_client.clear_current_db(run_id)
 
     # ------------------------------------------------------------------
     # Public API
