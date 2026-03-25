@@ -1,5 +1,6 @@
 # Firebase credentials - NEVER commit
 firebase-credentials.json
+firebase-credentials-current.json
 *-credentials.json
 
 # Python
