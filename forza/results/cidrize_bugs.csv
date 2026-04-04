@@ -224,3 +224,11 @@ Traceback (most recent call last):
   File ""pyimod01_archive.py"", line 20, in <module>
 KeyboardInterrupt
 ",255,False,False,swap_chars,2026-03-25 22:05:07
+cidrize,RELIABILITY,1df208f3bb24,208.216.196.135/22,,,3221225786,False,False,radamsa,2026-04-04 10:22:29
+cidrize,RELIABILITY,1df208f3bb24,1,,,3221225786,False,False,truncate,2026-04-04 10:23:37
+cidrize,RELIABILITY,43f72a3a898e,192.0.2.80-19	2.0.2.85,"Running cidrize function with the arguments: ipstr: 192.0.2.80-19	2.0.2.85 strict: False raise-errors: False
+Output: ['invalid IPNetwork 192.0.2.80-19\t2.0.2.85']
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,False,False,byte_insert,2026-04-04 10:26:21

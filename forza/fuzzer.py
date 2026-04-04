@@ -292,6 +292,7 @@ def print_banner(config: dict, mode: str, duration: float | None, max_iters: int
 
 # Number of lines in the live status block (must match print_fuzz_status exactly)
 _STATUS_LINES = 23
+_status_drawn = False  # True after the first status block has been printed
 
 def _afl_time(seconds: float) -> str:
     if seconds is None:
@@ -397,12 +398,14 @@ def print_fuzz_status(
     assert len(lines) == _STATUS_LINES, \
         f"_STATUS_LINES mismatch: expected {_STATUS_LINES}, got {len(lines)}"
 
+    global _status_drawn
     # Move cursor up to overwrite previous block (skip on first draw)
-    if iteration > 1:
+    if _status_drawn:
         sys.stdout.write(f"\033[{_STATUS_LINES}A\033[J")
 
     sys.stdout.write("\n".join(lines) + "\n")
     sys.stdout.flush()
+    _status_drawn = True
 
 
 def print_seed_result(
@@ -476,22 +479,21 @@ class ReportRefresher(threading.Thread):
         while not self._stop_evt.is_set():
             self._refresh()
             self._stop_evt.wait(timeout=REPORT_INTERVAL)
-        # Final refresh on stop
-        self._refresh()
 
-    def _refresh(self) -> None:
+    def _refresh(self, final: bool = False) -> None:
         try:
             rg           = self._rg
-            all_data     = rg.load_all(self.targets)
+            all_data     = rg.load_all(self.targets, use_firestore=final)
             all_coverage = rg.load_all_coverage(self.targets)
             rg.generate_report(all_data, all_coverage, self.targets, self.out_path)
             self.last_run = time.monotonic()
-        except Exception:
-            pass  # never crash the fuzzer because the report failed
+        except Exception as e:
+            print(f"\n[report_generator] Report generation failed: {e}")
 
     def stop(self) -> None:
         self._stop_evt.set()
         self.join(timeout=10)
+        self._refresh(final=True)  # ← one final Firestore fetch on shutdown
 
     def elapsed_since_last(self, now: float) -> float | None:
         if self.last_run is None:
@@ -665,6 +667,10 @@ def run_fuzz_mode(
     MutationEngine, BugOracle, coverage_tracker, bug_logger, report_generator = (
         _import_fuzz_pipeline()
     )
+
+    # Reset draw flag so the first status block of this run prints fresh
+    global _status_drawn
+    _status_drawn = False
 
     seeds = load_seeds(config["seeds_path"])
     if not seeds:

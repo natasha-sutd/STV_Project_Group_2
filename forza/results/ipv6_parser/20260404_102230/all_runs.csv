@@ -1,0 +1,2 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,'ea46:99eaff0e9:2bce:2dad:744a:a1de:bc3:',RELIABILITY,1,3221225786

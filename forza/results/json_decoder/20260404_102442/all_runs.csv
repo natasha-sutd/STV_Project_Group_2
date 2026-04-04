@@ -1,0 +1,11 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,7.016,"'{""a"": }'",INVALIDITY,1,0
+2,10.360,"'{""unclosed"": '",INVALIDITY,1,0
+3,16.750,"'[""foo"", {""bar"":[""baz"", null, 1.0, 2]}]]]'",INVALIDITY,1,0
+4,20.516,"'{""a"":'",INVALIDITY,0,0
+5,24.282,"'{""RDemQfMMikMlpweTOoR"": ""[\'MsFtbgtRDoyVNmWnIqaWJrjIjOuOOKbpdddpZjygNoFsCdZvHcaTlPlHkAEDrOBiQvheeCitxDzNElsT\', \'False",INVALIDITY,1,0
+6,38.079,"'{""unclosed"": '",INVALIDITY,0,0
+7,40.610,"'{""unclosed"": '",INVALIDITY,0,0
+8,43.219,'{bad json}',INVALIDITY,1,0
+9,46.922,"'{""unclosed"": '",INVALIDITY,0,0
+10,51.938,"'{""a"": }'",INVALIDITY,0,0

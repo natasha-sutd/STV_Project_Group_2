@@ -1,0 +1,3 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,20.219,'192.0.2.80-19\t2.0.2.85',RELIABILITY,1,0
+2,42.375,'254.169.183.212/3',RELIABILITY,0,0

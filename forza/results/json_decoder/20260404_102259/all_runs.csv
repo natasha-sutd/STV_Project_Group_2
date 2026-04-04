@@ -1,0 +1,9 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,"'[""foo"", {""bar"":[""baz"", nu{ll, 1.0, 2]}]'",INVALIDITY,1,0
+2,7.765,"'{""OnauCXWeJUBIr"": """", ""BpDdCcf"": ""True"", ""UZWkM""RajThB"": vFalse"", ""fWLYhcak"": 1024054570}'",INVALIDITY,1,0
+3,9.718,'{bad json}',INVALIDITY,1,0
+4,21.468,"'{""WEjGZJTxDlgWJ"": """", ""CkmYFQFQsiwmZtm"": ""True"", ""pjJpnDaTQUX"": ""False"", ""NOu"": ""hXWeTUIsVfxareWpprsAPcwpEDuWRMhHjiGFtK",INVALIDITY,1,0
+5,23.578,"'[""foo"", {""ba,"":[""baz"", nullr 1.0, 2]}]'",INVALIDITY,1,0
+6,25.703,'{bad json}',INVALIDITY,0,0
+7,37.687,"'{""\x00json"":""obj""}'",RELIABILITY,1,-1
+8,37.765,"'{""GBpWqxEgglaOe"": ""True"", ""WYp"": ""[\'null\']"", ""DpfAX"": ""[\'wTOcWqfVfRxaXsjYNmmIaNkGcahMGooetmElKsyqOAcGkHGwFXIECHnNMGI",RELIABILITY,0,3221225786

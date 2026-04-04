@@ -15,7 +15,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-ENGINE_DIR  = Path(__file__).resolve().parent
+ENGINE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = ENGINE_DIR.parent
 RESULTS_DIR = PROJECT_DIR / "results"
 CRASHES_DIR = PROJECT_DIR / "crashes"
@@ -25,6 +25,7 @@ KNOWN_TARGETS = ["json_decoder", "cidrize", "ipv4_parser", "ipv6_parser"]
 # ---------------------------------------------------------------------------
 # Data loading
 # ---------------------------------------------------------------------------
+
 
 def load_csv(target: str) -> list[dict]:
     """Load bug rows for one target. Returns [] if file missing or empty."""
@@ -36,19 +37,120 @@ def load_csv(target: str) -> list[dict]:
 
 
 def load_coverage_csv(target: str) -> list[dict]:
-    """
-    Load coverage snapshots for one target from results/<target>_coverage.csv.
-    Returns [] if file missing. Each row should have:
-        timestamp, statement_coverage, branch_coverage, function_coverage, total_inputs
-    """
     csv_path = RESULTS_DIR / f"{target}_coverage.csv"
     if not csv_path.exists():
         return []
     with open(csv_path, newline="", encoding="utf-8", errors="replace") as f:
-        return list(csv.DictReader(f))
+        rows = list(csv.DictReader(f))
+    if not rows:
+        return []
+    # Filter to only the latest run_id
+    latest_run = max(r.get("run_id", "") for r in rows)
+    return [r for r in rows if r.get("run_id") == latest_run]
 
 
-def load_all(targets: list[str]) -> dict[str, list[dict]]:
+import json as _json_mod
+from datetime import timezone
+
+_CACHE_PATH = RESULTS_DIR / "firestore_cache.json"
+
+
+def _normalise_row(row: dict) -> dict:
+    """Normalise Firestore typed values to strings matching CSV format."""
+    ts = row.get("timestamp")
+    if ts and hasattr(ts, "strftime"):
+        row["_ts_iso"] = ts.isoformat()
+        row["timestamp"] = ts.strftime("%Y-%m-%d %H:%M:%S")
+    row["timed_out"] = str(row.get("timed_out", False)).lower()
+    row["crashed"]   = str(row.get("crashed",   False)).lower()
+    return row
+
+
+def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
+    """
+    Fetch bugs from Firestore using a local cache to minimise reads.
+
+    First run  : fetches all documents, saves to results/firestore_cache.json.
+    Later runs : only fetches documents newer than the cached last_timestamp,
+                 merges with cache, and updates the cache file.
+
+    Falls back to None (→ CSVs) if Firestore is unavailable.
+    """
+    try:
+        from engine.firestore_client import get_archive_db
+    except ImportError:
+        return None
+
+    db = get_archive_db()
+    if db is None:
+        return None
+
+    try:
+        # ── load local cache ──────────────────────────────────────────────
+        cached_bugs: dict[str, list[dict]] = {t: [] for t in targets}
+        last_timestamp: str | None = None
+
+        if _CACHE_PATH.exists():
+            try:
+                with open(_CACHE_PATH, encoding="utf-8") as f:
+                    cache_data = _json_mod.load(f)
+                for t in targets:
+                    cached_bugs[t] = cache_data.get("bugs", {}).get(t, [])
+                last_timestamp = cache_data.get("last_timestamp")
+            except Exception:
+                pass  # corrupted cache — refetch everything
+
+        # ── query only new docs ───────────────────────────────────────────
+        query = db.collection("bugs")
+        if last_timestamp:
+            from datetime import datetime
+            dt = datetime.fromisoformat(last_timestamp).replace(tzinfo=timezone.utc)
+            try:
+                from google.cloud.firestore_v1.base_query import FieldFilter
+                query = query.where(filter=FieldFilter("timestamp", ">", dt))
+            except ImportError:
+                query = query.where("timestamp", ">", dt)
+
+        new_docs = list(query.stream())
+        print(f"[report_generator] Fetched {len(new_docs)} new bugs from Firestore "              f"(cache has {sum(len(v) for v in cached_bugs.values())})")
+
+        # ── merge new docs into result ────────────────────────────────────
+        result: dict[str, list[dict]] = {t: list(cached_bugs[t]) for t in targets}
+        newest_ts = last_timestamp
+
+        for doc in new_docs:
+            row = _normalise_row(doc.to_dict())
+            ts_iso = row.pop("_ts_iso", None)
+            if ts_iso and (newest_ts is None or ts_iso > newest_ts):
+                newest_ts = ts_iso
+            target = row.get("target", "")
+            if target in result:
+                result[target].append(row)
+
+        # ── save updated cache ────────────────────────────────────────────
+        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+        with open(_CACHE_PATH, "w", encoding="utf-8") as f:
+            _json_mod.dump({
+                "bugs": {t: result[t] for t in targets},
+                "last_timestamp": newest_ts,
+            }, f)
+
+        total = sum(len(v) for v in result.values())
+        print(f"[report_generator] Total {total} bugs (cached + new)")
+        return result
+
+    except Exception as e:
+        print(f"[report_generator] Firestore fetch failed: {e}")
+        return None
+
+
+def load_all(targets: list[str], use_firestore: bool = True) -> dict[str, list[dict]]:
+    """Try Firestore first, fall back to local CSVs if unavailable."""
+    if use_firestore:
+        firestore_data = _load_from_firestore(targets)
+        if firestore_data is not None:
+            return firestore_data
+    print("[report_generator] Using local CSVs")
     return {t: load_csv(t) for t in targets}
 
 
@@ -68,11 +170,13 @@ def crash_count(target: str) -> int:
 # ---------------------------------------------------------------------------
 
 def summarise(rows: list[dict]) -> dict:
-    total       = len(rows)
-    by_type     = Counter(r.get("bug_type", "unknown") for r in rows)
+    total = len(rows)
+    by_type = Counter(r.get("bug_type", "unknown") for r in rows)
     by_strategy = Counter(r.get("strategy",  "unknown") for r in rows)
-    timeouts    = sum(1 for r in rows if r.get("timed_out", "").lower() == "true")
-    crashes     = sum(1 for r in rows if r.get("crashed",   "").lower() == "true")
+    timeouts = sum(1 for r in rows if str(
+        r.get("timed_out", "")).lower() == "true")
+    crashes = sum(1 for r in rows if str(
+        r.get("crashed",   "")).lower() == "true")
     unique_keys = len({r.get("bug_key", "") for r in rows})
     return dict(
         total=total,
@@ -88,25 +192,33 @@ def summarise(rows: list[dict]) -> dict:
 # HTML helpers
 # ---------------------------------------------------------------------------
 
-def _esc(s: str) -> str:
+def _esc(s) -> str:
+    s = str(s) if not isinstance(s, str) else s
     return (s.replace("&", "&amp;").replace("<", "&lt;")
              .replace(">", "&gt;").replace('"', "&quot;"))
 
 
 def _pill(row: dict) -> str:
-    bt    = row.get("bug_type", "").lower()
+    bt = row.get("bug_type", "").lower()
     label = _esc(row.get("bug_type", "unknown"))
-    if "crash"   in bt: return f'<span class="pill pill-crash">{label}</span>'
-    if "timeout" in bt: return f'<span class="pill pill-timeout">{label}</span>'
-    if "keyword" in bt: return f'<span class="pill pill-keyword">{label}</span>'
-    if "diff"    in bt: return f'<span class="pill pill-diff">{label}</span>'
+    if "crash" in bt:
+        return f'<span class="pill pill-crash">{label}</span>'
+    if "timeout" in bt:
+        return f'<span class="pill pill-timeout">{label}</span>'
+    if "keyword" in bt:
+        return f'<span class="pill pill-keyword">{label}</span>'
+    if "diff" in bt:
+        return f'<span class="pill pill-diff">{label}</span>'
     return f'<span class="pill pill-error">{label}</span>'
 
 
 def _badge(total: int, has_data: bool) -> str:
-    if not has_data:   return '<span class="badge muted">no data</span>'
-    if total == 0:     return '<span class="badge ok">clean</span>'
-    if total >= 10:    return f'<span class="badge danger">{total} bugs</span>'
+    if not has_data:
+        return '<span class="badge muted">no data</span>'
+    if total == 0:
+        return '<span class="badge ok">clean</span>'
+    if total >= 10:
+        return f'<span class="badge danger">{total} bugs</span>'
     return f'<span class="badge warn">{total} bugs</span>'
 
 
@@ -132,23 +244,24 @@ def _bar_row(key: str, count: int, maximum: int) -> str:
 # ---------------------------------------------------------------------------
 
 def render_overview_card(target: str, rows: list[dict]) -> str:
-    summary  = summarise(rows)
+    summary = summarise(rows)
     has_data = len(rows) > 0
-    total    = summary["total"]
-    card_cls = "card has-bugs" if total > 0 else ("card no-data" if not has_data else "card")
-    badge    = _badge(total, has_data)
-    n_crashes  = summary["crashes"]
+    total = summary["total"]
+    card_cls = "card has-bugs" if total > 0 else (
+        "card no-data" if not has_data else "card")
+    badge = _badge(total, has_data)
+    n_crashes = summary["crashes"]
     n_timeouts = summary["timeouts"]
-    n_unique   = summary["unique_keys"]
-    n_files    = crash_count(target)
+    n_unique = summary["unique_keys"]
+    n_files = crash_count(target)
 
-    cs_total    = f'<div class="cs"><div class="v {"d" if total>0 else ""}" data-count="{total}">{total}</div><div class="l">bugs</div></div>'
-    cs_crashes  = f'<div class="cs"><div class="v {"d" if n_crashes>0 else ""}" data-count="{n_crashes}">{n_crashes}</div><div class="l">crashes</div></div>'
-    cs_timeouts = f'<div class="cs"><div class="v {"w" if n_timeouts>0 else ""}" data-count="{n_timeouts}">{n_timeouts}</div><div class="l">timeouts</div></div>'
-    cs_unique   = f'<div class="cs"><div class="v" data-count="{n_unique}">{n_unique}</div><div class="l">unique</div></div>'
-    cs_files    = f'<div class="cs"><div class="v" data-count="{n_files}">{n_files}</div><div class="l">files saved</div></div>'
+    cs_total = f'<div class="cs"><div class="v {"d" if total > 0 else ""}" data-count="{total}">{total}</div><div class="l">bugs</div></div>'
+    cs_crashes = f'<div class="cs"><div class="v {"d" if n_crashes > 0 else ""}" data-count="{n_crashes}">{n_crashes}</div><div class="l">crashes</div></div>'
+    cs_timeouts = f'<div class="cs"><div class="v {"w" if n_timeouts > 0 else ""}" data-count="{n_timeouts}">{n_timeouts}</div><div class="l">timeouts</div></div>'
+    cs_unique = f'<div class="cs"><div class="v" data-count="{n_unique}">{n_unique}</div><div class="l">unique</div></div>'
+    cs_files = f'<div class="cs"><div class="v" data-count="{n_files}">{n_files}</div><div class="l">files saved</div></div>'
 
-    by_type   = summary["by_type"]
+    by_type = summary["by_type"]
     max_count = max(by_type.values(), default=1)
     type_rows = "".join(
         _bar_row(bt, cnt, max_count)
@@ -199,12 +312,12 @@ def render_ablation_section(all_data: dict[str, list[dict]], targets: list[str])
     if not global_strategy:
         return ""
 
-    strategies  = [s for s, _ in global_strategy.most_common()]
-    labels_js   = _json.dumps(strategies)
-    palette     = ["#00ff88", "#45aaf2", "#ffd32a", "#ff4757"]
-    datasets    = []
+    strategies = [s for s, _ in global_strategy.most_common()]
+    labels_js = _json.dumps(strategies)
+    palette = ["#00ff88", "#45aaf2", "#ffd32a", "#ff4757"]
+    datasets = []
     for i, t in enumerate(targets):
-        c   = per_target_strategy[t]
+        c = per_target_strategy[t]
         col = palette[i % len(palette)]
         datasets.append({
             "label": _target_label(t),
@@ -292,7 +405,7 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
   </div>
 </div>"""
 
-    palette     = ["#00ff88", "#45aaf2", "#ffd32a", "#ff4757"]
+    palette = ["#00ff88", "#45aaf2", "#ffd32a", "#ff4757"]
     charts_html = ""
     for metric, metric_label in [
         ("statement_coverage", "statement coverage (%)"),
@@ -305,7 +418,7 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
             rows = all_coverage[t]
             if not rows:
                 continue
-            col      = palette[i % len(palette)]
+            col = palette[i % len(palette)]
             data_pts = []
             for r in rows:
                 try:
@@ -328,6 +441,15 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
             continue
 
         datasets_js = _json.dumps(datasets)
+
+        # Dynamic y-axis range with padding to highlight differences
+        all_y = [pt["y"] for ds in datasets for pt in ds["data"]]
+        if all_y:
+            y_min = max(0.0, round(min(all_y) - 5, 1))
+            y_max = min(100.0, round(max(all_y) + 5, 1))
+        else:
+            y_min, y_max = 0, 100
+
         charts_html += f"""
 <div class="chart-box">
   <div class="chart-label">{metric_label} vs inputs tested</div>
@@ -355,7 +477,7 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
           grid:  {{ color: '#1e2330' }}
         }},
         y: {{
-          min: 0, max: 100,
+          min: {y_min}, max: {y_max},
           ticks: {{ color: '#718096', font: {{ family: "'Share Tech Mono'", size: 10 }}, callback: function(v){{ return v+'%'; }} }},
           grid:  {{ color: '#1e2330' }}
         }}
@@ -374,20 +496,20 @@ def render_bug_table(rows: list[dict], target: str) -> str:
     """Recent bugs table — newest first, max 50 rows."""
     if not rows:
         return ""
-    label   = _target_label(target)
+    label = _target_label(target)
     display = list(reversed(rows[-50:]))
-    trows   = "".join(
+    trows = "".join(
         f"<tr>"
         f"<td>{_pill(r)}</td>"
-        f'<td class="input-cell mono" title="{_esc(r.get("input_data","")[:80])}">{_esc(r.get("input_data","")[:80])}</td>'
-        f"<td class='mono'>{_esc(r.get('strategy','') or '—')}</td>"
-        f"<td class='mono num'>{_esc(r.get('returncode',''))}</td>"
-        f'<td class="ts-cell mono">{_esc(r.get("timestamp","")[:19])}</td>'
+        f'<td class="input-cell mono" title="{_esc(r.get("input_data", "")[:80])}">{_esc(r.get("input_data", "")[:80])}</td>'
+        f"<td class='mono'>{_esc(r.get('strategy', '') or '—')}</td>"
+        f"<td class='mono num'>{_esc(r.get('returncode', ''))}</td>"
+        f'<td class="ts-cell mono">{_esc(r.get("timestamp", "")[:19])}</td>'
         f"</tr>"
         for r in display
     )
     return f"""
-<div class="section-title">{label} — recent bugs (last {min(50,len(rows))} of {len(rows)})</div>
+<div class="section-title">{label} — recent bugs (last {min(50, len(rows))} of {len(rows)})</div>
 <div class="table-wrap">
   <table>
     <thead><tr><th>type</th><th>input</th><th>strategy</th><th>rc</th><th>timestamp</th></tr></thead>
@@ -401,9 +523,9 @@ def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> s
     Appendix: structured bug reports matching the rubric format.
     One card per unique bug (by bug_key). Max 20 total across all targets.
     """
-    cards       = ""
+    cards = ""
     total_shown = 0
-    max_shown   = 20
+    max_shown = 20
 
     for t in targets:
         seen_keys: set[str] = set()
@@ -417,14 +539,14 @@ def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> s
             total_shown += 1
 
             bug_type = r.get("bug_type", "unknown")
-            ts       = r.get("timestamp", "unknown")[:19]
-            inp      = r.get("input_data", "")
-            stdout   = r.get("stdout",     "")[:400]
-            stderr   = r.get("stderr",     "")[:400]
-            rc       = r.get("returncode", "?")
-            strat    = r.get("strategy",   "unknown")
-            crashed  = r.get("crashed",    "").lower() == "true"
-            timed    = r.get("timed_out",  "").lower() == "true"
+            ts = r.get("timestamp", "unknown")[:19]
+            inp = r.get("input_data", "")
+            stdout = r.get("stdout",     "")[:400]
+            stderr = r.get("stderr",     "")[:400]
+            rc = r.get("returncode", "?")
+            strat = r.get("strategy",   "unknown")
+            crashed = str(r.get("crashed",    "")).lower() == "true"
+            timed = str(r.get("timed_out",  "")).lower() == "true"
 
             impact = (
                 "Process crashed (non-zero/negative return code)." if crashed
@@ -618,12 +740,12 @@ def generate_report(
     out_path: Path,
 ) -> Path:
     now = datetime.now()
-    ts  = now.strftime("%Y-%m-%d %H:%M:%S")
+    ts = now.strftime("%Y-%m-%d %H:%M:%S")
 
-    total_bugs     = sum(len(v) for v in all_data.values())
-    total_crashes  = sum(crash_count(t) for t in targets)
+    total_bugs = sum(len(v) for v in all_data.values())
+    total_crashes = sum(crash_count(t) for t in targets)
     total_timeouts = sum(summarise(v)["timeouts"] for v in all_data.values())
-    targets_run    = sum(1 for v in all_data.values() if v)
+    targets_run = sum(1 for v in all_data.values() if v)
 
     global_stats = f"""
 <div class="global-stats">
@@ -688,18 +810,18 @@ def main() -> None:
         description="Generate an HTML fuzzing report from bug + coverage CSVs."
     )
     parser.add_argument("--target", "-t", nargs="+", metavar="TARGET",
-        help=f"Targets to include. Default: all ({', '.join(KNOWN_TARGETS)})")
+                        help=f"Targets to include. Default: all ({', '.join(KNOWN_TARGETS)})")
     parser.add_argument("--out", "-o", default=str(RESULTS_DIR / "report.html"),
-        metavar="PATH", help="Output HTML file (default: results/report.html)")
+                        metavar="PATH", help="Output HTML file (default: results/report.html)")
     parser.add_argument("--no-open", action="store_true",
-        help="Don't auto-open the report in a browser")
+                        help="Don't auto-open the report in a browser")
     args = parser.parse_args()
 
-    targets  = args.target if args.target else KNOWN_TARGETS
+    targets = args.target if args.target else KNOWN_TARGETS
     out_path = Path(args.out).resolve()
 
     print(f"[report_generator] Loading data for: {', '.join(targets)}")
-    all_data     = load_all(targets)
+    all_data = load_all(targets)
     all_coverage = load_all_coverage(targets)
 
     for t in targets:

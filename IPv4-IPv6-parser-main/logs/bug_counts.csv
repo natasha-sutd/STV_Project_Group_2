@@ -45,7 +45,7 @@ functional,FunctionalBug,Invalid ipv4 calculation.,buggy_ipyparse/ipv4_stv.py,13
 functional,FunctionalBug,Invalid ipv4 calculation.,buggy_ipyparse\ipv4_stv.py,134,8
 invalidity,InvalidityBug,Hex of length more than 4 found.,buggy_ipyparse/ipv6_mstv.py,93,13
 invalidity,InvalidityBug,One of the octets are empty,buggy_ipyparse/ipv4_stv.py,80,25
-invalidity,InvalidityBug,One of the octets are empty,buggy_ipyparse\ipv4_stv.py,80,5
+invalidity,InvalidityBug,One of the octets are empty,buggy_ipyparse\ipv4_stv.py,80,7
 invalidity,ParseException,"Expected '.', found ' '  (at char 7), (line:1, col:8)",pyparsing/core.py,1340,1
 invalidity,ParseException,"Expected '.', found '0'  (at char 2), (line:1, col:3)",pyparsing/core.py,1340,4
 invalidity,ParseException,"Expected '.', found '0'  (at char 4), (line:1, col:5)",pyparsing/core.py,1340,2
@@ -54,7 +54,7 @@ invalidity,ParseException,"Expected '.', found '000000000'  (at char 2), (line:1
 invalidity,ParseException,"Expected '.', found '1'  (at char 10), (line:1, col:11)",pyparsing/core.py,1340,4
 invalidity,ParseException,"Expected '.', found '1'  (at char 2), (line:1, col:3)",pyparsing/core.py,1340,2
 invalidity,ParseException,"Expected '.', found '1'  (at char 3), (line:1, col:4)",pyparsing/core.py,1340,5
-invalidity,ParseException,"Expected '.', found '1'  (at char 3), (line:1, col:4)",pyparsing\core.py,1340,14
+invalidity,ParseException,"Expected '.', found '1'  (at char 3), (line:1, col:4)",pyparsing\core.py,1340,15
 invalidity,ParseException,"Expected '.', found '111111'  (at char 3), (line:1, col:4)",pyparsing/core.py,1340,5
 invalidity,ParseException,"Expected '.', found '1111111'  (at char 3), (line:1, col:4)",pyparsing/core.py,1340,5
 invalidity,ParseException,"Expected '.', found '111111111'  (at char 3), (line:1, col:4)",pyparsing/core.py,1340,2

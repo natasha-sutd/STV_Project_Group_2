@@ -760,3 +760,33 @@ ipv6_parser,BONUS,fee7e4b36ca6,93d9:66d8:1df9:b610:4c0f:3026:a592:a1c,,"Tracebac
   File ""<frozen importlib._bootstrap>"", line 1360, in _find_and_load
   File ""<frozen importlib",1,False,False,radamsa,2026-03-25 22:04:55
 ipv6_parser,RELIABILITY,1df208f3bb24,a680:1889:790f:f3f5:5661:494,,,-2,False,True,constraint_violation,2026-03-25 22:05:11
+ipv6_parser,RELIABILITY,1df208f3bb24,ea46:99eaff0e9:2bce:2dad:744a:a1de:bc3:,,,3221225786,False,False,swap_chars,2026-04-04 10:22:30
+ipv6_parser,RELIABILITY,1df208f3bb24,c77e:50ff:6245:d02e:ad21:f250:ddf3:947:8214,,,3221225786,False,False,constraint_violation,2026-04-04 10:23:38
+ipv6_parser,INVALIDITY,727d4ca8d50c,"2001:db8::1:2:3:4:5""","Running the IPv4 parser with ipstr: 2001:db8::1:2:3:4:5""
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, ""Expected '.', found '1'  (at char 3), (line:1, col:4)"", 'pyparsing\\core","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 3), (line:1, col:4)
+",0,False,False,insert_special_char,2026-04-04 10:28:18
+ipv6_parser,INVALIDITY,d2303cdaa98e,e99f:160f:14ce:5de7:9251:146a:edde:8288,"Running the IPv4 parser with ipstr: e99f:160f:14ce:5de7:9251:146a:edde:8288
+An invalidity bug has been triggered: One of the octets are empty
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv4_stv.In","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1328, in parse_string
+  File ""pyparsing\core.py"", line 950, in _parseNoCache
+  File ""pyparsing\core.py"", line 5155, in parseImpl
+  File ""pyparsing\core.py"", line 950, in _parseNoCache
+  File ""pyparsing\core.py"", line 4612, in parseImpl
+  File ""pyparsing\core.py"", line 989, in _parseNoCache
+  File ""pyparsing\core.py"", line 284, in wrapper
+  File ""buggy_ipyparse\ipv4_stv.",0,False,False,grammar_mutate,2026-04-04 10:28:44

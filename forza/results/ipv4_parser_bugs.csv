@@ -1399,3 +1399,5 @@ ipv4_parser,BONUS,1b8da01570dc,112.198.175.216<,,"Traceback (most recent call la
   File ""zipfile/__init__.py"", line 10, in <module>
   File ""<frozen importlib._bootstrap>"",",1,False,False,insert_special_char,2026-03-25 21:58:38
 ipv4_parser,RELIABILITY,1df208f3bb24,226.108.70.204,,,-2,False,True,radamsa,2026-03-25 22:05:09
+ipv4_parser,RELIABILITY,1df208f3bb24,78.205.18.161,,,3221225786,False,False,swap_chars,2026-04-04 10:22:29
+ipv4_parser,RELIABILITY,1df208f3bb24,74.228.196.193,,,3221225786,False,False,radamsa,2026-04-04 10:23:38

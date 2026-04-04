@@ -1,0 +1,4 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,7.312,"'2001:db8::1:2:3:4:5""'",INVALIDITY,1,0
+2,32.812,'e99f:160f:14ce:5de7:9251:146a:edde:8288',INVALIDITY,1,0
+3,58.219,'ed6b:5be6:579:8b4:c894:f779:533c',INVALIDITY,0,0
