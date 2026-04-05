@@ -65,11 +65,9 @@ from typing import Optional
 from engine.types import BugResult, BugType, classify_from_keywords
 from engine.target_runner import RawResult
 
-
 # ---------------------------------------------------------------------------
 # Generic output extractor
 # ---------------------------------------------------------------------------
-
 def _extract_output(stdout: str, pattern: str) -> Optional[str]:
     """
     Extract the output value from stdout using a pattern defined in the YAML.
@@ -96,11 +94,9 @@ def _extract_output(stdout: str, pattern: str) -> Optional[str]:
     match = re.search(regex, stdout)
     return match.group(1).strip() if match else None
 
-
 # ---------------------------------------------------------------------------
 # BugOracle
 # ---------------------------------------------------------------------------
-
 class BugOracle:
     """
     Classifies a RawResult into a BugResult.

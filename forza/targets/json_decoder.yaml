@@ -1,13 +1,18 @@
 name: json_decoder
 
+# commands
 buggy_cmd:
+  windows: ["python", "decoder_stv.py", "--str-json", "{input}"]
+  mac: ["uv", "run", "decoder_stv.py", "--str-json", "{input}"]
+buggy_cwd: "../../json-decoder/buggy_json"
+
+reference_cmd:
   windows: ["python", "json_decoder_stv.py", "--str-json", "{input}"]
   mac: ["uv", "run", "json_decoder_stv.py", "--str-json", "{input}"]
-buggy_cwd: "../../json-decoder"
+reference_cwd: "../../json-decoder"
 
 # input
 input_mode: arg
-seeds_path: ../inputs/json_decoder/seeds.txt
 input:
   type: object
   encoding: json
@@ -21,6 +26,8 @@ input:
       - { type: boolean }
       - { type: array, min_length: 0, max_length: 10, element: { type: any } }
       - { type: null }
+seeds_path: "../inputs/cidrize/seeds.txt"
+seed_count: 30
 
 # execution
 timeout: 60
@@ -39,4 +46,3 @@ output_pattern: "Output decoded data: {value} of type"
 coverage_enabled: true
 coverage_flag: "--show-coverage"
 tracking_mode: code_execution
-seed_count: 30

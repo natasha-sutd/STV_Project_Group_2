@@ -29,11 +29,9 @@ import random
 import string
 import subprocess
 
-
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-
 SPECIAL_CHARS = [
     "\x00",                      # null byte
     "\xff",                      # max byte
@@ -45,29 +43,25 @@ SPECIAL_CHARS = [
     "/../",                      # path traversal
     "%00",                       # URL-encoded null
     "&&", "||",                  # shell injection
-    "999999999999999999999999",   # integer overflow bait
+    "999999999999999999999999",  # integer overflow bait
 ]
-
 
 # ---------------------------------------------------------------------------
 # Generic mutation strategies
 # ---------------------------------------------------------------------------
-
 def bit_flip(data: str) -> str:
     """Flip a random bit in a random character of the input."""
     if not data:
         return data
-    idx     = random.randint(0, len(data) - 1)
+    idx = random.randint(0, len(data) - 1)
     flipped = chr(ord(data[idx]) ^ (1 << random.randint(0, 7)))
     return data[:idx] + flipped + data[idx + 1:]
-
 
 def truncate(data: str) -> str:
     """Cut the input short at a random position."""
     if len(data) <= 1:
         return data
     return data[:random.randint(0, len(data) - 1)]
-
 
 def insert_special_char(data: str) -> str:
     """Insert a special/bad character at a random position."""
@@ -76,51 +70,43 @@ def insert_special_char(data: str) -> str:
     idx = random.randint(0, len(data))
     return data[:idx] + random.choice(SPECIAL_CHARS) + data[idx:]
 
-
 def repeat_chunk(data: str) -> str:
     """Duplicate a random slice of the input (stress-tests length handling)."""
     if len(data) < 2:
         return data * 2
     start = random.randint(0, len(data) - 1)
-    end   = random.randint(start + 1, len(data))
+    end = random.randint(start + 1, len(data))
     chunk = data[start:end]
     return data[:start] + chunk * random.randint(2, 10) + data[end:]
-
 
 def byte_insert(data: str) -> str:
     """Insert a random printable ASCII character at a random position."""
     idx = random.randint(0, len(data))
     return data[:idx] + random.choice(string.printable) + data[idx:]
 
-
 def swap_chars(data: str) -> str:
     """Swap two random characters in the input."""
     if len(data) < 2:
         return data
-    i, j  = random.sample(range(len(data)), 2)
-    lst   = list(data)
+    i, j = random.sample(range(len(data)), 2)
+    lst = list(data)
     lst[i], lst[j] = lst[j], lst[i]
     return "".join(lst)
-
 
 def radamsa_mutate(data: str) -> str:
     """Mutate using external Radamsa (skipped silently if not installed)."""
     try:
-        p = subprocess.Popen(
-            ["radamsa"], stdin=subprocess.PIPE, stdout=subprocess.PIPE
-        )
+        p = subprocess.Popen(["radamsa"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         out, _ = p.communicate(data.encode())
         return out.decode(errors="ignore")
     except Exception:
         return data
-
 
 # ---------------------------------------------------------------------------
 # Strategy registry
 # grammar_mutate and constraint_violation are added dynamically in __init__
 # when a grammar_spec is provided.
 # ---------------------------------------------------------------------------
-
 STRATEGIES = [
     ("bit_flip",            bit_flip,            1.0, ["*"]),
     ("truncate",            truncate,            1.0, ["*"]),
@@ -131,11 +117,9 @@ STRATEGIES = [
     ("radamsa",             radamsa_mutate,      2.0, ["*"]),
 ]
 
-
 # ---------------------------------------------------------------------------
 # MutationEngine
 # ---------------------------------------------------------------------------
-
 class MutationEngine:
     """
     AFL-style weighted mutation engine.
@@ -149,17 +133,13 @@ class MutationEngine:
 
     Without a grammar spec, only generic format-agnostic mutations are used.
     """
-
     def __init__(
         self,
-        input_format : str        = "*",
-        grammar_spec : dict | None = None,
-        # Legacy alias — accepted but grammar_spec takes priority
-        input_spec   : dict | None = None,
+        input_format : str = "*",
+        grammar_spec : dict | None = None
     ) -> None:
-        self.input_format   = input_format
-        # Accept both parameter names for backwards compatibility
-        self._grammar_spec  = grammar_spec or input_spec or {}
+        self.input_format = input_format
+        self._grammar_spec = grammar_spec or {}
         self._last_strategy = "unknown"
 
         # Build active strategy list
@@ -183,7 +163,6 @@ class MutationEngine:
             })
 
     # ── Public interface ──────────────────────────────────────────────────
-
     def mutate(self, seed: str) -> str:
         """Pick a strategy via weighted random selection and return a mutated seed."""
         chosen = self._weighted_choice()
@@ -214,7 +193,6 @@ class MutationEngine:
         return {s["name"]: round(s["weight"], 3) for s in self.strategies}
 
     # ── Grammar-aware strategies ──────────────────────────────────────────
-
     def _grammar_mutate(self, seed: str) -> str:
         """
         Structurally valid mutation using the YAML grammar spec.
@@ -238,7 +216,6 @@ class MutationEngine:
             return insert_special_char(seed)
 
     # ── Internal ──────────────────────────────────────────────────────────
-
     def _weighted_choice(self) -> dict:
         """Select a strategy using weighted random sampling."""
         total      = sum(s["weight"] for s in self.strategies)
@@ -252,11 +229,9 @@ class MutationEngine:
         self._last_strategy = self.strategies[-1]["name"]
         return self.strategies[-1]
 
-
 # ---------------------------------------------------------------------------
 # Quick manual test — python3 engine/mutation_engine.py
 # ---------------------------------------------------------------------------
-
 if __name__ == "__main__":
     import yaml
     from pathlib import Path

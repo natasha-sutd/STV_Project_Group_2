@@ -1,13 +1,18 @@
 name: cidrize
 
+# commands
 buggy_cmd: 
-  windows: ["../cidrize-runner-main/bin/win-cidrize-runner.exe", "--func", "cidrize", "--ipstr", "{input}"]
-  mac: ["../cidrize-runner-main/bin/mac-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}"]
-buggy_cwd: "../../cidrize-runner-main"
+  windows: ["./win-cidrize-runner.exe", "--func", "cidrize", "--ipstr", "{input}"]
+  mac: ["./mac-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}"]
+buggy_cwd: "../../cidrize-runner-main/bin"
+
+reference_cmd:
+  windows: ["python", "cidrize.py", "{input}"]
+  mac: ["python3", "cidrize.py", "{input}"]
+reference_cwd: "../../cidrize-runner-main/cidrize"
 
 # input
 input_mode: arg
-seeds_path: "../inputs/cidrize/seeds.txt"
 input:
   type: sequence
   parts:
@@ -20,6 +25,8 @@ input:
     - type: int
       min: 0
       max: 32
+seeds_path: "../inputs/cidrize/seeds.txt"
+seed_count: 30
 
 # execution
 timeout: 60
@@ -43,4 +50,3 @@ output_pattern: "IPNetwork('{value}')"
 # coverage
 coverage_enabled: false
 tracking_mode: behavioral
-seed_count: 30

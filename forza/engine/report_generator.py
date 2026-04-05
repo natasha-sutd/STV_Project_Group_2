@@ -3,6 +3,8 @@ Reads the CSVs produced by bug_logger.py and generates a human-readable summary 
 """
 
 from __future__ import annotations
+from datetime import timezone
+import json as _json_mod
 
 import argparse
 import csv
@@ -18,23 +20,18 @@ from pathlib import Path
 ENGINE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = ENGINE_DIR.parent
 RESULTS_DIR = PROJECT_DIR / "results"
-CRASHES_DIR = PROJECT_DIR / "crashes"
 
 KNOWN_TARGETS = ["json_decoder", "cidrize", "ipv4_parser", "ipv6_parser"]
 
 # ---------------------------------------------------------------------------
 # Data loading
 # ---------------------------------------------------------------------------
-
-
 def load_csv(target: str) -> list[dict]:
-    """Load bug rows for one target. Returns [] if file missing or empty."""
     csv_path = RESULTS_DIR / f"{target}_bugs.csv"
     if not csv_path.exists():
         return []
     with open(csv_path, newline="", encoding="utf-8", errors="replace") as f:
         return list(csv.DictReader(f))
-
 
 def load_coverage_csv(target: str) -> list[dict]:
     csv_path = RESULTS_DIR / f"{target}_coverage.csv"
@@ -48,23 +45,16 @@ def load_coverage_csv(target: str) -> list[dict]:
     latest_run = max(r.get("run_id", "") for r in rows)
     return [r for r in rows if r.get("run_id") == latest_run]
 
-
-import json as _json_mod
-from datetime import timezone
-
 _CACHE_PATH = RESULTS_DIR / "firestore_cache.json"
 
-
 def _normalise_row(row: dict) -> dict:
-    """Normalise Firestore typed values to strings matching CSV format."""
     ts = row.get("timestamp")
     if ts and hasattr(ts, "strftime"):
         row["_ts_iso"] = ts.isoformat()
         row["timestamp"] = ts.strftime("%Y-%m-%d %H:%M:%S")
     row["timed_out"] = str(row.get("timed_out", False)).lower()
-    row["crashed"]   = str(row.get("crashed",   False)).lower()
+    row["crashed"] = str(row.get("crashed",   False)).lower()
     return row
-
 
 def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
     """
@@ -104,7 +94,8 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
         query = db.collection("bugs")
         if last_timestamp:
             from datetime import datetime
-            dt = datetime.fromisoformat(last_timestamp).replace(tzinfo=timezone.utc)
+            dt = datetime.fromisoformat(
+                last_timestamp).replace(tzinfo=timezone.utc)
             try:
                 from google.cloud.firestore_v1.base_query import FieldFilter
                 query = query.where(filter=FieldFilter("timestamp", ">", dt))
@@ -112,7 +103,8 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
                 query = query.where("timestamp", ">", dt)
 
         new_docs = list(query.stream())
-        print(f"[report_generator] Fetched {len(new_docs)} new bugs from Firestore "              f"(cache has {sum(len(v) for v in cached_bugs.values())})")
+        print(f"[report_generator] Fetched {len(new_docs)} new bugs from Firestore "              
+              f"(cache has {sum(len(v) for v in cached_bugs.values())})")
 
         # ── merge new docs into result ────────────────────────────────────
         result: dict[str, list[dict]] = {t: list(cached_bugs[t]) for t in targets}
@@ -132,8 +124,8 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
         with open(_CACHE_PATH, "w", encoding="utf-8") as f:
             _json_mod.dump({
                 "bugs": {t: result[t] for t in targets},
-                "last_timestamp": newest_ts,
-            }, f)
+                "last_timestamp": newest_ts
+                }, f)
 
         total = sum(len(v) for v in result.values())
         print(f"[report_generator] Total {total} bugs (cached + new)")
@@ -142,7 +134,6 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
     except Exception as e:
         print(f"[report_generator] Firestore fetch failed: {e}")
         return None
-
 
 def load_all(targets: list[str], use_firestore: bool = True) -> dict[str, list[dict]]:
     """Try Firestore first, fall back to local CSVs if unavailable."""
@@ -153,30 +144,18 @@ def load_all(targets: list[str], use_firestore: bool = True) -> dict[str, list[d
     print("[report_generator] Using local CSVs")
     return {t: load_csv(t) for t in targets}
 
-
 def load_all_coverage(targets: list[str]) -> dict[str, list[dict]]:
     return {t: load_coverage_csv(t) for t in targets}
-
-
-def crash_count(target: str) -> int:
-    d = CRASHES_DIR / target
-    if not d.exists():
-        return 0
-    return sum(1 for f in d.iterdir() if f.is_file())
-
 
 # ---------------------------------------------------------------------------
 # Aggregation
 # ---------------------------------------------------------------------------
-
 def summarise(rows: list[dict]) -> dict:
     total = len(rows)
     by_type = Counter(r.get("bug_type", "unknown") for r in rows)
     by_strategy = Counter(r.get("strategy",  "unknown") for r in rows)
-    timeouts = sum(1 for r in rows if str(
-        r.get("timed_out", "")).lower() == "true")
-    crashes = sum(1 for r in rows if str(
-        r.get("crashed",   "")).lower() == "true")
+    timeouts = sum(1 for r in rows if str(r.get("timed_out", "")).lower() == "true")
+    crashes = sum(1 for r in rows if str(r.get("crashed",   "")).lower() == "true")
     unique_keys = len({r.get("bug_key", "") for r in rows})
     return dict(
         total=total,
@@ -187,16 +166,13 @@ def summarise(rows: list[dict]) -> dict:
         unique_keys=unique_keys,
     )
 
-
 # ---------------------------------------------------------------------------
 # HTML helpers
 # ---------------------------------------------------------------------------
-
 def _esc(s) -> str:
     s = str(s) if not isinstance(s, str) else s
     return (s.replace("&", "&amp;").replace("<", "&lt;")
              .replace(">", "&gt;").replace('"', "&quot;"))
-
 
 def _pill(row: dict) -> str:
     bt = row.get("bug_type", "").lower()
@@ -211,7 +187,6 @@ def _pill(row: dict) -> str:
         return f'<span class="pill pill-diff">{label}</span>'
     return f'<span class="pill pill-error">{label}</span>'
 
-
 def _badge(total: int, has_data: bool) -> str:
     if not has_data:
         return '<span class="badge muted">no data</span>'
@@ -221,10 +196,8 @@ def _badge(total: int, has_data: bool) -> str:
         return f'<span class="badge danger">{total} bugs</span>'
     return f'<span class="badge warn">{total} bugs</span>'
 
-
 def _target_label(t: str) -> str:
     return t.replace("_", " ").title()
-
 
 def _bar_row(key: str, count: int, maximum: int) -> str:
     pct = round(count / maximum * 100) if maximum else 0
@@ -238,28 +211,21 @@ def _bar_row(key: str, count: int, maximum: int) -> str:
         f'</div>'
     )
 
-
 # ---------------------------------------------------------------------------
 # Section renderers
 # ---------------------------------------------------------------------------
-
 def render_overview_card(target: str, rows: list[dict]) -> str:
     summary = summarise(rows)
     has_data = len(rows) > 0
     total = summary["total"]
-    card_cls = "card has-bugs" if total > 0 else (
-        "card no-data" if not has_data else "card")
+    card_cls = "card has-bugs" if total > 0 else ("card no-data" if not has_data else "card")
     badge = _badge(total, has_data)
-    n_crashes = summary["crashes"]
     n_timeouts = summary["timeouts"]
     n_unique = summary["unique_keys"]
-    n_files = crash_count(target)
 
     cs_total = f'<div class="cs"><div class="v {"d" if total > 0 else ""}" data-count="{total}">{total}</div><div class="l">bugs</div></div>'
-    cs_crashes = f'<div class="cs"><div class="v {"d" if n_crashes > 0 else ""}" data-count="{n_crashes}">{n_crashes}</div><div class="l">crashes</div></div>'
     cs_timeouts = f'<div class="cs"><div class="v {"w" if n_timeouts > 0 else ""}" data-count="{n_timeouts}">{n_timeouts}</div><div class="l">timeouts</div></div>'
     cs_unique = f'<div class="cs"><div class="v" data-count="{n_unique}">{n_unique}</div><div class="l">unique</div></div>'
-    cs_files = f'<div class="cs"><div class="v" data-count="{n_files}">{n_files}</div><div class="l">files saved</div></div>'
 
     by_type = summary["by_type"]
     max_count = max(by_type.values(), default=1)
@@ -289,11 +255,10 @@ def render_overview_card(target: str, rows: list[dict]) -> str:
     {badge}
   </div>
   <div class="card-stats">
-    {cs_total}{cs_crashes}{cs_timeouts}{cs_unique}{cs_files}
+    {cs_total}{cs_timeouts}{cs_unique}
   </div>
   {breakdown}
 </div>"""
-
 
 def render_ablation_section(all_data: dict[str, list[dict]], targets: list[str]) -> str:
     """
@@ -380,7 +345,6 @@ def render_ablation_section(all_data: dict[str, list[dict]], targets: list[str])
   }});
 }})();
 </script>"""
-
 
 def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[str]) -> str:
     """
@@ -491,7 +455,6 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
 <div class="section-title">coverage over time</div>
 <div class="coverage-grid">{charts_html}</div>"""
 
-
 def render_bug_table(rows: list[dict], target: str) -> str:
     """Recent bugs table — newest first, max 50 rows."""
     if not rows:
@@ -516,7 +479,6 @@ def render_bug_table(rows: list[dict], target: str) -> str:
     <tbody>{trows}</tbody>
   </table>
 </div>"""
-
 
 def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> str:
     """
@@ -598,7 +560,6 @@ def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> s
   </div>
   <div class="br-field">
     <span class="br-label">5. attachments</span>
-    <span class="br-value dim">See <code>crashes/{t}/</code> for saved input files.</span>
   </div>
 </div>"""
 
@@ -609,11 +570,9 @@ def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> s
 <div class="section-title">appendix — structured bug reports (first {total_shown} unique bugs)</div>
 <div class="bug-reports-list">{cards}</div>"""
 
-
 # ---------------------------------------------------------------------------
 # CSS + JS
 # ---------------------------------------------------------------------------
-
 _CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -728,11 +687,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 """
 
-
 # ---------------------------------------------------------------------------
 # Full report
 # ---------------------------------------------------------------------------
-
 def generate_report(
     all_data: dict[str, list[dict]],
     all_coverage: dict[str, list[dict]],
@@ -743,14 +700,12 @@ def generate_report(
     ts = now.strftime("%Y-%m-%d %H:%M:%S")
 
     total_bugs = sum(len(v) for v in all_data.values())
-    total_crashes = sum(crash_count(t) for t in targets)
     total_timeouts = sum(summarise(v)["timeouts"] for v in all_data.values())
     targets_run = sum(1 for v in all_data.values() if v)
 
     global_stats = f"""
 <div class="global-stats">
   <div class="stat-cell"><div class="val {"danger" if total_bugs else "ok"}" data-count="{total_bugs}">{total_bugs}</div><div class="lbl">total bugs</div></div>
-  <div class="stat-cell"><div class="val {"danger" if total_crashes else "ok"}" data-count="{total_crashes}">{total_crashes}</div><div class="lbl">crash files</div></div>
   <div class="stat-cell"><div class="val {"warn" if total_timeouts else "ok"}" data-count="{total_timeouts}">{total_timeouts}</div><div class="lbl">timeouts</div></div>
   <div class="stat-cell"><div class="val info" data-count="{targets_run}">{targets_run}</div><div class="lbl">targets with data</div></div>
   <div class="stat-cell"><div class="val" data-count="{len(targets)}">{len(targets)}</div><div class="lbl">targets total</div></div>
@@ -800,11 +755,9 @@ def generate_report(
     out_path.write_text(html, encoding="utf-8")
     return out_path
 
-
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
-
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate an HTML fuzzing report from bug + coverage CSVs."
@@ -834,7 +787,6 @@ def main() -> None:
 
     if not args.no_open:
         webbrowser.open(out_path.as_uri())
-
 
 if __name__ == "__main__":
     main()

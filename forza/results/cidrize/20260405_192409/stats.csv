@@ -1,0 +1,2 @@
+iteration,elapsed_s,runs_total,bugs_unique,corpus_size,runs_per_sec
+50,575.8,50,1,0,0.09

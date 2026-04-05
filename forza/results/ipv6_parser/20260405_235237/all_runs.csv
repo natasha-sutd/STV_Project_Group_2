@@ -1,0 +1,4 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,0.000,'9663:d107=:8716:1f12:8fdf:c3dc:923a:73dc',BONUS,1,0
+2,11.955,'9663:d107:8716:1f:218fdf:c3dc:923a:73dc',BONUS,1,0
+3,37.554,'53e:fdd:5e45::f8d:61ebaf9e4:6802:bc3b',INVALIDITY,1,0

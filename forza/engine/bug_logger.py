@@ -75,7 +75,6 @@ class FuzzLogger:
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
-
     def record(self, result: BugResult, corpus_size: int = 0) -> None:
         """Record a single run result."""
         self._iteration += 1
@@ -92,18 +91,6 @@ class FuzzLogger:
                 "1" if result.new_coverage else "0",
                 result.returncode,
             ])
-
-        # if result.is_new_behavior:
-        #     self._unique_bugs += 1
-        #     cat, exc, msg = result.bug_key if result.bug_key else ("", "", "")
-        #     with open(self._bug_path, "a", newline="", encoding="utf-8") as f:
-        #         writer = csv.writer(f)
-        #         writer.writerow([
-        #             self._iteration,
-        #             f"{now:.3f}",
-        #             cat, exc, msg,
-        #             input_repr,
-        #         ])
 
         if result.bug_key and result.bug_key not in self._seen_keys:
             self._seen_keys.add(result.bug_key)
@@ -124,24 +111,9 @@ class FuzzLogger:
                     "strategy"   : result.strategy,
                     "timestamp"  : time.strftime("%Y-%m-%d %H:%M:%S"),
                 })
- 
-            # Save crash input to crashes/<target>/
-            if result.crashed or result.timed_out:
-                crash_dir = _CRASHES_DIR / self.target
-                crash_dir.mkdir(parents=True, exist_ok=True)
-                (crash_dir / f"{result.bug_key}.txt").write_text(
-                    result.input_data, encoding="utf-8", errors="replace"
-                )
 
             # Upload to Firestore
             firestore_client.upload_bug(result, run_id=self._run_id)
-            if result.crashed or result.timed_out:
-                firestore_client.upload_crash(
-                    target=self.target,
-                    bug_key=result.bug_key,
-                    input_data=result.input_data,
-                    error_type="TIMEOUT" if result.timed_out else "CRASH",
-                )
 
         if result.bug_type not in (BugType.NORMAL,):
             with open(self._tb_path, "a", encoding="utf-8") as f:
@@ -203,7 +175,6 @@ class FuzzLogger:
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
-
     def _init_csv(self, path: Path, fields: list) -> None:
         with open(path, "w", newline="", encoding="utf-8") as f:
             csv.writer(f).writerow(fields)
@@ -241,8 +212,7 @@ class FuzzLogger:
 # ---------------------------------------------------------------------------
  
 _logger: FuzzLogger | None = None
- 
- 
+
 def log(bug: BugResult, config: dict) -> None:
     """
     Log one bug result. Creates a FuzzLogger for the target on first call.
@@ -255,7 +225,6 @@ def log(bug: BugResult, config: dict) -> None:
         _logger = FuzzLogger(target=target)
  
     _logger.record(bug)
- 
  
 def reset() -> None:
     """

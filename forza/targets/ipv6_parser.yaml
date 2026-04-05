@@ -1,13 +1,18 @@
 name: ipv6_parser
 
+# commands
 buggy_cmd: 
-  windows: ["../IPv4-IPv6-parser-main/bin/win-ipv4-parser.exe", "--ipstr", "{input}"]
-  mac: ["./bin/mac-ipv6-parser", "--ipstr", "{input}"]
-buggy_cwd: "../../IPv4-IPv6-parser-main"
+  windows: ["./win-ipv6-parser.exe", "--ipstr", "{input}"]
+  mac: ["./mac-ipv6-parser", "--ipstr", "{input}"]
+buggy_cwd: "../../IPv4-IPv6-parser-main/bin"
+
+reference_cmd:
+  windows: ["python", "ipv6_parser.py", "{input}"]
+  mac: ["python3", "ipv6_parser.py", "{input}"]
+reference_cwd: "../../IPv4-IPv6-parser-main/ipyparse/src"
 
 # input
 input_mode: arg
-seeds_path: "../inputs/ipv6_parser/seeds.txt"
 input:
   type: sequence
   separator: ":"
@@ -16,6 +21,8 @@ input:
     type: hex
     min: 0
     max: 0xFFFF
+seeds_path: "../inputs/ipv6_parser/seeds.txt"
+seed_count: 30
 
 # execution
 timeout: 60
@@ -33,4 +40,3 @@ output_pattern: "Output: [{value}]"
 # coverage
 coverage_enabled: false
 tracking_mode: behavioral
-seed_count: 30

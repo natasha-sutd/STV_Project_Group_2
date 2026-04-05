@@ -5588,3 +5588,182 @@ Traceback (most recent call last):
 buggy_ipyparse.ipv4_stv.InvalidityBug: One of the octets are empty
 
 
+================================================================================
+Timestamp : 2026-04-05 07:38:16.992462+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-04-05 07:38:28.048743+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 8), (line:1, col:9)
+
+
+================================================================================
+Timestamp : 2026-04-05 07:39:01.436562+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-04-05 07:39:12.520206+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+
+================================================================================
+Timestamp : 2026-04-05 07:39:34.731635+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-04-05 07:40:25.285547+00:00
+Bug Type  : validity
+Exception: ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '5'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-04-05 07:40:47.447682+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+
+================================================================================
+Timestamp : 2026-04-05 07:43:02.548495+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected end of text, found '.'  (at char 20), (line:1, col:21)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '.'  (at char 20), (line:1, col:21)
+
+
+================================================================================
+Timestamp : 2026-04-05 07:43:13.581761+00:00
+Bug Type  : bonus
+Exception: ParseException: Expected ':', found '\x17'  (at char 26), (line:1, col:27)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found '\x17'  (at char 26), (line:1, col:27)
+
+
+================================================================================
+Timestamp : 2026-04-05 07:43:24.703200+00:00
+Bug Type  : bonus
+Exception: InvalidityBug: One of the octets are empty ('')
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4754, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4634, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 5155, in parseImpl
+  File "pyparsing/core.py", line 950, in _parseNoCache
+  File "pyparsing/core.py", line 4612, in parseImpl
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv4_mstv.py", line 81, in convert_octet
+buggy_ipyparse.ipv4_mstv.InvalidityBug: One of the octets are empty ('')
+
+
+================================================================================
+Timestamp : 2026-04-05 07:43:36.081690+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: Number of tokens passed exceeds the permitted number of hexes.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv6_mstv.py", line 132, in convert_ipv6
+buggy_ipyparse.ipv6_mstv.InvalidityBug: Number of tokens passed exceeds the permitted number of hexes.
+
+
+================================================================================
+Timestamp : 2026-04-05 07:43:58.296520+00:00
+Bug Type  : invalidity
+Exception: InvalidityBug: Number of tokens passed exceeds the permitted number of hexes.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv6_parser_stv.py", line 219, in <module>
+  File "pyparsing/core.py", line 1328, in parse_string
+  File "pyparsing/core.py", line 989, in _parseNoCache
+  File "pyparsing/core.py", line 284, in wrapper
+  File "buggy_ipyparse/ipv6_mstv.py", line 132, in convert_ipv6
+buggy_ipyparse.ipv6_mstv.InvalidityBug: Number of tokens passed exceeds the permitted number of hexes.
+
+
+================================================================================
+Timestamp : 2026-04-05 09:07:07.928015+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing/core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
+
+

@@ -61,32 +61,10 @@ Seed mode (--seed):
 
     python3 fuzzer.py --target targets/json_decoder.yaml --seed
     python3 fuzzer.py --all --seed
-
-Interface contracts (for teammates)
-------------------------------------
-See INTERFACES.md for full details. Quick summary:
-
-    MutationEngine(input_format: str)
-        .mutate(seed: str) -> str
-        .get_last_strategy() -> str
-        .boost(strategy: str) -> None
-
-    output_parser.classify(buggy_results, ref, config) -> BugResult
-
-    coverage_tracker.update(bug, config) -> bool
-
-    bug_logger.log(bug, config) -> None
-
-    report_generator.load_all(targets) -> dict
-    report_generator.load_all_coverage(targets) -> dict
-    report_generator.generate_report(all_data, all_coverage, targets, out_path) -> Path
-    report_generator.RESULTS_DIR  (Path)
 """
-
 from __future__ import annotations
 
 import argparse
-from logging import config
 import random
 import signal
 import sys
@@ -94,69 +72,20 @@ import threading
 import time
 from pathlib import Path
 
-# ---------------------------------------------------------------------------
-# Core imports (always available — no teammate dependencies)
-# ---------------------------------------------------------------------------
-from engine.target_runner import load_config, load_seeds, run_both
 from engine.types import BugResult, BugType, classify_from_keywords
-
-# ---------------------------------------------------------------------------
-# Pipeline imports — loaded at runtime so seed mode works independently
-# ---------------------------------------------------------------------------
-def _import_fuzz_pipeline():
-    """
-    Import all engine modules. Called once at the start of fuzz mode.
-    Raises ImportError with a clear message if a module is missing.
-    """
-    try:
-        from engine.mutation_engine import MutationEngine
-    except ImportError:
-        raise ImportError(
-            "engine/mutation_engine.py not found.\n"
-            "Expected: class MutationEngine with mutate(), "
-            "get_last_strategy(), boost() — see INTERFACES.md"
-        )
-
-    try:
-        from engine.bug_oracle import BugOracle
-    except ImportError as e:
-        raise ImportError(f"engine/bug_oracle.py: {e}\nSee INTERFACES.md")
-
-    try:
-        from engine import coverage_tracker
-        if not hasattr(coverage_tracker, "update"):
-            raise ImportError("coverage_tracker.py is missing update()")
-    except ImportError as e:
-        raise ImportError(f"engine/coverage_tracker.py: {e}\nSee INTERFACES.md")
-
-    try:
-        from engine import bug_logger
-        if not hasattr(bug_logger, "log"):
-            raise ImportError("bug_logger.py is missing log()")
-    except ImportError as e:
-        raise ImportError(f"engine/bug_logger.py: {e}\nSee INTERFACES.md")
-
-    try:
-        from engine import report_generator
-    except ImportError as e:
-        raise ImportError(f"engine/report_generator.py: {e}")
-
-    return MutationEngine, BugOracle, coverage_tracker, bug_logger, report_generator
-
-
-def _import_report_generator():
-    from engine import report_generator
-    return report_generator
-
+from engine.mutation_engine import MutationEngine
+from engine.bug_oracle import BugOracle
+from engine.target_runner import RawResult, load_config, load_seeds, run_both
+from engine import coverage_tracker, bug_logger, report_generator
 
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
-DISPLAY_INTERVAL  = 5       # iterations between status redraws
-DISPLAY_TIME_INT  = 0.5     # seconds between status redraws
-REPORT_INTERVAL   = 300     # seconds between background report refreshes (5 min)
-DEFAULT_DURATION  = None    # None = no time limit unless --duration given
-DEFAULT_ITERS     = 100_000 # safety cap when no --iterations given
+DISPLAY_INTERVAL = 5    # iterations between status redraws
+DISPLAY_TIME_INT = 0.5  # seconds between status redraws
+REPORT_INTERVAL = 300   # seconds between background report refreshes (5 min)
+DEFAULT_DURATION = None # None = no time limit unless --duration given
+DEFAULT_ITERS = 100_000 # safety cap when no --iterations given
 
 TARGETS_DIR  = Path(__file__).resolve().parent / "targets"
 KNOWN_YAMLS  = [
@@ -171,41 +100,11 @@ MAX_CORPUS = 10000
 # ---------------------------------------------------------------------------
 # Config helpers
 # ---------------------------------------------------------------------------
-
-def get_input_format(config: dict) -> str:
-    """
-    Resolve the input format string from a config dict.
-
-    Supports two YAML schemas:
-      Old: input_format: json
-      New: input:
-             type: random_object   ← json_decoder
-             type: sequence        ← ipv4/ipv6/cidr (inferred from target name)
-
-    Falls back to the target name for inference when input.type is ambiguous
-    (e.g. both ipv4 and ipv6 use type: sequence).
-    """
-    # Old schema — explicit field present
-    if "input_format" in config:
-        return config["input_format"]
-
-    # New schema — infer from input.type + target name
+def get_input_type(config: dict) -> str:
+    """Resolve the input format string from a config dict."""
     input_block = config.get("input", {})
-    input_type  = input_block.get("type", "") if isinstance(input_block, dict) else ""
-    target_name = config.get("name", "").lower()
-
-    if input_type == "random_object":
-        return "json"
-    if "ipv6" in target_name:
-        return "ipv6"
-    if "ipv4" in target_name:
-        return "ipv4"
-    if "cidr" in target_name:
-        return "cidr"
-    if input_type == "sequence":
-        return "text"   # generic fallback for unknown sequence targets
-
-    return "text"
+    input_type = input_block.get("type", "") if isinstance(input_block, dict) else None
+    return input_type
 
 # ---------------------------------------------------------------------------
 # ANSI colour helpers (no external deps)
@@ -223,21 +122,21 @@ class C:
     WHITE   = "\033[97m"
 
     @staticmethod
-    def green(s):   return f"\033[92m{s}\033[0m"
+    def green(s): return f"\033[92m{s}\033[0m"
     @staticmethod
-    def yellow(s):  return f"\033[93m{s}\033[0m"
+    def yellow(s): return f"\033[93m{s}\033[0m"
     @staticmethod
-    def red(s):     return f"\033[91m{s}\033[0m"
+    def red(s): return f"\033[91m{s}\033[0m"
     @staticmethod
-    def cyan(s):    return f"\033[96m{s}\033[0m"
+    def cyan(s): return f"\033[96m{s}\033[0m"
     @staticmethod
-    def dim(s):     return f"\033[2m{s}\033[0m"
+    def dim(s): return f"\033[2m{s}\033[0m"
     @staticmethod
-    def bold(s):    return f"\033[1m{s}\033[0m"
+    def bold(s): return f"\033[1m{s}\033[0m"
     @staticmethod
     def magenta(s): return f"\033[95m{s}\033[0m"
     @staticmethod
-    def white(s):   return f"\033[97m{s}\033[0m"
+    def white(s): return f"\033[97m{s}\033[0m"
 
 
 # ---------------------------------------------------------------------------
@@ -248,20 +147,16 @@ _W = 72  # display width
 def _div(label: str = "") -> str:
     if label:
         inner = f" {label} "
-        dashes = "─" * (_W - len(inner) - 2)
         return f"{C.CYAN}──{inner}{'─' * (_W - len(inner) - 2)}{C.RESET}"
     return C.cyan("─" * _W)
-
 
 def _kv(key: str, val: str, w: int = 26) -> str:
     return f"  {C.DIM}{key:<{w}}{C.RESET}: {val}"
 
-
 def _fmt_elapsed(seconds: float) -> str:
-    h, r    = divmod(int(seconds), 3600)
-    m, s    = divmod(r, 60)
+    h, r = divmod(int(seconds), 3600)
+    m, s = divmod(r, 60)
     return f"{h}h {m:02d}m {s:02d}s"
-
 
 def _fmt_remaining(elapsed: float, duration: float | None) -> str:
     if duration is None:
@@ -269,10 +164,9 @@ def _fmt_remaining(elapsed: float, duration: float | None) -> str:
     rem = max(0.0, duration - elapsed)
     return C.yellow(_fmt_elapsed(rem))
 
-
 def print_banner(config: dict, mode: str, duration: float | None, max_iters: int) -> None:
-    name    = config.get("name", "unknown")
-    fmt     = get_input_format(config)
+    target = config.get("name", "unknown")
+    input_type = get_input_type(config)
     timeout = config.get("timeout", "?")
     dur_str = f"{duration:.0f}s" if duration else "∞"
     iter_str = f"{max_iters:,}"
@@ -280,21 +174,19 @@ def print_banner(config: dict, mode: str, duration: float | None, max_iters: int
     print()
     print(_div())
     print(f"  {C.bold(C.cyan('greybox fuzzer'))}  ·  "
-          f"target: {C.green(name)}  ·  mode: {C.yellow(mode)}")
+          f"target: {C.green(target)}  ·  mode: {C.yellow(mode)}")
     print(_div())
-    print(_kv("target name",   C.green(name)))
-    print(_kv("input format",  C.cyan(fmt)))
-    print(_kv("exec timeout",  f"{timeout}s per input"))
-    print(_kv("stop after",    f"{dur_str}  /  {iter_str} iters (whichever first)"))
-    print(_kv("detection",     config.get("detection_mode", "keyword+crash+diff")))
-    print(_kv("coverage",      C.green("enabled") if config.get("coverage_enabled") else C.dim("disabled")))
+    if (input_type != None): print(_kv("input format",  C.cyan(input_type)))
+    print(_kv("exec timeout", f"{timeout}s per input"))
+    print(_kv("stop after", f"{dur_str}  /  {iter_str} iters (whichever first)"))
+    print(_kv("detection", config.get("detection_mode", "keyword+crash+diff")))
+    print(_kv("coverage", C.green("enabled") if config.get("coverage_enabled") else C.dim("disabled")))
     print(_div())
     print()
 
-
-# Number of lines in the live status block (must match print_fuzz_status exactly)
+# number of lines in the live status block (must match print_fuzz_status exactly)
 _STATUS_LINES = 23
-_status_drawn = False  # True after the first status block has been printed
+_status_drawn = False 
 
 def _afl_time(seconds: float) -> str:
     if seconds is None:
@@ -314,20 +206,24 @@ def _cp(s: str, w: int, c_fn=None) -> str:
     return c_fn(padded) if c_fn else padded
 
 def print_fuzz_status(
-    config      : dict,
-    iteration   : int,
-    total_bugs  : int,
-    new_paths   : int,
-    corpus_len  : int,
-    execs_sec   : float,
-    elapsed     : float,
-    duration    : float | None,
-    max_iters   : int,
-    last_bug    : BugResult | None,
-    last_report : float | None,
-    strategy_counts : dict[str, int],
+    config: dict,
+    iteration: int,
+    total_bugs: int,
+    new_paths: int,
+    corpus_len: int,
+    execs_sec: float,
+    elapsed: float,
+    duration: float | None,
+    max_iters: int,
+    last_bug: BugResult | None,
+    last_report: float | None,
+    strategy_counts: dict[str, int],
 ) -> None:
     """Overwrite the previous status block in-place."""
+    import shutil
+    _, rows = shutil.get_terminal_size()
+    if rows < _STATUS_LINES + 2:
+        pass
     
     # Process timing
     t_run_time    = _afl_time(elapsed)
@@ -358,11 +254,11 @@ def print_fuzz_status(
     else:
         t_total_execs = str(iteration)
         
-    t_exec_speed  = f"{execs_sec:.1f}/sec"
+    t_exec_speed = f"{execs_sec:.1f}/sec"
     
     # Findings 
-    t_fav_items   = str(corpus_len)  # the whole corpus is favored basically
-    t_new_edges   = str(new_paths)
+    t_fav_items = str(corpus_len)  # the whole corpus is favored basically
+    t_new_edges = str(new_paths)
     
     def st_name(i):
         if i < len(strats):
@@ -372,7 +268,7 @@ def print_fuzz_status(
     s1, s2, s3, s4, s5, s6, s7 = [st_name(i) for i in range(7)]
 
     lines = [
-        f"┌─ process timing ───────────┬─ overall results ──────────────────┐",
+        f"┌─ process timing ─────────────────────────────────────┬─ overall results ─────┐",
         f"│        run time : {_cp(t_run_time, 35, C.white)}│  cycles done : {_cp(t_cycles, 7, C.magenta)}│",
         f"│   last new find : {_cp(t_last_find, 35, C.white)}│ corpus count : {_cp(t_corpus, 7, C.cyan)}│",
         f"│last saved crash : {_cp(t_last_crash, 35, C.white)}│saved crashes : {_cp(t_crashes, 7, C.red)}│",
@@ -392,7 +288,7 @@ def print_fuzz_status(
         f"│   strategy 4 : {_cp(s4, 33, C.white)}│    own finds : {_cp(t_corpus, 12, C.cyan)}│",
         f"│   strategy 5 : {_cp(s5, 33, C.white)}│     imported : {_cp('n/a', 12, C.white)}│",
         f"│   strategy 6 : {_cp(s6, 33, C.white)}│    stability : {_cp('100.00%', 12, C.white)}│",
-        f"│   strategy 7 : {_cp(s7, 33, C.white)}├───────────────────────────┘",
+        f"│   strategy 7 : {_cp(s7, 33, C.white)}├────────────────────────────┘",
         f"│          --  : {_cp('n/a', 33, C.white)}│          [cpu000: --%]     ",
         f"└─ strategy: {_cp('explore', 14, C.white)}── state: {_cp('in progress', 13, C.green)}┘                             ",
     ]
@@ -401,20 +297,21 @@ def print_fuzz_status(
         f"_STATUS_LINES mismatch: expected {_STATUS_LINES}, got {len(lines)}"
 
     global _status_drawn
-    # Move cursor up to overwrite previous block (skip on first draw)
+    output = ""
     if _status_drawn:
-        sys.stdout.write(f"\033[{_STATUS_LINES}A\033[J")
+        output += f"\033[{_STATUS_LINES}A"
+    
+    output += "\n".join(lines) + "\n"
 
-    sys.stdout.write("\n".join(lines) + "\n")
+    sys.stdout.write(output)
     sys.stdout.flush()
     _status_drawn = True
 
-
 def print_seed_result(
-    seed    : str,
-    bug     : BugResult,
-    idx     : int,
-    total   : int,
+    seed: str,
+    bug: BugResult,
+    idx: int,
+    total: int,
 ) -> None:
     tag = {
         BugType.NORMAL      : C.green("  ok         "),
@@ -434,14 +331,13 @@ def print_seed_result(
     seed_str = C.dim(repr(seed[:48]))
     print(f"  {progress} {tag}  {seed_str}")
 
-
 def print_summary(
-    label      : str,
-    n_run      : int,
-    total_bugs : int,
-    new_paths  : int,
-    corpus_len : int,
-    elapsed    : float,
+    label: str,
+    n_run: int,
+    total_bugs: int,
+    new_paths: int,
+    corpus_len: int,
+    elapsed: float,
     report_path: Path | None = None,
 ) -> None:
     print()
@@ -457,11 +353,9 @@ def print_summary(
     print(_div())
     print()
 
-
 # ---------------------------------------------------------------------------
 # Background report refresh thread
 # ---------------------------------------------------------------------------
-
 class ReportRefresher(threading.Thread):
     """
     Daemon thread that regenerates report.html every REPORT_INTERVAL seconds.
@@ -469,11 +363,11 @@ class ReportRefresher(threading.Thread):
     """
     def __init__(self, targets: list[str], out_path: Path) -> None:
         super().__init__(daemon=True)
-        self.targets    = targets
-        self.out_path   = out_path
-        self._stop_evt  = threading.Event()
-        self.last_run   : float | None = None
-        self._rg        = _import_report_generator()
+        self.targets = targets
+        self.out_path = out_path
+        self._stop_evt = threading.Event()
+        self.last_run : float | None = None
+        self._rg = report_generator
 
     def run(self) -> None:
         # First refresh after a short delay so there's some data to show
@@ -484,8 +378,8 @@ class ReportRefresher(threading.Thread):
 
     def _refresh(self, final: bool = False) -> None:
         try:
-            rg           = self._rg
-            all_data     = rg.load_all(self.targets, use_firestore=final)
+            rg = self._rg
+            all_data = rg.load_all(self.targets, use_firestore=final)
             all_coverage = rg.load_all_coverage(self.targets)
             rg.generate_report(all_data, all_coverage, self.targets, self.out_path)
             self.last_run = time.monotonic()
@@ -495,23 +389,21 @@ class ReportRefresher(threading.Thread):
     def stop(self) -> None:
         self._stop_evt.set()
         self.join(timeout=10)
-        self._refresh(final=True)  # ← one final Firestore fetch on shutdown
+        self._refresh(final=True)
 
     def elapsed_since_last(self, now: float) -> float | None:
         if self.last_run is None:
             return None
         return now - self.last_run
 
-
 # ---------------------------------------------------------------------------
 # Inline minimal classifier (seed mode only — no output_parser dependency)
 # ---------------------------------------------------------------------------
-
 def _classify_inline(
-    buggy_results : list,
-    ref           : object | None,
-    config        : dict,
-    seed          : str,
+    buggy_result: RawResult,
+    ref: RawResult | None,
+    config: dict,
+    seed: str,
 ) -> BugResult:
     """
     Inline classifier used in seed mode (no output_parser.py dependency).
@@ -529,73 +421,66 @@ def _classify_inline(
     Note on PERFORMANCE: the seeded PerformanceBug raises an exception keyword,
     so it is caught in step 3. True hang/timeout (process killed) is step 1.
     """
+    if buggy_result is None:
+        return BugResult(
+            bug_type=BugType.ERROR, bug_key="no_result", input_data=seed,
+            target=config.get("name", "unknown"), strategy="seed",
+        )
+    
     import hashlib
 
     target = config.get("name", "unknown")
 
-    for raw in buggy_results:
-        combined = raw.stdout + raw.stderr
+    # 1. Timeout — process was killed by the runner
+    if buggy_result.timed_out:
+        btype = BugType.TIMEOUT
 
-        # 1. Timeout — process was killed by the runner
-        if raw.timed_out:
-            btype = BugType.TIMEOUT
+    # 2. Crash — negative return code (segfault, signal, unhandled exception
+    #    that caused a non-zero exit WITHOUT a known keyword in output)
+    #    We check keywords first before committing to RELIABILITY so that
+    #    an explicit "raise ReliabilityBug" (which also exits non-zero) is
+    #    classified as RELIABILITY rather than a generic crash.
+    elif buggy_result.crashed:
+        # Still check for a named exception in stderr — prefer the specific type
+        keyword_type = classify_from_keywords(buggy_result.stdout, buggy_result.stderr)
+        btype = keyword_type if keyword_type is not None else BugType.RELIABILITY
 
-        # 2. Crash — negative return code (segfault, signal, unhandled exception
-        #    that caused a non-zero exit WITHOUT a known keyword in output)
-        #    We check keywords first before committing to RELIABILITY so that
-        #    an explicit "raise ReliabilityBug" (which also exits non-zero) is
-        #    classified as RELIABILITY rather than a generic crash.
-        elif raw.crashed:
-            # Still check for a named exception in stderr — prefer the specific type
-            keyword_type = classify_from_keywords(raw.stdout, raw.stderr)
-            btype = keyword_type if keyword_type is not None else BugType.RELIABILITY
+    # 3. Named exception keyword in output — covers all 6 seeded types + BONUS
+    else:
+        keyword_type = classify_from_keywords(buggy_result.stdout, buggy_result.stderr)
+        if keyword_type is not None:
+            btype = keyword_type
 
-        # 3. Named exception keyword in output — covers all 6 seeded types + BONUS
+        # 4. Differential divergence — ref exists, didn't crash/timeout,
+        #    but return code differs (functional divergence without a named bug)
+        elif (ref
+                and not ref.timed_out
+                and not ref.crashed
+                and buggy_result.returncode != ref.returncode):
+            btype = BugType.DIFF
+
+        # 5. Clean run
         else:
-            keyword_type = classify_from_keywords(raw.stdout, raw.stderr)
-            if keyword_type is not None:
-                btype = keyword_type
+            btype = BugType.NORMAL
 
-            # 4. Differential divergence — ref exists, didn't crash/timeout,
-            #    but return code differs (functional divergence without a named bug)
-            elif (ref
-                  and not ref.timed_out
-                  and not ref.crashed
-                  and raw.returncode != ref.returncode):
-                btype = BugType.DIFF
+    bug_key = hashlib.md5(f"{btype.name}:{seed[:80]}".encode()).hexdigest()[:12]
 
-            # 5. Clean run
-            else:
-                btype = BugType.NORMAL
-
-        bug_key = hashlib.md5(
-            f"{btype.name}:{seed[:80]}".encode()
-        ).hexdigest()[:12]
-
-        return BugResult(
-            bug_type   = btype,
-            bug_key    = bug_key,
-            input_data = seed,
-            target     = target,
-            strategy   = "seed",
-            stdout     = raw.stdout,
-            stderr     = raw.stderr,
-            returncode = raw.returncode,
-            timed_out  = raw.timed_out,
-            crashed    = raw.crashed,
-        )
-
-    # Fallback if buggy_results is somehow empty
     return BugResult(
-        bug_type=BugType.ERROR, bug_key="empty", input_data=seed,
-        target=target, strategy="seed",
+        bug_type = btype,
+        bug_key = bug_key,
+        input_data = seed,
+        target = target,
+        strategy = "seed",
+        stdout = buggy_result.stdout,
+        stderr = buggy_result.stderr,
+        returncode = buggy_result.returncode,
+        timed_out = buggy_result.timed_out,
+        crashed = buggy_result.crashed,
     )
-
 
 # ---------------------------------------------------------------------------
 # Seed mode
 # ---------------------------------------------------------------------------
-
 def run_seed_mode(config: dict) -> None:
     """
     Run every seed through the full pipeline once (no mutation).
@@ -624,12 +509,12 @@ def run_seed_mode(config: dict) -> None:
 
     elapsed = time.monotonic() - start
     print_summary(
-        label      = "seed mode",
-        n_run      = len(seeds),
+        label = "seed mode",
+        n_run = len(seeds),
         total_bugs = total_bugs,
-        new_paths  = None,
+        new_paths = None,
         corpus_len = None,
-        elapsed    = elapsed,
+        elapsed = elapsed,
     )
     print(C.dim("  tip: omit --seed to run the full mutation loop"))
     print()
@@ -638,12 +523,11 @@ def run_seed_mode(config: dict) -> None:
 # ---------------------------------------------------------------------------
 # Fuzz mode
 # ---------------------------------------------------------------------------
-
 def run_fuzz_mode(
-    config      : dict,
-    duration    : float | None,
-    max_iters   : int,
-    all_targets : list[str] | None = None,
+    config: dict,
+    duration: float | None,
+    max_iters: int,
+    all_targets: list[str] | None = None,
 ) -> None:
     """
     AFL-style energy-based mutation loop.
@@ -666,9 +550,6 @@ def run_fuzz_mode(
         ReportRefresher regenerates report.html every REPORT_INTERVAL seconds
         in a daemon thread. Final refresh happens on shutdown.
     """
-    MutationEngine, BugOracle, coverage_tracker, bug_logger, report_generator = (
-        _import_fuzz_pipeline()
-    )
 
     # Reset draw flag so the first status block of this run prints fresh
     global _status_drawn
@@ -680,13 +561,13 @@ def run_fuzz_mode(
         return
     
     # Get the input spec from the config (the 'input:' section of your YAML)
-    input_spec = config.get("input", {})
+    grammar_spec = config.get("input", {})
 
-    engine     = MutationEngine(input_format=get_input_format(config), input_spec=input_spec)
-    oracle     = BugOracle()
-    corpus     = list(seeds)
-    target     = config.get("name", "unknown")
-    out_path   = report_generator.RESULTS_DIR / "report.html"
+    engine = MutationEngine(input_format=get_input_type(config), grammar_spec=grammar_spec)
+    oracle = BugOracle()
+    corpus = list(seeds)
+    target = config.get("name", "unknown")
+    out_path = report_generator.RESULTS_DIR / "report.html"
 
     # ── energy scheduling state ───────────────────────────────
     energy = {s: 1.0 for s in corpus}
@@ -705,7 +586,7 @@ def run_fuzz_mode(
         try:
             from engine.seed_generator import generate_from_spec
             input_spec = config["input"]
-            generated  = []
+            generated = []
             for _ in range(seed_count):
                 seed = generate_from_spec(input_spec)
                 # generate_from_spec may return non-str (e.g. dict, list) — coerce
@@ -723,6 +604,15 @@ def run_fuzz_mode(
     # Reset per-target state in module-level wrappers
     bug_logger.reset()
     coverage_tracker.reset()
+
+   # ── timing state (adaptive timeout) ──────────────────────────────
+    CALIBRATION_WINDOW = 50
+    RECALIBRATE_EVERY = 200
+    TIMEOUT_MULTIPLIER = 3.0
+    TIMEOUT_FLOOR = 1.0
+    timeout = config.get("timeout", 60)
+    exec_time_window = []     # rolling window of recent exec times
+    MAX_WINDOW = 100    # keep last 100 timings for rolling average
 
     # ── reset accumulated coverage file ───────────────────────────────────
     # Ensures the coverage curve always starts from 0% for a clean,
@@ -783,15 +673,23 @@ def run_fuzz_mode(
             strategy = engine.get_last_strategy()
 
             # ── 2. run target ─────────────────────────────────────────────
-            buggy_results, ref = run_both(
-                config, mutated, strategy=strategy, use_coverage=True
-            )
+            t0 = time.monotonic()
+            buggy_result, reference_result = run_both(config, mutated, strategy=strategy, use_coverage=True, timeout=timeout)
+            exec_time = time.monotonic() - t0
+            exec_time_window.append(exec_time)
+            if len(exec_time_window) > MAX_WINDOW:
+                exec_time_window.pop(0)
+
+            if (iteration == CALIBRATION_WINDOW or (iteration > CALIBRATION_WINDOW and iteration % RECALIBRATE_EVERY == 0)):
+                avg = sum(exec_time_window) / len(exec_time_window)
+                new_timeout = max(TIMEOUT_FLOOR, TIMEOUT_MULTIPLIER * avg)
+                if abs(new_timeout - config["timeout"]) > 0.5:
+                    timeout = round(new_timeout, 1)
 
             # ── 3. classify ───────────────────────────────────────────────
-            raw        = buggy_results[0]
-            ref_stdout = ref.stdout if ref else None
-            bug        = oracle.classify(
-                raw        = raw,
+            ref_stdout = reference_result.stdout if reference_result else None
+            bug = oracle.classify(
+                raw        = buggy_result,
                 input_data = mutated,
                 target     = target,
                 config     = config,
@@ -834,7 +732,8 @@ def run_fuzz_mode(
 
             # ── 7. live status redraw ─────────────────────────────────────
             elapsed = time.monotonic() - start
-            if iteration % DISPLAY_INTERVAL == 0 or iteration == 1 or (time.monotonic() - getattr(print_fuzz_status, "last_draw", 0)) > DISPLAY_TIME_INT:
+
+            if (time.monotonic() - getattr(print_fuzz_status, "last_draw", 0)) > DISPLAY_TIME_INT or iteration == 1:
                 execs_sec = iteration / elapsed if elapsed > 0 else 0.0
                 print_fuzz_status.last_draw = time.monotonic()
                 print_fuzz_status(
@@ -888,11 +787,9 @@ def run_fuzz_mode(
             report_path = out_path if out_path.exists() else None,
         )
 
-
 # ---------------------------------------------------------------------------
 # Target resolution
 # ---------------------------------------------------------------------------
-
 def _collect_yamls(explicit: str | None, run_all: bool) -> list[str]:
     if explicit:
         return [explicit]
