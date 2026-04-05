@@ -190,9 +190,11 @@ class BugOracle:
 
         # ── 3. INVALIDITY ─────────────────────────────────────────────────
         if "invalidity" in lower:
+            # Include stdout to differentiate similar invalidity bugs
+            stdout_snippet = stdout[:80].strip() if stdout else ""
             return self._make_result(
                 bug_type   = BugType.INVALIDITY,
-                raw_key    = ("invalidity", "ParseException", exc_msg),
+                raw_key    = ("invalidity", "ParseException", exc_msg, stdout_snippet),
                 input_data = input_data,
                 target     = target,
                 raw        = raw,
@@ -203,10 +205,12 @@ class BugOracle:
                 or "syntax error" in lower
                 or "AddrFormatError" in combined):   # class name is case-sensitive
             addr_match = re.search(r"AddrFormatError: (.+?)(?:\n|$)", combined)
-            smsg = addr_match.group(1)[:120] if addr_match else exc_msg
+            smsg = addr_match.group(1)[:160] if addr_match else exc_msg  # increased from 120
+            # Include stdout to differentiate similar syntactic bugs
+            stdout_snippet = stdout[:80].strip() if stdout else ""
             return self._make_result(
                 bug_type   = BugType.SYNTACTIC,
-                raw_key    = ("syntactic", "AddrFormatError", smsg),
+                raw_key    = ("syntactic", "AddrFormatError", smsg, stdout_snippet),
                 input_data = input_data,
                 target     = target,
                 raw        = raw,
@@ -215,10 +219,12 @@ class BugOracle:
         # ── 5. FUNCTIONAL ─────────────────────────────────────────────────
         if "functional" in lower and "functional bug" in lower:
             func_match = re.search(r"FunctionalBug: (.+?)(?:\n|$)", combined)
-            fmsg = func_match.group(1)[:120] if func_match else exc_msg
+            fmsg = func_match.group(1)[:160] if func_match else exc_msg  # increased from 120
+            # Include stdout snippet to differentiate similar functional bugs
+            stdout_snippet = stdout[:80].strip() if stdout else ""
             return self._make_result(
                 bug_type   = BugType.FUNCTIONAL,
-                raw_key    = ("functional", "FunctionalBug", fmsg),
+                raw_key    = ("functional", "FunctionalBug", fmsg, stdout_snippet),
                 input_data = input_data,
                 target     = target,
                 raw        = raw,
@@ -226,9 +232,11 @@ class BugOracle:
 
         # ── 6. BONUS (untracked / unseeded exceptions) ────────────────────
         if "bonus" in lower:
+            # Include stdout to differentiate similar bonus bugs
+            stdout_snippet = stdout[:80].strip() if stdout else ""
             return self._make_result(
                 bug_type   = BugType.BONUS,
-                raw_key    = ("bonus", "ParseException", exc_msg),
+                raw_key    = ("bonus", "ParseException", exc_msg, stdout_snippet),
                 input_data = input_data,
                 target     = target,
                 raw        = raw,
@@ -241,9 +249,11 @@ class BugOracle:
             if kw.lower() in lower:
                 specific = classify_from_keywords(stdout, stderr)
                 bug_type = specific if specific is not None else BugType.RELIABILITY
+                # Include stdout/stderr to differentiate similar keyword-triggered bugs
+                stdout_snippet = stdout[:80].strip() if stdout else ""
                 return self._make_result(
                     bug_type   = bug_type,
-                    raw_key    = ("keyword", kw, exc_msg),
+                    raw_key    = ("keyword", kw, exc_msg, stdout_snippet),
                     input_data = input_data,
                     target     = target,
                     raw        = raw,
@@ -251,9 +261,11 @@ class BugOracle:
 
         # ── 8. RELIABILITY — non-zero exit, no structured output ──────────
         if raw.returncode != 0:
+            # Include returncode + more stderr/stdout to differentiate bugs
+            rel_msg = (stderr[:160] or stdout[:160]).strip()
             return self._make_result(
                 bug_type   = BugType.RELIABILITY,
-                raw_key    = ("reliability", "", stderr[:80].strip()),
+                raw_key    = ("reliability", str(raw.returncode), rel_msg),
                 input_data = input_data,
                 target     = target,
                 raw        = raw,
@@ -297,13 +309,14 @@ class BugOracle:
     ) -> BugResult:
         """
         Build a BugResult from a RawResult, hashing the tuple raw_key
-        into a stable 12-char string for bug_logger deduplication.
+        into a stable 16-char string for bug_logger deduplication.
+        Uses 16 characters (64 bits) instead of 12 to reduce collision risk.
         """
         if raw_key is not None:
             key_str = ":".join(str(p) for p in raw_key)
         else:
             key_str = f"normal:{input_data[:40]}"
-        bug_key = hashlib.md5(key_str.encode()).hexdigest()[:12]
+        bug_key = hashlib.md5(key_str.encode()).hexdigest()[:16]  # increased from 12 to 16
 
         return BugResult(
             bug_type   = bug_type,
