@@ -41,6 +41,7 @@ import string
 import yaml
 from pathlib import Path
 from typing import Any
+import copy
 
 
 # ---------------------------------------------------------------------------
@@ -210,193 +211,200 @@ def generate_from_spec(spec: Any) -> str:
 
 
 # ---------------------------------------------------------------------------
+# CFG Tree
+# ---------------------------------------------------------------------------
+
+class CFGNode:
+    def __init__(self, spec, children=None, value=None):
+        self.spec = spec
+        self.children = children or []
+        self.value = value
+
+def build_tree_from_spec(spec: dict, depth=0, max_depth=5) -> CFGNode:
+    """
+    Build a derivation tree from spec.
+    Non-terminals → children
+    Terminals → value
+    """
+    if not isinstance(spec, dict):
+        return CFGNode(spec, value=str(spec))
+    
+    if depth > max_depth:
+        return CFGNode(spec, value=generate_from_spec(spec))
+
+    t = spec.get("type", "")
+
+    # terminals
+    if t in ("int", "hex", "string", "boolean", "null", "any", "literal"):
+        return CFGNode(spec, value=generate_from_spec(spec))
+
+    # one_of / weighted_one_of
+    if t in ("one_of", "weighted_one_of"):
+        options = spec.get("options", [])
+        if not options:
+            return CFGNode(spec, value="")
+        weights = [float(o.get("weight", 1.0)) for o in options]
+        chosen = random.choices(options, weights=weights, k=1)[0]
+        return CFGNode(spec, [build_tree_from_spec(chosen, depth + 1, max_depth)])
+
+    # sequence
+    if t == "sequence" and "count" in spec:
+        return CFGNode(spec, [
+            build_tree_from_spec(spec["element"], depth + 1, max_depth)
+            for _ in range(spec["count"])
+        ])
+    
+    if t in ("sequence", "concat"):
+        return CFGNode(spec, [
+            build_tree_from_spec(p, depth + 1, max_depth)
+            for p in spec.get("parts", [])
+        ])
+
+    # array
+    if t == "array":
+        length = random.randint(spec.get("min_length", 1), spec.get("max_length", 3))
+        return CFGNode(spec, [
+            build_tree_from_spec(spec.get("element", {"type": "int"}), depth + 1, max_depth)
+            for _ in range(length)
+        ])
+
+    # object
+    if t == "object":
+        key_spec = spec.get("key_schema") or spec.get("key", {"type": "string"})
+        value_spec = spec.get("value_schema") or spec.get("value", {"type": "int"})
+        children = []
+        for _ in range(random.randint(1, spec.get("max_fields", 3))):
+            k = build_tree_from_spec(key_spec, depth + 1, max_depth)
+            v = build_tree_from_spec(value_spec, depth + 1, max_depth)
+            children.append((k, v))
+        return CFGNode(spec, children)
+    return CFGNode(spec, value=generate_from_spec(spec))
+
+def tree_to_string(node: CFGNode) -> str:
+    """
+    Convert a CFGNode tree back to a string by concatenating terminal values
+    """
+    spec = node.spec
+
+    if node.value is not None:
+        return str(node.value)
+
+    t = spec.get("type", "")
+
+    if t == "sequence" and "count" in spec:
+        sep = str(spec.get("separator", ""))
+        return sep.join(tree_to_string(c) for c in node.children)
+    
+    if t in ("sequence", "concat"):
+        return "".join(tree_to_string(c) for c in node.children)
+
+    if t == "array":
+        result = []
+        for c in node.children:
+            s = tree_to_string(c)
+            try:
+                val = json.loads(s)
+            except:
+                val = s
+            result.append(val)
+        return json.dumps(result)
+
+    if t == "object":
+        obj = {}
+        for k, v in node.children:
+            key = tree_to_string(k)
+            val_str = tree_to_string(v)
+            try:
+                val = json.loads(val_str)
+            except:
+                val = val_str
+            obj[str(key)] = val
+        return json.dumps(obj)
+
+    if t in ("one_of", "weighted_one_of"):
+        return tree_to_string(node.children[0]) if node.children else ""
+
+    return "".join(tree_to_string(c) for c in node.children)
+
+# ---------------------------------------------------------------------------
 # Grammar-aware mutation
 # ---------------------------------------------------------------------------
 
+def mutate_tree(node: CFGNode, prob=0.2) -> CFGNode:
+    """
+    Mutate tree via subtree replacement.
+    """
+    node = copy.deepcopy(node)
+
+    if random.random() < prob:
+        return build_tree_from_spec(node.spec)
+
+    if node.spec.get("type") == "object":
+        new_children = []
+        for k, v in node.children:
+            k = mutate_tree(k, prob)
+            v = mutate_tree(v, prob)
+            new_children.append((k, v))
+        node.children = new_children
+        return node
+
+    node.children = [mutate_tree(c, prob) if isinstance(c, CFGNode) else c
+                     for c in node.children]
+    return node
+
+def violate_tree(node: CFGNode) -> CFGNode:
+    """
+    Break grammar intentionally at tree level.
+    """
+    t = node.spec.get("type", "")
+
+    if t == "int":
+        node.value = random.choice(["999999", "-999999", "NaN", ""])
+        return node
+
+    if t == "hex":
+        node.value = random.choice(["GGGG", "-1", ""])
+        return node
+
+    if t == "sequence" and "count" in node.spec:
+        node.children = [
+            build_tree_from_spec(node.spec["element"])
+            for _ in range(max(0, node.spec["count"] + random.choice([-2, 2])))
+        ]
+        return node
+
+    if node.children:
+        i = random.randint(0, len(node.children) - 1)
+        node.children[i] = violate_tree(node.children[i])
+
+    return node
+
 def mutate_from_spec(seed: str, spec: dict) -> str:
     """
-    Grammar-aware mutation: produce a structurally plausible variant of
-    seed by applying one of three sub-strategies chosen at random.
-
-    Sub-strategies
-    --------------
-    fresh            — regenerate entire input from grammar
-    boundary         — push one numeric leaf to its min or max value
-    component_swap   — force selection of the last one_of option
-                       (typically the invalid/edge-case branch)
+    CFG-based mutation using tree operations.
     """
     if not spec:
         return seed
-
-    strategy = random.choice(
-        [_mutate_fresh, _mutate_boundary, _mutate_component_swap])
     try:
-        return strategy(seed, spec)
+        tree = build_tree_from_spec(spec)
+        choice = random.choice(["fresh", "mutate", "violate"])
+        if choice == "fresh":
+            return tree_to_string(tree)
+        elif choice == "mutate":
+            return tree_to_string(mutate_tree(tree))
+        elif choice == "violate":
+            return tree_to_string(violate_tree(tree))
     except Exception:
         return generate_from_spec(spec)
 
-
 def violate_constraints(seed: str, spec: dict) -> str:
-    """
-    Intentionally generate a value that breaks the grammar's constraints.
-    Walks the spec to find numeric or structured components to violate.
-
-    Used by MutationEngine as the 'constraint_violation' strategy.
-    """
-    t = spec.get("type", "")
-
-    if t == "int":
-        return random.choice([
-            str(spec.get("max", 100) + random.randint(1, 1000)),
-            str(spec.get("min", 0) - random.randint(1, 1000)),
-            "not_an_int",
-            "",
-        ])
-
-    if t == "hex":
-        return random.choice(["GGGG", "0xZZZZ", "-1", ""])
-
-    if t == "sequence" and "count" in spec:
-        bad_count = max(0, spec["count"] + random.choice([-2, -1, 1, 3, 8]))
-        sep = str(spec.get("separator", ""))
-        elem_spec = spec.get("element", {"type": "int", "min": 0, "max": 255})
-        elements = [str(generate_from_spec(elem_spec))
-                    for _ in range(bad_count)]
-        return sep.join(elements)
-
-    if t in ("one_of", "weighted_one_of"):
-        # Pick a random option and violate it recursively
-        options = spec.get("options", [])
-        if options:
-            return violate_constraints(seed, random.choice(options))
-
-    if t == "object":
-        # Return structurally broken JSON
-        return random.choice([
-            '{"unclosed": ',
-            '{"a": }',
-            '{bad json}',
-            '',
-        ])
-
-    # Generic fallback
     from engine.mutation_engine import insert_special_char
+    t = spec.get("type") if spec else ""
+    if t == "int":
+        return random.choice(["999", "-1", "NaN", ""])
+    if t == "sequence" and spec and "count" in spec:
+        return seed + ".extra"
     return insert_special_char(seed)
-
-
-# ---------------------------------------------------------------------------
-# Mutation helpers
-# ---------------------------------------------------------------------------
-
-def _mutate_fresh(seed: str, spec: dict) -> str:
-    return generate_from_spec(spec)
-
-
-def _mutate_boundary(seed: str, spec: dict) -> str:
-    import copy
-    mutated_spec = copy.deepcopy(spec)
-    leaves = _collect_numeric_leaves(mutated_spec)
-    if not leaves:
-        return generate_from_spec(mutated_spec)
-    leaf = random.choice(leaves)
-    leaf["_boundary"] = leaf.get(
-        "min", 0) if random.random() < 0.5 else leaf.get("max", 999)
-    return _generate_with_boundary(mutated_spec)
-
-
-def _mutate_component_swap(seed: str, spec: dict) -> str:
-    import copy
-    mutated_spec = copy.deepcopy(spec)
-    one_of_nodes = _collect_one_of_nodes(mutated_spec)
-    if not one_of_nodes:
-        return generate_from_spec(mutated_spec)
-    node = random.choice(one_of_nodes)
-    options = node.get("options", [])
-    if options:
-        node["_forced_index"] = len(options) - 1
-    return _generate_forced(mutated_spec)
-
-
-def _collect_numeric_leaves(spec: dict) -> list[dict]:
-    leaves = []
-    if spec.get("type") in ("int", "hex"):
-        leaves.append(spec)
-    for key in ("element", "key", "key_schema", "value", "value_schema"):
-        if key in spec and isinstance(spec[key], dict):
-            leaves.extend(_collect_numeric_leaves(spec[key]))
-    for part in spec.get("parts", []):
-        if isinstance(part, dict):
-            leaves.extend(_collect_numeric_leaves(part))
-    for opt in spec.get("options", []):
-        if isinstance(opt, dict):
-            leaves.extend(_collect_numeric_leaves(opt))
-    return leaves
-
-
-def _collect_one_of_nodes(spec: dict) -> list[dict]:
-    nodes = []
-    if spec.get("type") in ("one_of", "weighted_one_of"):
-        nodes.append(spec)
-    for key in ("element", "key", "key_schema", "value", "value_schema"):
-        if key in spec and isinstance(spec[key], dict):
-            nodes.extend(_collect_one_of_nodes(spec[key]))
-    for part in spec.get("parts", []):
-        if isinstance(part, dict):
-            nodes.extend(_collect_one_of_nodes(part))
-    for opt in spec.get("options", []):
-        if isinstance(opt, dict):
-            nodes.extend(_collect_one_of_nodes(opt))
-    return nodes
-
-
-def _generate_with_boundary(spec: dict) -> str:
-    if not isinstance(spec, dict):
-        return str(spec)
-    t = spec.get("type", "")
-    if t == "int" and "_boundary" in spec:
-        return str(spec["_boundary"])
-    if t == "hex" and "_boundary" in spec:
-        return format(int(spec["_boundary"]), "x")
-    if t in TYPE_GENERATORS:
-        return str(TYPE_GENERATORS[t](spec))
-    if t in ("sequence", "concat"):
-        if "count" in spec and "element" in spec:
-            sep = str(spec.get("separator", ""))
-            return sep.join(_generate_with_boundary(spec["element"]) for _ in range(spec["count"]))
-        return "".join(_generate_with_boundary(p) for p in spec.get("parts", []))
-    if t in ("one_of", "weighted_one_of"):
-        options = spec.get("options", [])
-        weights = [float(o.get("weight", 1.0))
-                   for o in options] if options else []
-        chosen = random.choices(options, weights=weights, k=1)[
-            0] if options else {}
-        return _generate_with_boundary(chosen)
-    return generate_from_spec(spec)
-
-
-def _generate_forced(spec: dict) -> str:
-    if not isinstance(spec, dict):
-        return str(spec)
-    t = spec.get("type", "")
-    if t in ("one_of", "weighted_one_of") and "_forced_index" in spec:
-        options = spec.get("options", [])
-        idx = min(spec["_forced_index"], len(options) - 1)
-        return _generate_forced(options[idx])
-    if t in TYPE_GENERATORS:
-        return str(TYPE_GENERATORS[t](spec))
-    if t in ("sequence", "concat"):
-        if "count" in spec and "element" in spec:
-            sep = str(spec.get("separator", ""))
-            return sep.join(_generate_forced(spec["element"]) for _ in range(spec["count"]))
-        return "".join(_generate_forced(p) for p in spec.get("parts", []))
-    if t in ("one_of", "weighted_one_of"):
-        options = spec.get("options", [])
-        weights = [float(o.get("weight", 1.0))
-                   for o in options] if options else []
-        chosen = random.choices(options, weights=weights, k=1)[
-            0] if options else {}
-        return _generate_forced(chosen)
-    return generate_from_spec(spec)
 
 
 # ---------------------------------------------------------------------------
