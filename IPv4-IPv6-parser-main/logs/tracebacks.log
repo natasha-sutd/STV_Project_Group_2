@@ -5767,3 +5767,78 @@ Traceback (most recent call last):
 pyparsing.exceptions.ParseException: Expected '.', found '1'  (at char 10), (line:1, col:11)
 
 
+================================================================================
+Timestamp : 2026-04-06 06:19:08.609181+00:00
+Bug Type  : functional
+Exception: FunctionalBug: Invalid ipv4 calculation.
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1328, in parse_string
+  File "pyparsing\core.py", line 989, in _parseNoCache
+  File "pyparsing\core.py", line 284, in wrapper
+  File "buggy_ipyparse\ipv4_stv.py", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+
+
+================================================================================
+Timestamp : 2026-04-06 06:21:10.364054+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found 'd'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'd'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-04-06 06:21:35.151127+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found 'b3'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'b3'  (at char 2), (line:1, col:3)
+
+
+================================================================================
+Timestamp : 2026-04-06 06:21:57.057262+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found ':'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ':'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-04-06 06:22:21.836737+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found '2'  (at char 3), (line:1, col:4)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 3), (line:1, col:4)
+
+
+================================================================================
+Timestamp : 2026-04-06 06:22:46.778496+00:00
+Bug Type  : invalidity
+Exception: ParseException: Expected '.', found 'bf'  (at char 2), (line:1, col:3)
+
+Traceback:
+Traceback (most recent call last):
+  File "ipv4_parser_stv.py", line 220, in <module>
+  File "pyparsing\core.py", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'bf'  (at char 2), (line:1, col:3)
+
+

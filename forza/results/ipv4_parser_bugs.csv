@@ -436,3 +436,37 @@ Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.ex
   File ""pyparsing/core.py"", line 1340, in parse_string
 pyparsing.exceptions.ParseException: Expected end of text, found ')'  (at char 14), (line:1, col:15)
 ",0,False,False,bit_flip,2026-04-05 23:59:05
+ipv4_parser,RELIABILITY,b1772531d20947de,225.121,,,3221225786,False,False,constraint_violation,2026-04-06 14:14:29
+ipv4_parser,FUNCTIONAL,b25cfc0775486f1c,127.0.0.1,"Running the IPv4 parser with ipstr: 127.0.0.1
+A functional bug has been triggered: Invalid ipv4 calculation.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_ipyparse.ipv4_stv.FunctionalBug'>, 'Invalid ipv4 calc","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1328, in parse_string
+  File ""pyparsing\core.py"", line 989, in _parseNoCache
+  File ""pyparsing\core.py"", line 284, in wrapper
+  File ""buggy_ipyparse\ipv4_stv.py"", line 134, in convert_ipv4
+buggy_ipyparse.ipv4_stv.FunctionalBug: Invalid ipv4 calculation.
+",0,False,False,truncate,2026-04-06 14:19:15
+ipv4_parser,MISMATCH,d8d9de6aba304b07,84.167.149.169,"Running the IPv4 parser with ipstr: 84.167.149.169
+Output: [1420268969]
+No bugs found. Skipping CSV creation
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {})
+",,0,False,False,grammar_mutate,2026-04-06 14:19:38
+ipv4_parser,MISMATCH,d4a28784b8b9211e,55.217.29.167,"Running the IPv4 parser with ipstr: 55.217.29.167
+Output: [936975783]
+No bugs found. Skipping CSV creation
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {})
+",,0,False,False,bit_flip,2026-04-06 14:20:01
+ipv4_parser,MISMATCH,803ba55eecd04425,94.91.251.211,"Running the IPv4 parser with ipstr: 94.91.251.211
+Output: [1583086547]
+No bugs found. Skipping CSV creation
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {})
+",,0,False,False,grammar_mutate,2026-04-06 14:20:25

@@ -1,59 +1,9 @@
 """
-take a RawResult from target_runner.py and classify it into a structured BugResult with 
-bug_type, bug_key etc. This is the "oracle" that determines whether a given test input 
-triggers a bug and what kind of bug it is.
+take a RawResult from target_runner.py and classify it into a structured BugResult
 
-Since both the IPv4/IPv6 parsers are closed binaries, coverage is
-approximated via behavioural novelty — every unique (bug_category,
-error_message) pair is treated as "new coverage" for corpus scheduling.
-
-Usage in output_parser.classify():
-    from engine.bug_oracle import BugOracle
-    from engine.target_runner import RawResult
-
-    oracle = BugOracle()
-    bug = oracle.classify(
-        raw         = buggy_raw,        # RawResult from run_both()
-        ref_stdout  = ref.stdout,       # reference stdout (or None)
-        target      = config["name"],   # e.g. "json_decoder"
-        input_data  = mutated_input,    # str — the input sent to the target
-        target_name = config["input_format"],  # "json"|"ipv4"|"ipv6"|"cidr"
-    )
-
-Classifies the output of a binary execution into a BugResult.
-
-Accepts a RawResult (from target_runner.run_both) and returns a BugResult
-(from engine.types) directly — no intermediate RunResult needed.
-
-Since both the IPv4/IPv6 parsers are closed binaries, coverage is
-approximated via behavioural novelty — every unique (bug_category,
-error_message) pair is treated as "new coverage" for corpus scheduling.
-
-All target-specific knowledge lives in the YAML config — this file
-contains no hardcoded target names, output formats, or patterns.
-
-Usage in output_parser.classify():
-    from engine.bug_oracle import BugOracle
-
-    oracle = BugOracle()
-    bug = oracle.classify(
-        raw        = buggy_raw,     # RawResult from run_both()
-        input_data = mutated_input, # str — the input sent to the target
-        target     = config["name"],
-        config     = config,        # full YAML config
-        ref_stdout = ref.stdout,    # reference stdout (or None)
-    )
-
-YAML fields read by this module
---------------------------------
-bug_keywords   : list[str]  — keywords triggering bug detection (already used
-                              by target_runner; reused here for fallback)
-output_pattern : str | None — pattern for extracting the parsed output value
-                              for differential (MISMATCH) comparison.
-                              Use {value} as the capture placeholder.
-                              Example:  "Output: [{value}]"
-                              Example:  "Output decoded data: {value} of type"
-                              If absent, MISMATCH detection is skipped.
+YAML fields read:
+    - bug_keywords: list[str]
+    - output_pattern: str | None
 """
 
 from __future__ import annotations
@@ -65,36 +15,16 @@ from typing import Optional
 from engine.types import BugResult, BugType, classify_from_keywords
 from engine.target_runner import RawResult
 
-# ---------------------------------------------------------------------------
+
 # Generic output extractor
-# ---------------------------------------------------------------------------
-
-
 def _extract_output(stdout: str, pattern: str) -> Optional[str]:
-    """
-    Extract the output value from stdout using a pattern defined in the YAML.
-
-    {value} in the pattern marks the capture group. Everything else is
-    treated as a literal string (re.escape'd).
-
-    Examples
-    --------
-    pattern = "Output: [{value}]"
-        matches "Output: [3232235777]" → returns "3232235777"
-
-    pattern = "Output decoded data: {value} of type"
-        matches "Output decoded data: {'a': 1} of type" → returns "{'a': 1}"
-
-    pattern = "IPNetwork('{value}')"
-        matches "IPNetwork('192.168.1.0/24')" → returns "192.168.1.0/24"
-
-    Returns None if the pattern does not match stdout.
-    """
+    """Extract the output value from stdout using a pattern defined in the YAML."""
     if not pattern or "{value}" not in pattern:
         return None
     regex = re.escape(pattern).replace(r"\{value\}", r"(.+?)")
     match = re.search(regex, stdout)
     return match.group(1).strip() if match else None
+
 
 # ---------------------------------------------------------------------------
 # BugOracle
@@ -120,8 +50,7 @@ class BugOracle:
     # Regex: pull the ParseException message from stdout or stderr
     _PARSE_EXC_RE = re.compile(r"ParseException: (.+?)(?:\n|$)", re.MULTILINE)
 
-    # Regex: structured "Final bug count" line emitted by json_decoder
-    # e.g. Final bug count: defaultdict(<class 'int'>, {('invalidity',...): 1})
+    # Regex: structured "Final bug count" line emitted
     _BUG_COUNT_RE = re.compile(
         r"Final bug count: defaultdict\(<class 'int'>, \{(.*)\}\)"
     )
@@ -132,36 +61,19 @@ class BugOracle:
     def classify(
         self,
         raw: RawResult,
-        input_data: str,              # already-decoded str input
-        target: str,              # config["name"], e.g. "json_decoder"
-        # full YAML config (bug_keywords, output_pattern)
+        input_data: str,
+        target: str,
         config: dict = None,
-        # reference binary stdout for MISMATCH check
         ref_stdout: Optional[str] = None,
     ) -> BugResult:
-        """
-        Classify one RawResult into a BugResult.
-
-        Parameters
-        ----------
-        raw        : RawResult from target_runner.run_both() (buggy binary only)
-        input_data : the str input that was sent to the target
-        target     : target name from config["name"]
-        config     : full YAML config dict. Two fields are used:
-                       bug_keywords   — list of strings for generic fallback detection
-                       output_pattern — pattern for MISMATCH differential comparison
-                                        (e.g. "Output: [{value}]")
-                     Pass {} or None to skip both.
-        ref_stdout : stdout from the reference binary for differential testing;
-                     pass None to skip MISMATCH detection
-        """
+        """Classify one RawResult into a BugResult."""
         config = config or {}
         stdout = raw.stdout
         stderr = raw.stderr
         combined = stdout + "\n" + stderr
         bug_keywords = config.get("bug_keywords", [])
 
-        # ── 1. TIMEOUT ────────────────────────────────────────────────────
+        # 1. TIMEOUT
         if raw.timed_out:
             return self._make_result(
                 bug_type=BugType.TIMEOUT,
@@ -171,7 +83,7 @@ class BugOracle:
                 raw=raw,
             )
 
-        # ── 2. Structured "Final bug count" line (json_decoder) ───────────
+        # 2. Structured "Final bug count" line (json_decoder) ───────────
         count_match = self._BUG_COUNT_RE.search(combined)
         if count_match:
             entries_str = count_match.group(1).strip()
@@ -191,30 +103,29 @@ class BugOracle:
 
         # Shared fallback message used by checks 3–7
         exc_match = self._PARSE_EXC_RE.search(combined)
-        exc_msg = exc_match.group(
-            1)[:120] if exc_match else combined[-120:].strip()
+        exc_msg = exc_match.group(1)[:120] if exc_match else combined[-120:].strip()
         lower = combined.lower()
 
-        # ── 3. INVALIDITY ─────────────────────────────────────────────────
+        # 3. INVALIDITY
         if "invalidity" in lower:
             # Include stdout to differentiate similar invalidity bugs
             stdout_snippet = stdout[:80].strip() if stdout else ""
             return self._make_result(
                 bug_type=BugType.INVALIDITY,
-                raw_key=("invalidity", "ParseException",
-                         exc_msg, stdout_snippet),
+                raw_key=("invalidity", "ParseException", exc_msg, stdout_snippet),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # ── 4. SYNTACTIC (cidrize: AddrFormatError, SyntaxError) ──────────
-        if ("syntactic" in lower
-                or "syntax error" in lower
-                or "AddrFormatError" in combined):   # class name is case-sensitive
+        # 4. SYNTACTIC (cidrize: AddrFormatError, SyntaxError)
+        if (
+            "syntactic" in lower
+            or "syntax error" in lower
+            or "AddrFormatError" in combined
+        ):
             addr_match = re.search(r"AddrFormatError: (.+?)(?:\n|$)", combined)
-            smsg = addr_match.group(
-                1)[:160] if addr_match else exc_msg  # increased from 120
+            smsg = addr_match.group(1)[:160] if addr_match else exc_msg
             # Include stdout to differentiate similar syntactic bugs
             stdout_snippet = stdout[:80].strip() if stdout else ""
             return self._make_result(
@@ -225,11 +136,12 @@ class BugOracle:
                 raw=raw,
             )
 
-        # ── 5. FUNCTIONAL ─────────────────────────────────────────────────
-        if "functional" in lower and "functional bug" in lower:
+        # 5. FUNCTIONAL
+        if "functional" in lower:
             func_match = re.search(r"FunctionalBug: (.+?)(?:\n|$)", combined)
-            fmsg = func_match.group(
-                1)[:160] if func_match else exc_msg  # increased from 120
+            fmsg = (
+                func_match.group(1)[:160] if func_match else exc_msg
+            )  # increased from 120
             # Include stdout snippet to differentiate similar functional bugs
             stdout_snippet = stdout[:80].strip() if stdout else ""
             return self._make_result(
@@ -240,7 +152,7 @@ class BugOracle:
                 raw=raw,
             )
 
-        # ── 6. BONUS (untracked / unseeded exceptions) ────────────────────
+        # 6. BONUS (untracked)
         if "bonus" in lower:
             # Include stdout to differentiate similar bonus bugs
             stdout_snippet = stdout[:80].strip() if stdout else ""
@@ -252,9 +164,7 @@ class BugOracle:
                 raw=raw,
             )
 
-        # ── 7. Generic keyword fallback (from YAML bug_keywords) ──────────
-        # Any target can define custom detection keywords in its YAML without
-        # modifying this file — directly supports the generalisability rubric.
+        # 7. Generic keyword fallback from YAML bug_keywords
         for kw in bug_keywords:
             if kw.lower() in lower:
                 specific = classify_from_keywords(stdout, stderr)
@@ -269,7 +179,7 @@ class BugOracle:
                     raw=raw,
                 )
 
-        # ── 8. RELIABILITY — non-zero exit, no structured output ──────────
+        # 8. RELIABILITY
         if raw.returncode != 0:
             # Include returncode + more stderr/stdout to differentiate bugs
             rel_msg = (stderr[:160] or stdout[:160]).strip()
@@ -281,24 +191,25 @@ class BugOracle:
                 raw=raw,
             )
 
-        # ── 9. MISMATCH — differential oracle ─────────────────────────────
-        # output_pattern is read from config — no hardcoded target logic here.
-        # Each YAML defines its own pattern e.g. "Output: [{value}]"
+        # 9. MISMATCH
         if ref_stdout is not None:
             pattern = config.get("output_pattern")
-            norm_out = _extract_output(stdout,    pattern)
+            norm_out = _extract_output(stdout, pattern)
             norm_ref = _extract_output(ref_stdout, pattern)
             if pattern and norm_out != norm_ref:
                 return self._make_result(
                     bug_type=BugType.MISMATCH,
-                    raw_key=("mismatch", "OutputMismatch",
-                             f"out={norm_out} ref={norm_ref}"),
+                    raw_key=(
+                        "mismatch",
+                        "OutputMismatch",
+                        f"out={norm_out} ref={norm_ref}",
+                    ),
                     input_data=input_data,
                     target=target,
                     raw=raw,
                 )
 
-        # ── 10. NORMAL ────────────────────────────────────────────────────
+        # 10. NORMAL
         return self._make_result(
             bug_type=BugType.NORMAL,
             raw_key=None,
@@ -307,8 +218,7 @@ class BugOracle:
             raw=raw,
         )
 
-    # ── helpers ───────────────────────────────────────────────────────────
-
+    # Helper functions
     @staticmethod
     def _make_result(
         bug_type: BugType,
@@ -317,24 +227,19 @@ class BugOracle:
         target: str,
         raw: RawResult,
     ) -> BugResult:
-        """
-        Build a BugResult from a RawResult, hashing the tuple raw_key
-        into a stable 16-char string for bug_logger deduplication.
-        Uses 16 characters (64 bits) instead of 12 to reduce collision risk.
-        """
+        """Build a BugResult from a RawResult"""
         if raw_key is not None:
             key_str = ":".join(str(p) for p in raw_key)
         else:
             key_str = f"normal:{input_data[:40]}"
-        bug_key = hashlib.md5(key_str.encode()).hexdigest()[
-            :16]  # increased from 12 to 16
+        bug_key = hashlib.md5(key_str.encode()).hexdigest()[:16]
 
         return BugResult(
             bug_type=bug_type,
             bug_key=bug_key,
             input_data=input_data,
             target=target,
-            strategy="",           # stamped by fuzzer.py after classify()
+            strategy="",  # stamped by fuzzer.py after classify()
             stdout=raw.stdout,
             stderr=raw.stderr,
             returncode=raw.returncode,
@@ -356,50 +261,3 @@ class BugOracle:
             "reliability": BugType.RELIABILITY,
         }.get(category, BugType.RELIABILITY)
 
-
-# ---------------------------------------------------------------------------
-# Quick sanity test — run directly to verify oracle against live targets
-# ---------------------------------------------------------------------------
-if __name__ == "__main__":
-    from pathlib import Path
-    from engine.target_runner import load_config, load_seeds, run_both
-
-    TARGET_YAMLS = [
-        "targets/json_decoder.yaml",
-        "targets/cidrize.yaml",
-        "targets/ipv4_parser.yaml",
-        "targets/ipv6_parser.yaml",
-    ]
-
-    oracle = BugOracle()
-
-    for yaml_path in TARGET_YAMLS:
-        if not Path(yaml_path).exists():
-            print(f"[skip] {yaml_path} not found")
-            continue
-
-        cfg = load_config(yaml_path)
-        seeds = load_seeds(cfg["seeds_path"])
-
-        # A few seeds + a couple of obviously malformed inputs for each target
-        test_inputs = seeds[:3] + ['{"a":', '{"a": ' * 50]
-
-        print(f"{'='*60}")
-        print(f"TARGET : {cfg['name']}")
-        print(f"{'='*60}")
-
-        for inp in test_inputs:
-            buggy_results, ref = run_both(cfg, inp, strategy="oracle_test")
-            raw = buggy_results[0]
-            bug = oracle.classify(
-                raw=raw,
-                input_data=inp,
-                target=cfg["name"],
-                config=cfg,
-                ref_stdout=ref.stdout if ref else None,
-            )
-            print(
-                f"  [{bug.bug_type.name:12s}] "
-                f"key={bug.bug_key:<14} "
-                f"| {repr(inp[:45])}"
-            )

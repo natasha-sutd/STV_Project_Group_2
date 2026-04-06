@@ -1,9 +1,10 @@
-import os
-import time
+'''
+Firestore client module for uploading fuzzing results to Firebase Firestore.
+'''
+
 from pathlib import Path
 from typing import Optional, Tuple
 
-# Firebase imports - will be None if not installed
 try:
     import firebase_admin
     from firebase_admin import credentials, firestore
@@ -14,14 +15,13 @@ except ImportError:
     credentials = None
     firestore = None
 
-from engine.types import BugResult, BugType
+from engine.types import BugResult
 
-# Path to credentials files (relative to project root)
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 _ARCHIVE_CREDS_PATH = _PROJECT_ROOT / "firebase-credentials.json"
 _CURRENT_CREDS_PATH = _PROJECT_ROOT / "firebase-credentials-current.json"
 
-# Firestore client singletons
+# Singleton Firestore clients
 _archive_db = None
 _current_db = None
 _archive_initialized = False

@@ -1,19 +1,10 @@
-"""Coverage tracking for both white-box and black-box fuzz targets.
+"""
+Coverage tracking for both white-box and black-box fuzz targets.
 
-This module intentionally avoids importing any project-specific runtime modules
-(for example, bug oracle, runner, or mutator components). The fuzzer
-orchestrator provides a small data-transfer payload per iteration, and the
-tracker updates its internal state using one of two modes:
-
-1. behavioral:
-   Used for black-box binaries where line-level execution coverage is not
-	available. A novel bug_key is treated as a new path.
-2. code_execution:
-   Used for white-box targets where execution data (typically line coverage)
-	can be supplied in execution_metrics.
-
-The tracker persists a time-series view of coverage growth in
-logs/coverage_evolution.csv.
+YAML fields read:
+    - tracking_mode:
+        - "behavioral": black-box binaries, a novel bug_key is treated as a new path
+        - "code_execution": white-box targets, execution data can be supplied in execution_metrics
 """
 
 from __future__ import annotations
@@ -34,11 +25,7 @@ _RESULTS_DIR = _PROJECT_DIR / "results"
 
 @dataclass(frozen=True)
 class FuzzIterationPayload:
-    """Per-iteration, transport-only data for coverage updates.
-
-    The payload keeps the tracker decoupled from concrete implementations of
-    target execution, bug classification, and mutation strategy management.
-    """
+    """Per-iteration, transport-only data for coverage updates."""
 
     iteration_id: int
     target_name: str
@@ -48,16 +35,10 @@ class FuzzIterationPayload:
 
 
 class CoverageTracker:
-    """Tracks fuzzing progress using behavioral or code-execution semantics.
+    """
+    Tracks fuzzing progress using behavioral or code-execution semantics.
 
-    Configuration
-    -------------
-    config_dict['tracking_mode'] controls behavior:
-    - behavioral: novel bug_key values are counted as new paths.
-    - code_execution: novel executed line identifiers are counted.
-
-    The public update method returns True when new coverage/novelty is
-    discovered so the orchestrator can reward the current mutation strategy.
+    'update()' returns True when new coverage/novelty is discovered.
     """
 
     valid_modes = {"behavioral", "code_execution"}
@@ -91,7 +72,7 @@ class CoverageTracker:
         self.last_iteration_id: int = 0
 
         # Real coverage percentages from --show-coverage output (json_decoder)
-    # None = not yet seen, use proxy metric instead
+        # None = not yet seen, use proxy metric instead
         self._last_line_cov: float | None = None
         self._last_branch_cov: float | None = None
 
@@ -127,7 +108,8 @@ class CoverageTracker:
         newly_seen_lines = self.extract_line_identifiers(
             payload.execution_metrics)
         coverage_percentages = self.extract_percentage_metrics(
-            payload.execution_metrics)
+            payload.execution_metrics
+        )
         if newly_seen_lines:
             novel_lines = newly_seen_lines - self.covered_line_ids
             if novel_lines:
@@ -154,23 +136,18 @@ class CoverageTracker:
 
             if coverage_percentages:
                 statement_coverage = coverage_percentages.get(
-                    "statement", round(float(self.current_metric), 2))
+                    "statement", round(float(self.current_metric), 2)
+                )
                 branch_coverage = coverage_percentages.get(
                     "branch", statement_coverage)
                 function_coverage = coverage_percentages.get(
-                    "function", coverage_percentages.get("combined", statement_coverage))
+                    "function", coverage_percentages.get(
+                        "combined", statement_coverage)
+                )
             else:
                 statement_coverage = round(float(self.current_metric), 2)
                 branch_coverage = statement_coverage
                 function_coverage = statement_coverage
-
-        # elif self.mode == "code_execution":
-        # 	newly_seen_lines = self.extract_line_identifiers(payload.execution_metrics)
-        # 	novel_lines = newly_seen_lines - self.covered_line_ids
-        # 	if novel_lines:
-        # 		self.covered_line_ids.update(novel_lines)
-        # 		self.current_metric = len(self.covered_line_ids)
-        # 		new_path_found = True
 
         self.log_state(
             current_metric=self.current_metric,
@@ -190,60 +167,46 @@ class CoverageTracker:
         if self.coverage_log_path.exists():
             return
 
-        # with self.coverage_log_path.open("w", newline="", encoding="utf-8") as f:
-        # 	writer = csv.writer(f)
-        # 	writer.writerow(["Timestamp", "Iteration", "Coverage_Metric", "New_Paths_Found"])
-
         with self.coverage_log_path.open("w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                "timestamp",
-                "run_id",
-                "statement_coverage",
-                "branch_coverage",
-                "function_coverage",
-                "total_inputs",
-                "coverage_source",
-            ])
+            writer.writerow(
+                [
+                    "timestamp",
+                    "run_id",
+                    "statement_coverage",
+                    "branch_coverage",
+                    "function_coverage",
+                    "total_inputs",
+                    "coverage_source",
+                ]
+            )
 
     def log_state(
-            self,
-            current_metric: int,
-            new_path_found: bool,
-            behavioral_metric: int,
-            execution_metric: int,
-            statement_coverage: float,
-            branch_coverage: float,
-            function_coverage: float,
-            coverage_source: str,
+        self,
+        current_metric: int,
+        new_path_found: bool,
+        behavioral_metric: int,
+        execution_metric: int,
+        statement_coverage: float,
+        branch_coverage: float,
+        function_coverage: float,
+        coverage_source: str,
     ) -> None:
-        # Log the current state to CSV
-        # elapsed_seconds = time.time() - self.start_time
-        # recorded_iteration = self.last_iteration_id
-
-        # with self.coverage_log_path.open("a", newline="", encoding="utf-8") as f:
-        # 	writer = csv.writer(f)
-        # 	writer.writerow(
-        # 		[
-        # 			f"{elapsed_seconds:.6f}",
-        # 			recorded_iteration,
-        # 			current_metric,
-        # 			int(new_path_found),
-        # 		]
-        # 	)
 
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
         with self.coverage_log_path.open("a", newline="", encoding="utf-8") as f:
-            csv.writer(f).writerow([
-                timestamp,
-                self.run_id,
-                statement_coverage,
-                branch_coverage,
-                function_coverage,
-                self.total_inputs,
-                coverage_source,
-            ])
+            csv.writer(f).writerow(
+                [
+                    timestamp,
+                    self.run_id,
+                    statement_coverage,
+                    branch_coverage,
+                    function_coverage,
+                    self.total_inputs,
+                    coverage_source,
+                ]
+            )
 
         firestore_client.upload_coverage(
             target=self.target,
@@ -288,7 +251,9 @@ class CoverageTracker:
 
         return set()
 
-    def extract_percentage_metrics(self, execution_metrics: Optional[Any]) -> dict[str, float]:
+    def extract_percentage_metrics(
+        self, execution_metrics: Optional[Any]
+    ) -> dict[str, float]:
         # Extract normalized coverage percentages from execution metrics payloads.
         if execution_metrics is None:
             return {}
@@ -334,10 +299,14 @@ def update(bug: BugResult, config: dict) -> bool:
     covered_lines = _extract_coverage_lines(bug.stdout, bug.stderr)
     coverage_percentages = _extract_coverage_percentages(
         bug.stdout, bug.stderr)
-    execution_metrics = {
-        "covered_lines": covered_lines,
-        "coverage_percentages": coverage_percentages,
-    } if covered_lines or coverage_percentages else None
+    execution_metrics = (
+        {
+            "covered_lines": covered_lines,
+            "coverage_percentages": coverage_percentages,
+        }
+        if covered_lines or coverage_percentages
+        else None
+    )
 
     payload = FuzzIterationPayload(
         iteration_id=_iteration,
@@ -389,21 +358,19 @@ def _extract_coverage_lines(stdout: str, stderr: str) -> set[str]:
     for line in combined.splitlines():
         stripped = line.strip()
 
-        # Format 1: "coverage: <file>:<lineno>"
         if stripped.startswith("coverage:"):
             lines.add(stripped[len("coverage:"):].strip())
 
-        # Format 2: json_decoder coverage report
-        # "line coverage     : 63.16% (204/323)"
-        # "branch coverage   : 65.22% (90/138)"
         elif "line coverage" in stripped.lower() and "%" in stripped:
             import re
+
             m = re.search(r"(\d+)/(\d+)", stripped)
             if m:
                 lines.add(f"line:{m.group(1)}/{m.group(2)}")
 
         elif "branch coverage" in stripped.lower() and "%" in stripped:
             import re
+
             m = re.search(r"(\d+)/(\d+)", stripped)
             if m:
                 lines.add(f"branch:{m.group(1)}/{m.group(2)}")

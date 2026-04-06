@@ -149,7 +149,6 @@ def load_all(targets: list[str], use_firestore: bool = True) -> dict[str, list[d
         firestore_data = _load_from_firestore(targets)
         if firestore_data is not None:
             return firestore_data
-    print("[report_generator] Using local CSVs")
     return {t: load_csv(t) for t in targets}
 
 

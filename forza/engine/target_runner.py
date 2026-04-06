@@ -91,8 +91,6 @@ def resolve_cmd(cmd: list[str]) -> list[str]:
         return [resolved] + cmd[1:]
     return cmd
 
-# runner
-
 
 def run_target(
     cmd_template: list[str],
@@ -174,8 +172,6 @@ def run_target(
     finally:
         if tmp_file and os.path.exists(tmp_file):
             os.remove(tmp_file)
-
-# wrapper
 
 
 def run_both(

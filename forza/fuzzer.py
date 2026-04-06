@@ -110,7 +110,7 @@ def get_input_type(config: dict) -> str:
     return input_type
 
 # ---------------------------------------------------------------------------
-# ANSI colour helpers (no external deps)
+# ANSI colour helpers
 # ---------------------------------------------------------------------------
 
 
@@ -198,7 +198,7 @@ def print_banner(config: dict, mode: str, duration: float | None, max_iters: int
     print()
 
 
-# number of lines in the live status block (must match print_fuzz_status exactly)
+# number of lines in the live status block
 _STATUS_LINES = 23
 _status_drawn = False
 
@@ -432,22 +432,7 @@ def _classify_inline(
     config: dict,
     seed: str,
 ) -> BugResult:
-    """
-    Inline classifier used in seed mode (no output_parser.py dependency).
-
-    Implements the full project bug taxonomy from the PDF, in priority order:
-
-        1. TIMEOUT     — process was killed (timed_out flag)
-        2. RELIABILITY — process crashed (returncode < 0), maps to ReliabilityBug
-        3. Seeded keyword match — scans stdout+stderr using KEYWORD_TO_BUGTYPE:
-               VALIDITY, INVALIDITY, PERFORMANCE, FUNCTIONAL, BOUNDARY,
-               RELIABILITY (raised explicitly), BONUS (untracked exceptions)
-        4. DIFF        — output diverged from reference (differential oracle)
-        5. NORMAL      — no bug signal detected
-
-    Note on PERFORMANCE: the seeded PerformanceBug raises an exception keyword,
-    so it is caught in step 3. True hang/timeout (process killed) is step 1.
-    """
+    
     if buggy_result is None:
         return BugResult(
             bug_type=BugType.ERROR, bug_key="no_result", input_data=seed,
@@ -592,7 +577,7 @@ def run_fuzz_mode(
         print(C.yellow("  [warn] no seeds found — check seeds_path in YAML"))
         return
 
-    # Get the input spec from the config (the 'input:' section of your YAML)
+    # Get the input spec from the config (the 'input:' section of YAML)
     grammar_spec = config.get("input", {})
 
     engine = MutationEngine(input_format=get_input_type(
@@ -885,7 +870,7 @@ def main() -> None:
         help="Seed mode: run each seed once with no mutation (sanity check)",
     )
 
-    # Stop conditions (both optional; whichever fires first wins)
+    # Stop conditions
     parser.add_argument(
         "--duration", "-d",
         type=float,

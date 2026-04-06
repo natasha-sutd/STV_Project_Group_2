@@ -657,3 +657,59 @@ ipv6_parser,BONUS,838a85ae925b,e3a2:e658:f4db:bace:9527:bd64:7881:db:bace:9527:b
   File ""<frozen importlib._bootstrap>"", line 1360, in _find_and_load
   File ""<frozen importlib._bootstrap>"", line 1331, in _find_and_load_unlocked
   File ""<frozen importlib._bootstrap>"", line 935, in _load_unlock",1,False,False,repeat_chunk,2026-04-05 23:59:09
+ipv6_parser,RELIABILITY,b1772531d20947de,8c04:6e3Od:cf35:7362:1449:1f4:c220:7c8d,,,3221225786,False,False,byte_insert,2026-04-06 14:14:34
+ipv6_parser,INVALIDITY,779f762f0e91733d,200d:1b8::1,"Running the IPv4 parser with ipstr: 200d:1b8::1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, ""Expected '.', found 'd'  (at char 3), (line:1, col:4)"", 'pyparsing\\core.py', 134","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'd'  (at char 3), (line:1, col:4)
+",0,False,False,swap_chars,2026-04-06 14:21:17
+ipv6_parser,INVALIDITY,57c0e01d3430b629,36b3:a119:1e01:3677:cb4e:e93b:cfe5:1c7di,"Running the IPv4 parser with ipstr: 36b3:a119:1e01:3677:cb4e:e93b:cfe5:1c7di
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, ""Expected '.', found 'b3'  (at char 2), (line:1, col:","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'b3'  (at char 2), (line:1, col:3)
+",0,False,False,byte_insert,2026-04-06 14:21:38
+ipv6_parser,INVALIDITY,6fb0b1834584ee8f,200:1db8::1,"Running the IPv4 parser with ipstr: 200:1db8::1
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, ""Expected '.', found ':'  (at char 3), (line:1, col:4)"", 'pyparsing\\core.py', 134","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found ':'  (at char 3), (line:1, col:4)
+",0,False,False,swap_chars,2026-04-06 14:21:59
+ipv6_parser,INVALIDITY,d543ab30b95a73f6,2022:e739:e35e:121f:68af:6eca:cbab:4fa,"Running the IPv4 parser with ipstr: 2022:e739:e35e:121f:68af:6eca:cbab:4fa
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, ""Expected '.', found '2'  (at char 3), (line:1, col:4)""","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found '2'  (at char 3), (line:1, col:4)
+",0,False,False,radamsa,2026-04-06 14:22:24
+ipv6_parser,INVALIDITY,b01414fee6e61388,28bf:c2c1:f23e:a1bd:66ff:c14a:a344:4,"Running the IPv4 parser with ipstr: 28bf:c2c1:f23e:a1bd:66ff:c14a:a344:4
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'pyparsing.exceptions.ParseException'>, ""Expected '.', found 'bf'  (at char 2), (line:1, col:3)"",","Traceback (most recent call last):
+  File ""ipv4_parser_stv.py"", line 220, in <module>
+  File ""pyparsing\core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected '.', found 'bf'  (at char 2), (line:1, col:3)
+",0,False,False,truncate,2026-04-06 14:22:49

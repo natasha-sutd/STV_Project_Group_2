@@ -1,13 +1,3 @@
-"""
-engine/types.py
-
-Canonical shared types for the fuzzer pipeline.
-ALL modules import BugResult and BugType from here — never redefine them.
-
-Import pattern:
-    from engine.types import BugResult, BugType
-"""
-
 from __future__ import annotations
 
 from dataclasses import dataclass, field

@@ -1,0 +1,106 @@
+iteration,timestamp,input,bug_type,is_new,exit_code
+1,4.453,"'{""a"": }'",BONUS,1,1
+2,6.328,"'{""Ok"": ""True"", ""XPCDGyXKwydJq"": ""False""¬ ""xOuwmFtoPjOtvlP"": ""[\'23\', \'null\', \'null\']"", ""eZMZKgUQc"": -77579797, ""hG",BONUS,0,1
+3,7.532,"'}""a"": {'",BONUS,0,1
+4,8.578,"'{""rtn"": """", ""bUnc"": -480110951, ""JNsAZdo"": """", ""prFdJUXSYc"": -1585731773, ""JjuvltZaSagfeQNJWFi"": ""[\'null\', \'null\', ",BONUS,0,1
+5,9.469,'192.6.20.64/20',BONUS,0,1
+6,10.532,"'{""PkhM"": ""[\'pzfGiTNm\', \'MleaIVUkrzsZoMoFuTLDLaweuBhOdsWEchVUGMLGxQGyNFoMAeAICVBrZbTWxV\', \'60\', \'False\', \'78\',",BONUS,0,1
+7,11.485,'192.0.2.18',BONUS,0,1
+8,12.844,"'{""Gm"": ""AfQdgDeNSYCaASXkcqgthoZWMgZnecFQRvOIAgDFXmdbAxixVQstfCQKFbhEPbhIPNFqKVM"", ""hgGaRmodDfEkEiyT"": ""BFpdALQzmsnggKuB",BONUS,0,1
+9,13.766,"'{""rQeP"": ""[\'null\', \'35\', \'25\']"", ""BrhWIsusAnGwu"": """", ""IPSEw"": -1137683073, ""RxFRPoROTGRRJI"": -186923813, ""BoZt"":",BONUS,0,1
+10,14.891,"'\x00{""a"": }'",RELIABILITY,1,-1
+11,16.735,"' ""a"":{}'",BONUS,0,1
+12,17.953,"'{""Ok"": ""True"", ""XPCDGyXKwydJq"": ""False"", ""xOuwmFtoPjOtvlP"": ""[\'23\', \'null\', 9null\']"", ""eZMZKgUQc"": -775797\'7, ""hG",BONUS,0,1
+13,18.813,"'{""roAALaTpyeTlJ"": ""True"", ""jlZWOXAMECtKkpRr"": ""[\'null\', \'bmdTWTaWQmigGEIzYtiYyFSfNyBsakXmShaRvSDsDwlVAtakDkZgSQcICGP",BONUS,0,1
+14,19.969,"'{""a"": }'",BONUS,0,1
+15,21.172,"'{""mrx"": ""True"", ""EXmyaTTyYTbAj"": ""[\'qPAnjfrzHbmpAxvFUHqcGhNlkWLHwKzpwcRlBERgdGYUGhwyskwAlHfuZobYUaZAjwIyzxuynruCUWn\',",BONUS,0,1
+16,22.032,"'{""a:"" }'",BONUS,0,1
+17,23.203,"'{""a"": }'",BONUS,0,1
+18,24.219,"'{}a"": ""'",BONUS,0,1
+19,25.219,"'{""a"": }>'",BONUS,0,1
+20,26.375,"'{""YDcuCbivwHFzGOQaz"": ""GjubHanKPLDhlpSwfRMgcPXwEQfFPLAS"", ""uoxB"": ""[\'rGxTyzoHTMLEqFqEqpXlfxjEQySskWljmRyLPGcwcpcWZvpzl",BONUS,0,1
+21,27.391,"'{""unclosed"": '",BONUS,0,1
+22,28.297,"'\x00{""a"": : }'",RELIABILITY,0,-1
+23,29.344,"'{""a"": '",BONUS,0,1
+24,30.188,"'\x00{""a""'",RELIABILITY,0,-1
+25,31.375,"'{""DyoqN"": ""RlQonVsXsKGi""YzfZanQmwbuvwhojvejVfvOZpZWSTbTWnbhkAqSzvYuPmczdsdLdepqgTbASDZGJrbFVjypVaqbVcHxYOndrPg"", ""sOADJ",BONUS,0,1
+26,32.891,"'{""GnGaRES"": 1960973400, ""UmuchxSztSIe"": ""mTNzRUneSNWXFFmBrcUViDvTEXvuMGmvYqAdvsiJP"", ""lHhaHgPqG"": ""False"", ""JkUVKrBARsm",BONUS,0,1
+27,34.047,"'{""yP"":4 """", ""pAhenOsJsP"": ""cmmSQEayphmfLwlnjPMgLlnWSHyojrQzAApNHnpaRpfdBiebBYMCXEslXmbsnVpsEmCc""}'",BONUS,0,1
+28,35.063,"'{""a"": }'",BONUS,0,1
+29,36.297,"'{""SQMJ'",BONUS,0,1
+30,37.235,"'{""bfziVwZDhXgHygqOsvBY"": -908841749, ""WUOEGRPEZKe"": ""False"", ""gdbR"": ""False"", ""coyz"": """", ""kMCyyGauvrJYeGSNwI"": ""False""",BONUS,0,1
+31,38.344,"'{""VrZpXK"": ""Rvivmkyr"", ""JsTbmg"": """", ""WvHuXdAyJUgXs"": ""False"", ""SGWByjjNgxhIkJX"": 1182883559, ""tOwpEAbMqJmJpglTr"": ""[\'",BONUS,0,1
+32,39.469,"'{""iwXGYbLDoMsllyuclB"": ""LxTCKNjAjqoXCuBHvPYFoACkYNhIrbILpujqpwnIyQwUpuznwHXHfyOzCvFoDuKnqZbVrSnQdpbvzzqXr"", ""eMemNvdTuE",BONUS,0,1
+33,40.344,"'{""yP"": """", ""pAhenOsJsP"": ""cmmSQEayphmfLwlnjPMgLlnWSHyojrQzAApNHnpaRpfdBiebBYMCXEslXmbsnVpsEmCc""}'",BONUS,0,1
+34,41.563,"'{""a"": }'",BONUS,0,1
+35,42.438,"'{""gBCuPB"":'",BONUS,0,1
+36,43.469,"'{""pGAofAzzHthSMr"": ""fNmWkMANlfjyTKAYQbLKbFrPKGdyxefpnPXaRXTFQHufTLszhAGDiuic"", ""fdRyFBVyBkoxcls"": """", ""joUXhRBpBD"": ""Fa",BONUS,0,1
+37,44.391,'192.0.2.170-175',BONUS,0,1
+38,45.625,"'{""SQMJF"": ""[\'null\', \'9\']"", ""vEQr"": """", ""aKqrBFLDSKZTjnoNeceA"": """"}'",BONUS,0,1
+39,46.750,"'{""sDHLRAor"": -23806663, ""UiSrMVnyunjyBER"": 1783142732, ""jGEiR"": ""PRDbMATndwgvYjHURnMPwBsgiPDvgFxscRpfZnixLMMqNyDWiozMMV",BONUS,0,1
+40,47.860,'{bad json}',BONUS,0,1
+41,48.860,"'{""unclosed"": '",BONUS,0,1
+42,49.797,"'{""AIi"": """", ""gcXG"": ""False"", ""wAEfld"": ""True"", ""WSaxuBwgOyNR"": ""[\'58\', \'True\', \'null\', \'RtwAcWNxNbCzNujVgtUOCsQp",BONUS,0,1
+43,50.844,"'{""gBCuPB"": ""False"", ""bqxXPxRNDgSvR"": ""True""}'",BONUS,0,1
+44,51.844,"'{""unclosed"": '",BONUS,0,1
+45,52.891,"'{""Gm"": ""AfQdgDeNSYCaASXkcqgthoZWMgZnecFQRvOIAgDFXmdbAxixVQstfCQKFbhEPbhIPNFqKVM"", ""hgGaRmodDfEkEiyT"": ""BFpdALQzmsnggKuB",BONUS,0,1
+46,53.938,"'{""muJYKgPF"": ""vKAI"", ""yHjy"": ""[\'QqtKqNPafgFGsGJvMBZsCPeZNtrVPkswsJzKwoRqlOMkgKpkglkGMCCpCorDw\', \'False\', \'BuVSysjT",BONUS,0,1
+47,54.938,"'{""Uv"": -659153261, ""RZyRSgvLWvCvDdvNAdo"": ""hiNaepocrHLZgfJMATHUesYFPWYImzrFEFjpUnvFZHJdZwRTSPz"", ""op"": ""True"", ""s"": ""Fa",BONUS,0,1
+48,55.953,"'{""AIi"": """", ""gcXG"": ""False"", ""wAEfld"": ""True"", ""WSaxuBwgOyNR"": ""[\'58\', \'True\', \'null\', \'RtwAcWNxNbCzNujVgtUOCsQp",BONUS,0,1
+49,57.094,"'{""mrx"": ""True"", ""EXmyaTTyYTbAj"": ""[\'qPAnjfrzHbmpAxvFUHqcGhNlkWLHwKzpwcRlBERgdGYUGhwyskwAlH\tfuZobYUaZAjwIyzxuynruCUWn\",BONUS,0,1
+50,58.047,'192.5.2.[0678]',BONUS,0,1
+51,60.078,"'\x00{a"""": }'",RELIABILITY,0,-1
+52,60.875,"'{""unclosed"": '",BONUS,0,1
+53,62.063,'{bad json}',BONUS,0,1
+54,63.219,"'{""Gm"": ""AfQdgDeNSYCaASXkcqgthoZWMgZnecFQRvOIAgDFXmdbAxixVQstfCQKFbhEPbhIPNFqKVM"", ""hgGaRmodDfEkEiyT"": ""BFpdALQzmsnggKuB",BONUS,0,1
+55,64.047,"'{""AYrBxaefUc"": ""ULADEylNnItUPPQsscZfwRydGkKruZIyVXLuYDiWDMPEmjyTyfYIRJdoCR"", ""heByuKN"": ""True"", ""yyO"": ""True"", ""nJeDvEq",BONUS,0,1
+56,65.125,'192.0.n2.8[0-5]',BONUS,0,1
+57,66.297,'{bad json}',BONUS,0,1
+58,67.125,"'{""SQMJF""\n: ""[\'null\', \'9\']"", ""vEQr"": """", ""aKqrBFLDSKZTjnoNeceA"": """"}'",BONUS,0,1
+59,68.250,"'{""pNkAotbkhDMptcWtCyBP"": ""[\'n\null\', \'80\', \'True\']"", ""vQBaBx"": -210935772, ""THCwlGyZWtvg"": 993760373, ""KewLnUJGXc",BONUS,0,1
+60,69.360,"'{""ucuKEH"": "">vvd"", ""ICeHNnEtiaeBD"": """"}'",BONUS,0,1
+61,70.266,'{',BONUS,0,1
+62,71.407,'192.0.2.18',BONUS,0,1
+63,72.547,"'{""JKIZLViP"": ""zrdbiFWvfCtBaIfddjgGkmGZCmtcoorUxpcCbmsqUVnssnYkshROspGXtmKqYLyRefdnEexUgMdEsVJGMigtdEdfw"", ""GxDvROYMzDb""",BONUS,0,1
+64,73.469,"'{""fTuEGyBXjfqJy||NmD"": """", ""wdYGLv"": [], ""IUuttoSbK"": """", ""tUTOPWXzMRZWpUKYfuMR"": """", ""W"": ""True""}'",BONUS,0,1
+65,74.703,"'{""unclosed"": '",BONUS,0,1
+66,75.500,"'{""VrZpXK"": ""Rvivmkyr"", ""JsTbmg"": """", ""WvHuXdAyJUgXs"": ""False"", ""SGWByjjNgxhIkJX"": 1182883559, ""tOwpEAbMqJmJpglT||r"": ""[",BONUS,0,1
+67,76.750,"'{""OiCfaOwqKT"": ""True"", ""jLIlrjLWoZaU"": """", ""t"": 1234419115, ""tSldNtrlaTaZuMqJS"": ""[\'APEzQFfIwZAXjmMNjfOvaVoFmESkmyQtfv",BONUS,0,1
+68,77.844,"'{""a"": }'",BONUS,0,1
+69,78.797,"'\x00{""a"": \x7f'",RELIABILITY,0,-1
+70,79.922,'192.0.2.[567%008]',BONUS,0,1
+71,80.844,"'{""Uv"": -659153261, ""RZyRSgvLWvCvDdvNAdo"": ""hiNaepocrHLZgfJMATHUesYFPWYImzrFEFjpUnvFZHJdZwRTSPz"", ""op"": ""True"", ""s"": ""Fa",BONUS,0,1
+72,81.985,"'{""hAoh"": ""RInODgapiGCtmUYmkVAbEvNcXdvIubPVSlsNmBiTxTIKOHInCiyUmPxgdPgIcyTIjJiafchLHBdJaNHSkMADikuBSJHWwd"", ""UJeXYVuZh"":",BONUS,0,1
+73,83.094,"'{""a"": }'",BONUS,0,1
+74,84.032,"'\x00{""a"": }'",RELIABILITY,0,-1
+75,85.125,'192..020.64/26',BONUS,0,1
+76,86.063,"'{""Ok"": ""True"", ""XPCDGyXKwydJq"": ""False"", ""xOuwmFtoPjOtvlP"": ""[\'23\', \'null\', \'null\']"", ""eZMZKgUQc"": -77579797'",BONUS,0,1
+77,87.094,"'\x00{#a"": }'",RELIABILITY,0,-1
+78,88.219,"'{""unclosed"": '",BONUS,0,1
+79,89.063,"'[""a"": }'",BONUS,0,1
+80,90.188,"'{""fTuEGyBXjfqJyNmD"": """", ""wdYGLv"": [], ""IUuttoSbK"": """", ""tUTOPWXzMRZWpUKYfuMR"": """", ""W"": ""True""}'",BONUS,0,1
+81,91.188,"'{""a"": }'",BONUS,0,1
+82,92.157,"'{""DjIvpJ[crPFx"": 459202811}'",BONUS,0,1
+83,93.235,"'{""unclosed"": '",BONUS,0,1
+84,94.188,"'{""unclosed"": '",BONUS,0,1
+85,95.172,"'{""JKIZLViP"": ""zrdbiFWvfCtBaIfddjgGkmGZCmtcoorUxpcCbmsqUVnssnYkshROspGXtmKqYLyRefdnEexUgMdEsVJGMigtdEdfw"", ""GxDvROYMzDb""",BONUS,0,1
+86,96.313,"'{""nsS"": 886879457, ""rYitcuiRIUcW"": ""True"", ""aQNkRYUoZIoLkX"": """"}'",BONUS,0,1
+87,97.328,'192.0.]2.[5678]',BONUS,0,1
+88,98.360,"'{""rtn"": """", ""bUnc"": -480110951, ""JNsAZdo"": """", ""prFdJUXSYc"": -1585731773, ""JjuvltZaSagfeQNJWFi"": ""[\'null\', \'null\', ",BONUS,0,1
+89,99.235,"'{""xV""TVbfJDFEK"": W[\'xLKSTkzZ\']"", ""GqwwX"": """"}'",BONUS,0,1
+90,100.375,"'{""yP"": """", ""pAhenOsJsP"": ""cmmSQEayphmfLwlnjCMgLlnWSHyojrQzAApNHnpaRpfdBiebBYMPXEslXmbsnVpsEmCc""}'",BONUS,0,1
+91,101.282,'{bad json}',BONUS,0,1
+92,102.313,"'{""unclosed"": '",BONUS,0,1
+93,103.328,"'{""xVWTVbfJDFEK"": ""[\'xLKSTkzZ\']"", ""GqwwX"": """"FEK"": ""[\'xLKSTkzZ\']"", ""GqwwX"": """"}'",BONUS,0,1
+94,104.157,"'{""Uv"": -659153261, ""RZyRSgvLWvCvDdvNAdo"": ""hiNaepocrHLZgfJMATHUesYFPWYImzrFEFjpUn'",BONUS,0,1
+95,105.360,'{bad json}',BONUS,0,1
+96,106.344,"'{""rtn"": """", ""bUnc"": -480110951, ""JNsAZdo"": """", ""prFdJUXSYc"": -1585731773, ""JjuvltZaSagfeQNJWFi"": ""[\'null\', \'null\', ",BONUS,0,1
+97,107.219,"'{""a"": }'",BONUS,0,1
+98,108.000,"'{""YFdUMBqOgeLOlAJEk"": 2094480344, ""RKy"": """", ""T"": ""[\'62\', \'null\', \'qDobpIDMiCYSCmxRGkCtyk\', \'70\', \'zQXJALnipfi",BONUS,0,1
+99,108.797,"'{""YDnnbjpZU"": ""[\'True\', \'mEDhWqiLaNAWSSu\', \'rRQnXymsGZhnTftmAZsCAibAqwSqc\', \'False\', \'True\', \'False\']"", ""it",BONUS,0,1
+100,109.719,'192.\\0.20.64/26',BONUS,0,1
+101,111.157,"'{""muJYKgPF"": ""vKAI"", ""yHjy"": ""[\'QqtKqNPafgFGsGJvMBZsCPeZNtrVPkswsJzKwoRqlOMkgKpkglkGMCCpCorDw\', \'False\', \'BuVSysjT",BONUS,0,1
+102,112.078,"'{""OiCfaOwqKT"": ""True""}, ""jLIlrjLWoZaU"": """", ""t"": 1234419115, ""tSldNtrlaTaZuMqJS"": ""[\'APEzQFfIwZAXjmMNjfOvaVoFmESkmyQtf",BONUS,0,1
+103,113.000,"'{""AIi"": """", ""gcXG"": ""False"", ""wAEfld"": ""True"", ""WSaxuBwgOyNR"": ""[\'58\', \'True\', \'null\', \'RtwAcWNxNbCzNujVgtUOC[sQ",BONUS,0,1
+104,113.813,"'{""Uv"": -659153261, ""RZyRSgvLWvCvYdvNAdo"": ""hiNaepocrHLZgfJMATHUesYFPWYImzrFEFjpUnvFZHJdZwRTSPz"", ""op"": ""True"", ""s"": ""Fa",BONUS,0,1
+105,114.735,"'{""DyoqN"": ""RlQonVsXsKGixYzfZanQmwbuvwhojvejVfvOZpZWSTbTWnbhkAqSzvYuPmczdsdLdepqgTbASDZGJrbFVjypVaqbVcHxYOndrPg"", ""sOADJ",BONUS,0,1

@@ -3146,3 +3146,14 @@ json_decoder,BONUS,1dfce35436a2,"{""WzGzC"": ""dYbfMYnQr"", ""QuUWNlkcY"": 16838
 ModuleNotFoundError: No module named 'buggy_json'
 ",1,False,False,constraint_violation,2026-04-05 23:55:50
 json_decoder,RELIABILITY,1df208f3bb24,192.0.2.80-192.0 .2.85,,,-1,False,True,insert_special_char,2026-04-05 23:55:51
+json_decoder,BONUS,12aaec05430fc066,"{""KIZxKAI"": ""bFLKRZSHRaykKMXdlAlWYZnlzpGPRCdGMsNiLkGMUhUfhwYyfomKXVVWsWZmFmSBteEKOEGPFdbgagWSDrKhRaooxgHPyVxknm"", ""b}SssxErbhBC"": """", ""FHB"": 1816781804, ""vJRzgYZZLxwAdWgmo"": ""['null', 'True', 'False', 'False', 'True']"", ""xpVaSDlkZUtIeSbqojfn"": ""['42', 'null', 'null', 'null', 'dArvXbUdlBnk', 'True', '35', 'DgixrEXIoNwCGxPkARlAiUrWmWTOvQRpjHjhZQdxdlsICzFEKEXDFakz', 'True']"", ""LKdlQZ"": 930009797, ""zJdYAglvJrBWm"": ""['72', 'RaTTXgW', 'null', 'False', 'null', 'null', '65']"", ""jRCN"": ""False"", ""eiPV"": 157245368}",,"Traceback (most recent call last):
+  File ""C:\STV PROJ\STV_Project_Group_2\json-decoder\buggy_json\decoder_stv.py"", line 4, in <module>
+    from buggy_json import scanner_stv as scanner
+ModuleNotFoundError: No module named 'buggy_json'
+",1,False,False,bit_flip,2026-04-06 14:11:10
+json_decoder,BONUS,12aaec05430fc066,"{""a"": }",,"Traceback (most recent call last):
+  File ""C:\STV PROJ\STV_Project_Group_2\json-decoder\buggy_json\decoder_stv.py"", line 4, in <module>
+    from buggy_json import scanner_stv as scanner
+ModuleNotFoundError: No module named 'buggy_json'
+",1,False,False,constraint_violation,2026-04-06 14:14:50
+json_decoder,RELIABILITY,6b6acc3ca57e4f54," {""a"": }",,,-1,False,True,insert_special_char,2026-04-06 14:15:01

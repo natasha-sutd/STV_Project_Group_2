@@ -1,47 +1,53 @@
 """
 Saves every unique bug found to disk and to a CSV file.
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Results logger: writes per-run data and periodic summaries to disk.
 
 Files written to results/<target>/<run_id>/:
-  - all_runs.csv    : every execution (input, bug_type, is_new)
-  - bugs.csv        : deduplicated unique bugs found
-  - stats.csv       : time-series snapshot of coverage/throughput
-  - tracebacks.log  : raw stdout for anything that is not NORMAL
+    - all_runs.csv: every execution (input, bug_type, is_new)
+    - bugs.csv: deduplicated unique bugs found
+    - stats.csv: time-series snapshot of coverage/throughput
+    - tracebacks.log: raw stdout for anything that is not NORMAL
 """
 
 from engine import firestore_client
-from typing import Optional
 from engine.types import BugResult, BugType
 from pathlib import Path
 import time
-import os
 import csv
 
 _ENGINE_DIR = Path(__file__).resolve().parent
 _PROJECT_DIR = _ENGINE_DIR.parent
 _RESULTS_DIR = _PROJECT_DIR / "results"
-_CRASHES_DIR = _PROJECT_DIR / "crashes"
 
 
 class FuzzLogger:
     """
     Writes fuzzing results to disk in a structured format.
 
-    Call `record(result)` after every run and `snapshot()` periodically
-    (e.g. every 100 runs) to update the stats CSV for graphing.
+    Call 'record(result)' after every run and 'snapshot()' periodically to update the stats CSV for graphing.
     """
 
-    RUNS_FIELDS = ["iteration", "timestamp",
-                   "input", "bug_type", "is_new", "exit_code"]
-    BUGS_FIELDS = ["target", "bug_type", "bug_key", "input_data",
-                   "stdout", "stderr", "returncode", "timed_out",
-                   "crashed", "strategy", "timestamp"]
-    STATS_FIELDS = ["iteration", "elapsed_s", "runs_total",
-                    "bugs_unique", "corpus_size", "runs_per_sec"]
+    RUNS_FIELDS = ["iteration", "timestamp", "input", "bug_type", "is_new", "exit_code"]
+    BUGS_FIELDS = [
+        "target",
+        "bug_type",
+        "bug_key",
+        "input_data",
+        "stdout",
+        "stderr",
+        "returncode",
+        "timed_out",
+        "crashed",
+        "strategy",
+        "timestamp",
+    ]
+    STATS_FIELDS = [
+        "iteration",
+        "elapsed_s",
+        "runs_total",
+        "bugs_unique",
+        "corpus_size",
+        "runs_per_sec",
+    ]
 
     def __init__(self, target: str) -> None:
         run_id = time.strftime("%Y%m%d_%H%M%S")
@@ -65,17 +71,14 @@ class FuzzLogger:
         self._seen_keys: set[str] = set()
         self._start_time = time.monotonic()
         self._last_snapshot_iter = 0
-        self._snapshot_interval = 50  # write stats row every N runs
+        self._snapshot_interval = 50
         self._run_id = run_id
 
         print(f"[logger] Writing results to: {run_dir}")
 
-        # Clear current Firestore database for new run
         firestore_client.clear_current_db(run_id)
 
-    # ------------------------------------------------------------------
     # Public API
-    # ------------------------------------------------------------------
     def record(self, result: BugResult, corpus_size: int = 0) -> None:
         """Record a single run result."""
         self._iteration += 1
@@ -84,14 +87,16 @@ class FuzzLogger:
 
         with open(self._run_path, "a", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                self._iteration,
-                f"{now:.3f}",
-                input_repr,
-                result.bug_type.name,
-                "1" if result.new_coverage else "0",
-                result.returncode,
-            ])
+            writer.writerow(
+                [
+                    self._iteration,
+                    f"{now:.3f}",
+                    input_repr,
+                    result.bug_type.name,
+                    "1" if result.new_coverage else "0",
+                    result.returncode,
+                ]
+            )
 
         if result.bug_key and result.bug_key not in self._seen_keys:
             self._seen_keys.add(result.bug_key)
@@ -99,28 +104,30 @@ class FuzzLogger:
 
             with open(self._bug_path, "a", newline="", encoding="utf-8") as f:
                 writer = csv.DictWriter(f, fieldnames=self.BUGS_FIELDS)
-                writer.writerow({
-                    "target": self.target,
-                    "bug_type": result.bug_type.name,
-                    "bug_key": result.bug_key,
-                    "input_data": result.input_data,
-                    "stdout": result.stdout[:500],
-                    "stderr": result.stderr[:500],
-                    "returncode": result.returncode,
-                    "timed_out": result.timed_out,
-                    "crashed": result.crashed,
-                    "strategy": result.strategy,
-                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-                })
+                writer.writerow(
+                    {
+                        "target": self.target,
+                        "bug_type": result.bug_type.name,
+                        "bug_key": result.bug_key,
+                        "input_data": result.input_data,
+                        "stdout": result.stdout[:500],
+                        "stderr": result.stderr[:500],
+                        "returncode": result.returncode,
+                        "timed_out": result.timed_out,
+                        "crashed": result.crashed,
+                        "strategy": result.strategy,
+                        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                    }
+                )
 
-            # Upload to Firestore
             firestore_client.upload_bug(result, run_id=self._run_id)
 
         if result.bug_type not in (BugType.NORMAL,):
             with open(self._tb_path, "a", encoding="utf-8") as f:
                 f.write(f"\n{'='*60}\n")
                 f.write(
-                    f"Iteration {self._iteration} | {result.bug_type.value} | {now:.1f}s\n")
+                    f"Iteration {self._iteration} | {result.bug_type.value} | {now:.1f}s\n"
+                )
                 f.write(f"Input: {input_repr}\n")
                 if result.stdout.strip():
                     f.write(result.stdout.strip() + "\n")
@@ -138,17 +145,18 @@ class FuzzLogger:
         runs_per_sec = self._iteration / now if now > 0 else 0.0
         with open(self._stat_path, "a", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow([
-                self._iteration,
-                f"{now:.1f}",
-                self._iteration,
-                self._unique_bugs,
-                corpus_size,
-                f"{runs_per_sec:.2f}",
-            ])
+            writer.writerow(
+                [
+                    self._iteration,
+                    f"{now:.1f}",
+                    self._iteration,
+                    self._unique_bugs,
+                    corpus_size,
+                    f"{runs_per_sec:.2f}",
+                ]
+            )
         self._last_snapshot_iter = self._iteration
 
-        # Upload stats to Firestore
         firestore_client.upload_stats(
             target=self.target,
             run_id=self._run_id,
@@ -173,25 +181,18 @@ class FuzzLogger:
             flush=True,
         )
 
-    # ------------------------------------------------------------------
-    # Helpers
-    # ------------------------------------------------------------------
+    # Helper functions
     def _init_csv(self, path: Path, fields: list) -> None:
         with open(path, "w", newline="", encoding="utf-8") as f:
             csv.writer(f).writerow(fields)
 
     def _bugs_csv_is_stale(self) -> bool:
-        """
-        Return True if bugs.csv exists but has a different header than
-        BUGS_FIELDS — prevents DictWriter from raising ValueError on first
-        writerow when the schema changed between runs.
-        """
         try:
             with open(self._bug_path, newline="", encoding="utf-8") as f:
                 existing_header = next(csv.reader(f), None)
             return existing_header != self.BUGS_FIELDS
         except Exception:
-            return True  # unreadable → treat as stale, rewrite
+            return True  # unreadable, treat as stale, rewrite
 
     @property
     def iteration(self) -> int:
@@ -201,26 +202,12 @@ class FuzzLogger:
     def unique_bugs(self) -> int:
         return self._unique_bugs
 
-# ---------------------------------------------------------------------------
-# Module-level interface — called by fuzzer.py
-#
-# fuzzer.py calls:  bug_logger.log(bug, config)
-#                   bug_logger.reset()
-#
-# A single FuzzLogger instance is created per target and reused across
-# all iterations for that target. reset() creates a fresh instance for
-# the next target when running --all.
-# ---------------------------------------------------------------------------
 
-
+# Singleton instance, reset per target
 _logger: FuzzLogger | None = None
 
 
 def log(bug: BugResult, config: dict) -> None:
-    """
-    Log one bug result. Creates a FuzzLogger for the target on first call.
-    Delegates to FuzzLogger.record() — all the real logic lives there.
-    """
     global _logger
     target = bug.target or config.get("name", "unknown")
 
@@ -231,10 +218,5 @@ def log(bug: BugResult, config: dict) -> None:
 
 
 def reset() -> None:
-    """
-    Drop the current FuzzLogger instance.
-    Call this between targets when running --all so each target gets a
-    fresh logger with its own run directory and clean dedup set.
-    """
     global _logger
     _logger = None
