@@ -341,8 +341,27 @@ def print_fuzz_status(
     # Cycle progress
     t_now_proc    = "n/a"
     t_runs_to     = "n/a"
-    t_map_dens    = "n/a"
-    t_count_cov   = "n/a"
+    from engine.coverage_tracker import get_tracker
+    _trk = get_tracker()
+    if _trk:
+        t_map_dens  = _trk.map_density
+        t_count_cov = _trk.count_coverage_bits
+        # Item geometry — real values from tracker
+        t_levels    = str(_trk.levels)
+        t_pending   = str(_trk.pending)
+        t_pend_fav  = str(_trk.pend_fav)
+        t_own_finds = str(_trk.own_finds)
+        t_imported  = str(_trk.imported)
+        t_stability = _trk.stability_str
+    else:
+        t_map_dens    = "n/a"
+        t_count_cov   = "n/a"
+        t_levels      = "n/a"
+        t_pending     = "n/a"
+        t_pend_fav    = "n/a"
+        t_own_finds   = "n/a"
+        t_imported    = "n/a"
+        t_stability   = "n/a"
     
     # Stage progress
     strats = list(strategy_counts.items())
@@ -383,12 +402,12 @@ def print_fuzz_status(
         f"│ total execs : {_cp(t_total_execs, 20, C.white)}│ total crashes : {_cp(t_crashes, 25, C.red)}│",
         f"│  exec speed : {_cp(t_exec_speed, 20, C.green)}│  total tmouts : {_cp('n/a', 25, C.white)}│",
         f"├─ fuzzing strategy yields ─────────┴─────────────┬─ item geometry ────────────┤",
-        f"│   strategy 1 : {_cp(s1, 33, C.white)}│       levels : {_cp('n/a', 12, C.white)}│",
-        f"│   strategy 2 : {_cp(s2, 33, C.white)}│      pending : {_cp('n/a', 12, C.white)}│",
-        f"│   strategy 3 : {_cp(s3, 33, C.white)}│     pend fav : {_cp('n/a', 12, C.white)}│",
-        f"│   strategy 4 : {_cp(s4, 33, C.white)}│    own finds : {_cp(t_corpus, 12, C.cyan)}│",
-        f"│   strategy 5 : {_cp(s5, 33, C.white)}│     imported : {_cp('n/a', 12, C.white)}│",
-        f"│   strategy 6 : {_cp(s6, 33, C.white)}│    stability : {_cp('100.00%', 12, C.white)}│",
+        f"│   strategy 1 : {_cp(s1, 33, C.white)}│       levels : {_cp(t_levels, 12, C.white)}│",
+        f"│   strategy 2 : {_cp(s2, 33, C.white)}│      pending : {_cp(t_pending, 12, C.white)}│",
+        f"│   strategy 3 : {_cp(s3, 33, C.white)}│     pend fav : {_cp(t_pend_fav, 12, C.white)}│",
+        f"│   strategy 4 : {_cp(s4, 33, C.white)}│    own finds : {_cp(t_own_finds, 12, C.cyan)}│",
+        f"│   strategy 5 : {_cp(s5, 33, C.white)}│     imported : {_cp(t_imported, 12, C.white)}│",
+        f"│   strategy 6 : {_cp(s6, 33, C.white)}│    stability : {_cp(t_stability, 12, C.white)}│",
         f"│   strategy 7 : {_cp(s7, 33, C.white)}├───────────────────────────┘",
         f"│          --  : {_cp('n/a', 33, C.white)}│          [cpu000: --%]     ",
         f"└─ strategy: {_cp('explore', 14, C.white)}── state: {_cp('in progress', 13, C.green)}┘                             ",
@@ -676,9 +695,13 @@ def run_fuzz_mode(
 
     engine     = MutationEngine(input_format=get_input_format(config), input_spec=input_spec)
     oracle     = BugOracle()
-    corpus     = list(seeds)
+    # Corpus stores (input_str, depth) tuples; seeds start at depth 1
+    corpus     : list[tuple[str, int]] = [(s, 1) for s in seeds]
     target     = config.get("name", "unknown")
     out_path   = report_generator.RESULTS_DIR / "report.html"
+
+    # Track which corpus indices have been used as mutation parents
+    used_as_parent: set[int] = set()
 
     # ── seed corpus initialisation ────────────────────────────────────────
     # Augment static seeds.txt with dynamically generated seeds using the
@@ -697,7 +720,7 @@ def run_fuzz_mode(
                 if not isinstance(seed, str):
                     seed = str(seed)
                 generated.append(seed)
-            corpus.extend(generated)
+            corpus.extend([(g, 1) for g in generated])
             print(C.dim(
                 f"  corpus: {len(seeds)} static seeds "
                 f"+ {seed_count} generated = {len(corpus)} total"
@@ -763,9 +786,12 @@ def run_fuzz_mode(
                 break
 
             # ── 1. pick seed and mutate ───────────────────────────────────
-            seed     = random.choice(corpus)
+            corpus_idx = random.randrange(len(corpus))
+            seed, seed_depth = corpus[corpus_idx]
+            used_as_parent.add(corpus_idx)
             mutated  = engine.mutate(seed)
             strategy = engine.get_last_strategy()
+            child_depth = seed_depth + 1
 
             # ── 2. run target ─────────────────────────────────────────────
             buggy_results, ref = run_both(
@@ -785,16 +811,33 @@ def run_fuzz_mode(
             bug.strategy = strategy  # stamp strategy (classify leaves it blank)
 
             # ── 4. coverage tracking ──────────────────────────────────────
-            found_new = coverage_tracker.update(bug, config)
+            found_new = coverage_tracker.update(bug, config, input_depth=child_depth)
 
             # ── 5. corpus growth + energy boost ───────────────────────────
             if found_new:
-                corpus.append(mutated)
+                corpus.append((mutated, child_depth))
                 engine.boost(strategy)
                 new_paths += 1
 
             # AFL-style energy decay — prevents one strategy dominating
             engine.decay()
+
+            # ── 5b. update item geometry ──────────────────────────────────
+            from engine.coverage_tracker import get_tracker
+            _trk = get_tracker()
+            if _trk:
+                # Compute pending: corpus entries not yet used as parents
+                pending_count = len(corpus) - len(used_as_parent)
+                # Compute pend_fav: for simplicity, all corpus entries
+                # that triggered new coverage are "favored"
+                fav_indices = {i for i in range(len(corpus)) if i < _trk.own_finds}
+                pend_fav_count = len(fav_indices - used_as_parent)
+                _trk.update_geometry(pending=pending_count, pend_fav=pend_fav_count)
+
+            # ── 5c. plateau escalation ────────────────────────────────────
+            # If coverage has stalled, boost mutation aggressiveness.
+            if _trk and _trk.is_plateau:
+                engine.boost(strategy)  # extra boost to break through plateau
 
             # ── 6. log bugs ───────────────────────────────────────────────
             if bug.is_bug():

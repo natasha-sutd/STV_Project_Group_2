@@ -7,6 +7,7 @@ import os
 import platform
 import shutil
 import subprocess
+import sys
 import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path, PureWindowsPath
@@ -91,7 +92,13 @@ def _make_error_result(e: Exception, input_bytes: bytes) -> RawResult:
 
 
 def resolve_cmd(cmd: list[str]) -> list[str]:
-    """Replace the command name (cmd[0]) with its full path using shutil.which()."""
+    """Replace the command name (cmd[0]) with its full path using shutil.which().
+    
+    For python/python3 commands, use sys.executable to guarantee the active
+    venv is inherited by subprocesses (avoids missing-dependency crashes).
+    """
+    if cmd[0] in ("python", "python3"):
+        return [sys.executable] + cmd[1:]
     resolved = shutil.which(cmd[0])
     if resolved:
         return [resolved] + cmd[1:]
