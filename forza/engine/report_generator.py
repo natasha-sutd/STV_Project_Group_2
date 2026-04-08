@@ -53,12 +53,15 @@ def _normalise_row(row: dict) -> dict:
     return row
 
 
-def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
+def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int] | None:
     """
     Fetch bugs from Firestore using a local cache to minimise reads.
 
     First run: fetches all documents, saves to results/firestore_cache.json.
     Later runs: only fetches documents newer than the cached last_timestamp, merges with cache, and updates the cache file.
+
+    Returns (bug_data, total_ever) where total_ever is the cumulative count
+    persisted across cache resets so the report always shows the true total.
 
     Use local CSV if Firestore is unavailable.
     """
@@ -75,6 +78,7 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
         # ── load local cache ──────────────────────────────────────────────
         cached_bugs: dict[str, list[dict]] = {t: [] for t in targets}
         last_timestamp: str | None = None
+        seen_keys: set[str] = set()
 
         if _CACHE_PATH.exists():
             try:
@@ -83,6 +87,14 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
                 for t in targets:
                     cached_bugs[t] = cache_data.get("bugs", {}).get(t, [])
                 last_timestamp = cache_data.get("last_timestamp")
+                seen_keys = set(cache_data.get("seen_keys", []))
+                # backfill seen_keys from cached bugs if cache predates this field
+                if not seen_keys:
+                    for rows in cached_bugs.values():
+                        for r in rows:
+                            k = r.get("bug_key", "")
+                            if k:
+                                seen_keys.add(k)
             except Exception:
                 pass  # corrupted cache — refetch everything
 
@@ -102,7 +114,7 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
         print(f"[report_generator] Fetched {len(new_docs)} new bugs from Firestore "
               f"(cache has {sum(len(v) for v in cached_bugs.values())})")
 
-        # merge new docs into result
+        # merge new docs into result, counting only new unique bug_keys
         result: dict[str, list[dict]] = {
             t: list(cached_bugs[t]) for t in targets}
         newest_ts = last_timestamp
@@ -112,33 +124,46 @@ def _load_from_firestore(targets: list[str]) -> dict[str, list[dict]] | None:
             ts_iso = row.pop("_ts_iso", None)
             if ts_iso and (newest_ts is None or ts_iso > newest_ts):
                 newest_ts = ts_iso
+            k = row.get("bug_key", "")
+            if k:
+                seen_keys.add(k)
             target = row.get("target", "")
             if target in result:
                 result[target].append(row)
+
+        total_ever = len(seen_keys)
 
         # save updated cache
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         with open(_CACHE_PATH, "w", encoding="utf-8") as f:
             _json_mod.dump({
                 "bugs": {t: result[t] for t in targets},
-                "last_timestamp": newest_ts
+                "last_timestamp": newest_ts,
+                "seen_keys": list(seen_keys),
+                "total_ever": total_ever,
             }, f)
 
-        total = sum(len(v) for v in result.values())
-        print(f"[report_generator] Total {total} bugs (cached + new)")
-        return result
+        print(f"[report_generator] Total ever: {total_ever} unique bugs (by bug_key)")
+        return result, total_ever
 
     except Exception as e:
         print(f"[report_generator] Firestore fetch failed: {e}")
         return None
 
 
+# Module-level total_ever so generate_report can access it
+_total_ever: int | None = None
+
+
 def load_all(targets: list[str], use_firestore: bool = True) -> dict[str, list[dict]]:
     """Try Firestore first, fall back to local CSVs if unavailable."""
+    global _total_ever
     if use_firestore:
-        firestore_data = _load_from_firestore(targets)
-        if firestore_data is not None:
-            return firestore_data
+        firestore_result = _load_from_firestore(targets)
+        if firestore_result is not None:
+            data, total_ever = firestore_result
+            _total_ever = total_ever
+            return data
     return {t: load_csv(t) for t in targets}
 
 
@@ -484,52 +509,45 @@ def render_bug_table(rows: list[dict], target: str) -> str:
 </div>"""
 
 
-def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> str:
-    """
-    Appendix: structured bug reports matching the rubric format.
-    One card per unique bug (by bug_key). Max 20 total across all targets.
-    """
+def _render_target_bug_reports(t: str, rows: list[dict], bug_num_start: int) -> tuple[str, int]:
+    """Render up to 11 bug report cards for a single target, one per bug type."""
     cards = ""
-    total_shown = 0
-    max_shown = 20
+    bug_num = bug_num_start
+    seen_types: set[str] = set()
 
-    for t in targets:
-        seen_keys: set[str] = set()
-        for r in all_data[t]:
-            if total_shown >= max_shown:
-                break
-            key = r.get("bug_key", "") or r.get("input_data", "")[:40]
-            if key in seen_keys:
-                continue
-            seen_keys.add(key)
-            total_shown += 1
+    for r in rows:
+        bug_type_key = r.get("bug_type", "unknown")
+        if bug_type_key in seen_types:
+            continue
+        seen_types.add(bug_type_key)
+        bug_num += 1
 
-            bug_type = r.get("bug_type", "unknown")
-            ts = r.get("timestamp", "unknown")[:19]
-            inp = r.get("input_data", "")
-            stdout = r.get("stdout",     "")[:400]
-            stderr = r.get("stderr",     "")[:400]
-            rc = r.get("returncode", "?")
-            strat = r.get("strategy",   "unknown")
-            crashed = str(r.get("crashed",    "")).lower() == "true"
-            timed = str(r.get("timed_out",  "")).lower() == "true"
+        bug_type = bug_type_key
+        ts = r.get("timestamp", "unknown")[:19]
+        inp = r.get("input_data", "")
+        stdout = r.get("stdout", "")[:400]
+        stderr = r.get("stderr", "")[:400]
+        rc = r.get("returncode", "?")
+        strat = r.get("strategy", "unknown")
+        crashed = str(r.get("crashed", "")).lower() == "true"
+        timed = str(r.get("timed_out", "")).lower() == "true"
 
-            impact = (
-                "Process crashed (non-zero/negative return code)." if crashed
-                else "Execution timed out — possible infinite loop or hang." if timed
-                else "Output keyword matched a known bug signature."
-            )
-            repro_cmd = f'python3 fuzzer.py --target {t} --input "{_esc(inp[:60])}"'
-            out_block = (f'<div class="code-block">{_esc(stdout[:300])}</div>'
-                         if stdout.strip() else '<span class="dim">— empty —</span>')
-            err_block = (f'<div class="code-block">{_esc(stderr[:300])}</div>'
-                         if stderr.strip() else '<span class="dim">— empty —</span>')
+        impact = (
+            "Process crashed (non-zero/negative return code)." if crashed
+            else "Execution timed out — possible infinite loop or hang." if timed
+            else "Output keyword matched a known bug signature."
+        )
+        repro_cmd = f'python3 fuzzer.py --target {t} --input "{_esc(inp[:60])}"'
+        out_block = (f'<div class="code-block">{_esc(stdout[:300])}</div>'
+                     if stdout.strip() else '<span class="dim">— empty —</span>')
+        err_block = (f'<div class="code-block">{_esc(stderr[:300])}</div>'
+                     if stderr.strip() else '<span class="dim">— empty —</span>')
 
-            cards += f"""
+        cards += f"""
 <div class="bug-report-card">
   <div class="br-header">
     <div>
-      <span class="br-num">BUG-{total_shown:03d}</span>
+      <span class="br-num">BUG-{bug_num:03d}</span>
       <span class="br-target">{_target_label(t)}</span>
     </div>
     {_pill(r)}
@@ -567,12 +585,35 @@ def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> s
   </div>
 </div>"""
 
-    if not cards:
+    return cards, bug_num
+
+
+def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> str:
+    """
+    Appendix: structured bug reports matching the rubric format.
+    One representative card per bug type per target (max 11 per target).
+    Targets are grouped under their own section header.
+    """
+    all_sections = ""
+    bug_num = 0
+
+    for t in targets:
+        rows = all_data[t]
+        if not rows:
+            continue
+        target_cards, bug_num = _render_target_bug_reports(t, rows, bug_num)
+        if not target_cards:
+            continue
+        all_sections += f"""
+<div class="section-title" style="margin-top:2rem">{_target_label(t)} — bug reports</div>
+<div class="bug-reports-list">{target_cards}</div>"""
+
+    if not all_sections:
         return ""
 
     return f"""
-<div class="section-title">appendix — structured bug reports (first {total_shown} unique bugs)</div>
-<div class="bug-reports-list">{cards}</div>"""
+<div class="section-title">appendix — structured bug reports (one per bug type per target)</div>
+{all_sections}"""
 
 
 # ---------------------------------------------------------------------------
@@ -706,10 +747,9 @@ def generate_report(
     now = datetime.now()
     ts = now.strftime("%Y-%m-%d %H:%M:%S")
 
-    total_bugs = sum(len(v) for v in all_data.values())
+    total_bugs = _total_ever if _total_ever is not None else sum(len(v) for v in all_data.values())
     total_timeouts = sum(summarise(v)["timeouts"] for v in all_data.values())
     targets_run = sum(1 for v in all_data.values() if v)
-
     global_stats = f"""
 <div class="global-stats">
   <div class="stat-cell"><div class="val {"danger" if total_bugs else "ok"}" data-count="{total_bugs}">{total_bugs}</div><div class="lbl">total bugs</div></div>
@@ -736,7 +776,7 @@ def generate_report(
   <div class="header-right">
     generated &nbsp;<span>{ts}</span><br/>
     targets &nbsp;&nbsp;&nbsp;<span>{", ".join(targets)}</span><br/>
-    total bugs&nbsp;<span>{total_bugs}</span>
+    total bugs&nbsp;<span>{_total_ever if _total_ever is not None else total_bugs}</span>
   </div>
 </header>
 <main class="container">

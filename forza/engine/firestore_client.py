@@ -174,7 +174,7 @@ def clear_current_db(run_id: str) -> bool:
         return False
 
 
-def upload_bug(result: BugResult, run_id: str = "") -> Optional[str]:
+def upload_bug(result: BugResult, run_id: str = "", is_representative: bool = False) -> Optional[str]:
     """
     Upload a bug result to both Archive and Current Firestore databases.
 
@@ -199,6 +199,7 @@ def upload_bug(result: BugResult, run_id: str = "") -> Optional[str]:
         "new_coverage": result.new_coverage,
         "exec_time_ms": result.exec_time_ms,
         "run_id": run_id,
+        "is_representative": is_representative,
         "timestamp": firestore.SERVER_TIMESTAMP if FIREBASE_AVAILABLE else None,
     }
 

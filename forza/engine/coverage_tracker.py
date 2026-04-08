@@ -747,8 +747,6 @@ def update(
             "covered_lines": covered_lines,
             "coverage_percentages": coverage_percentages,
         }
-        if has_coverage_flag
-        else None
     )
 
     payload = FuzzIterationPayload(

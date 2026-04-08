@@ -39,6 +39,7 @@ class FuzzLogger:
         "crashed",
         "strategy",
         "timestamp",
+        "is_representative",
     ]
     STATS_FIELDS = [
         "iteration",
@@ -73,6 +74,10 @@ class FuzzLogger:
         self._last_snapshot_iter = 0
         self._snapshot_interval = 50
         self._run_id = run_id
+
+        # Stores the FIRST input that triggered each unique BugType (max 11 entries).
+        # Only these representative bugs are surfaced in report.html.
+        self._first_by_type: dict[BugType, BugResult] = {}
 
         print(f"[logger] Writing results to: {run_dir}")
 
@@ -117,10 +122,22 @@ class FuzzLogger:
                         "crashed": result.crashed,
                         "strategy": result.strategy,
                         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "is_representative": result.bug_type in self._first_by_type and self._first_by_type[result.bug_type].bug_key == result.bug_key,
                     }
                 )
 
             firestore_client.upload_bug(result, run_id=self._run_id)
+
+        # Track the first-ever input for each BugType (used by report.html).
+        # NORMAL results are excluded -- only real bug categories are recorded.
+        if (
+            result.bug_type is not BugType.NORMAL
+            and result.bug_type not in self._first_by_type
+        ):
+            self._first_by_type[result.bug_type] = result
+            firestore_client.upload_bug(
+                result, run_id=self._run_id, is_representative=True
+            )
 
         if result.bug_type not in (BugType.NORMAL,):
             with open(self._tb_path, "a", encoding="utf-8") as f:
@@ -201,6 +218,15 @@ class FuzzLogger:
     @property
     def unique_bugs(self) -> int:
         return self._unique_bugs
+
+    @property
+    def first_bugs(self) -> dict[BugType, BugResult]:
+        """One representative BugResult per BugType, in discovery order.
+        
+        At most 11 entries (one per category). Use this for report.html
+        instead of the full bugs list to avoid duplicates flooding the report.
+        """
+        return dict(self._first_by_type)
 
 
 # Singleton logger, reset per target

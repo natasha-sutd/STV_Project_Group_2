@@ -273,7 +273,8 @@ def print_fuzz_status(
     t_cycles = "n/a"
     t_corpus = str(corpus_len)
     t_crashes = str(total_bugs)
-    t_hangs = "n/a"
+    _lg = bug_logger._logger
+    t_unique = str(_lg.unique_bugs) if _lg else "0"
 
     # Cycle progress
     t_now_proc = "n/a"
@@ -331,7 +332,7 @@ def print_fuzz_status(
         f"│        run time : {_cp(t_run_time, 35, C.white)}│  cycles done : {_cp(t_cycles, 7, C.magenta)}│",
         f"│   last new find : {_cp(t_last_find, 35, C.white)}│ corpus count : {_cp(t_corpus, 7, C.cyan)}│",
         f"│last saved crash : {_cp(t_last_crash, 35, C.white)}│saved crashes : {_cp(t_crashes, 7, C.red)}│",
-        f"│ last saved hang : {_cp(t_last_hang, 35, C.white)}│  saved hangs : {_cp(t_hangs, 7, C.green)}│",
+        f"│  last saved hang : {_cp(t_last_hang, 34, C.white)}│ unique bugs  : {_cp(t_unique, 7, C.yellow)}│",
         f"├─ cycle progress ──────────────────┬─ map coverage ───┴───────────────────────┤",
         f"│  now processing : {_cp(t_now_proc, 16, C.white)}│ map density : {_cp(t_map_dens, 27, C.white)}│", 
         f"│  runs timed out : {_cp(t_runs_to, 16, C.white)}│ count coverage : {_cp(t_count_cov, 24, C.white)}│", 

@@ -176,6 +176,7 @@ def run_target(
         if tmp_file and os.path.exists(tmp_file):
             os.remove(tmp_file)
 
+
 def run_reference_with_coverage(
     cmd_template: list[str],
     input_str: str,
@@ -207,8 +208,8 @@ def run_reference_with_coverage(
         os.sep)[-1].split(".")[0] in python_interpreters else cmd_template
 
     data_file = f".coverage_{uuid.uuid4().hex[:8]}"
-    cov_run_cmd = [sys.executable, "-m", "coverage", "run", "--branch", f"--data-file={data_file}"] + rest
-
+    cov_run_cmd = [sys.executable, "-m", "coverage", "run",
+                   "--branch", f"--data-file={data_file}"] + rest
 
     run_result = run_target(
         cmd_template=cov_run_cmd,
@@ -222,7 +223,7 @@ def run_reference_with_coverage(
     # Now call 'coverage report' to get the percentages and append to stdout.
     try:
         report_proc = subprocess.run(
-            [sys.executable, "coverage", "report", f"--data-file={data_file}",
+            [sys.executable, "-m", "coverage", "report", f"--data-file={data_file}",
              "--precision=2", "-m"],
             capture_output=True,
             timeout=15,
@@ -317,6 +318,7 @@ def _parse_coverage_report_to_summary(report_text: str) -> str:
         except (ValueError, ZeroDivisionError):
             continue
     return ""
+
 
 def run_reference_with_coverage(
     cmd_template: list[str],
