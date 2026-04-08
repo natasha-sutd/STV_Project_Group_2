@@ -233,6 +233,7 @@ def _parse_coverage_report_to_summary(report_text: str) -> str:
     return ""
 
 
+
 def run_reference_with_coverage(
     cmd_template: list[str],
     input_str: str,
