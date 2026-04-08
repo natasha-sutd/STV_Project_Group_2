@@ -66,6 +66,7 @@ Seed mode (--seed):
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 import random
 import signal
 import sys
@@ -73,7 +74,7 @@ import threading
 import time
 from pathlib import Path
 
-from engine.types import BugResult, BugType
+from engine.types import BugResult
 from engine.mutation_engine import MutationEngine
 from engine.bug_oracle import BugOracle
 from engine.target_runner import load_config, load_seeds, run_both
@@ -89,14 +90,16 @@ DEFAULT_DURATION = None  # None = no time limit unless --duration given
 DEFAULT_ITERS = 100_000  # safety cap when no --iterations given
 
 TARGETS_DIR = Path(__file__).resolve().parent / "targets"
-KNOWN_YAMLS = [
-    "json_decoder.yaml",
-    "cidrize.yaml",
-    "ipv4_parser.yaml",
-    "ipv6_parser.yaml",
-]
+KNOWN_YAMLS = [f.name for f in TARGETS_DIR.glob("*.yaml")]
 
 MAX_CORPUS = 10000
+
+# ─────────────────────────────────────────────────────────────────────
+# Threading for parallel fuzzing (2 workers)
+# ─────────────────────────────────────────────────────────────────────
+_corpus_energy_lock = threading.Lock()  # Protects corpus and energy dict updates
+_engine_lock = threading.Lock()         # Protects MutationEngine state
+_stats_lock = threading.Lock()          # Protects exec_time_window and completed iteration count
 
 # ---------------------------------------------------------------------------
 # Config helpers
@@ -504,6 +507,90 @@ def run_seed_mode(config: dict) -> None:
 # ---------------------------------------------------------------------------
 # Fuzz mode
 # ---------------------------------------------------------------------------
+def _fuzz_one_iteration(
+    config: dict,
+    oracle: BugOracle,
+    corpus: list[tuple[str, int]],
+    energy: dict,
+    engine: MutationEngine,
+    timeout: int,
+) -> tuple[BugResult, bool, int, float]:
+    """
+    Execute one fuzzing iteration: pick seed, mutate, run, classify, update coverage.
+    
+    Returns: (bug_result, found_new, child_depth, exec_time_ms)
+    
+    Thread-safe: only acquires lock for corpus/energy reads and updates + engine operations.
+    """
+    global _corpus_energy_lock, _engine_lock
+    
+    # ── 1. pick seed and mutate (needs lock for corpus/energy and engine)
+    with _corpus_energy_lock:
+        weights = [energy.get(s[0], 1.0) for s in corpus]
+        corpus_idx = random.choices(range(len(corpus)), weights=weights, k=1)[0]
+        seed, seed_depth = corpus[corpus_idx]
+    
+    with _engine_lock:
+        mutated = engine.mutate(seed)
+        strategy = engine.get_last_strategy()
+    
+    child_depth = seed_depth + 1
+
+    # ── 2. run target (I/O bound, no lock needed)
+    t0 = time.monotonic()
+    buggy_result, reference_result = run_both(
+        config, mutated, strategy=strategy, use_coverage=True, timeout=timeout
+    )
+    exec_time = time.monotonic() - t0
+
+    # ── 3. classify (no lock needed)
+    bug = oracle.classify(
+        raw=buggy_result,
+        input_data=mutated,
+        target=config.get("name", "unknown"),
+        config=config,
+        ref=reference_result,
+    )
+    bug.strategy = strategy
+
+    # ── 4. coverage tracking (has internal lock)
+    found_new = coverage_tracker.update(bug, config, input_depth=child_depth, reference_result=reference_result)
+    
+    # ── 5. corpus growth + energy boost (needs lock)
+    if found_new:
+        with _corpus_energy_lock:
+            corpus.append((mutated, child_depth))
+            parent_energy = energy.get(seed, 1.0)
+            energy[mutated] = min(10.0, parent_energy * 1.2 + 2.0)
+            energy[seed] = min(10.0, energy.get(seed, 1.0) * 1.5)
+            # limit corpus size
+            if len(corpus) > MAX_CORPUS:
+                worst_idx = min(
+                    range(len(corpus)), key=lambda i: energy.get(corpus[i][0], 1.0)
+                )
+                removed_str, _ = corpus.pop(worst_idx)
+                energy.pop(removed_str, None)
+        
+        with _engine_lock:
+            engine.boost(strategy)
+    else:
+        with _corpus_energy_lock:
+            energy[seed] = max(0.1, energy.get(seed, 1.0) * 0.95)
+
+    # AFL-style energy decay
+    with _engine_lock:
+        engine.decay()
+    
+    with _corpus_energy_lock:
+        for s in energy:
+            energy[s] = max(0.1, energy[s] * 0.999)
+
+    # ── 6. log bugs (has internal lock)
+    if bug.is_bug():
+        bug_logger.log(bug, config)
+
+    return (bug, found_new, child_depth, exec_time)
+
 def run_fuzz_mode(
     config: dict,
     duration: float | None,
@@ -645,126 +732,119 @@ def run_fuzz_mode(
     iteration = 0
 
     try:
-        for iteration in range(1, max_iters + 1):
-
-            # ── stop conditions ───────────────────────────────────────────
-            if _shutdown.is_set():
-                break
-            elapsed = time.monotonic() - start
-            if duration is not None and elapsed >= duration:
-                break
-
-            # ── 1. pick seed and mutate ───────────────────────────────────
-            corpus_idx = (
-                pick_seed(corpus, energy)
-                if iteration > 1
-                else random.randrange(len(corpus))
-            )
-            seed, seed_depth = corpus[corpus_idx]
-            used_as_parent.add(corpus_idx)
-
-            mutated = engine.mutate(seed)
-            strategy = engine.get_last_strategy()
-            child_depth = seed_depth + 1
-
-            # ── 2. run target ─────────────────────────────────────────────
-            t0 = time.monotonic()
-            buggy_result, reference_result = run_both(
-                config, mutated, strategy=strategy, use_coverage=True, timeout=timeout
-            )
-            exec_time = time.monotonic() - t0
-            exec_time_window.append(exec_time)
-            if len(exec_time_window) > MAX_WINDOW:
-                exec_time_window.pop(0)
-
-            if iteration == CALIBRATION_WINDOW or (
-                iteration > CALIBRATION_WINDOW and iteration % RECALIBRATE_EVERY == 0
-            ):
-                avg = sum(exec_time_window) / len(exec_time_window)
-                new_timeout = max(TIMEOUT_FLOOR, TIMEOUT_MULTIPLIER * avg)
-                if abs(new_timeout - timeout) > 0.5:
-                    timeout = round(new_timeout, 1)
-
-            # ── 3. classify ───────────────────────────────────────────────
-            bug = oracle.classify(
-                raw=buggy_result,
-                input_data=mutated,
-                target=target,
-                config=config,
-                ref=reference_result,
-            )
-            # stamp strategy (classify leaves it blank)
-            bug.strategy = strategy
-
-            # ── 4. coverage tracking ──────────────────────────────────────
-            found_new = coverage_tracker.update(bug, config, input_depth=child_depth, reference_result=reference_result)
-
-            # ── 5. corpus growth + energy boost ───────────────────────────
-            if found_new:
-                corpus.append((mutated, child_depth))
-                parent_energy = energy.get(seed, 1.0)
-                # reward new and parent seed
-                energy[mutated] = min(10.0, parent_energy * 1.2 + 2.0)
-                energy[seed] = min(10.0, energy.get(seed, 1.0) * 1.5)
-                engine.boost(strategy)
-                new_paths += 1
-                # limit corpus size
-                if len(corpus) > MAX_CORPUS:
-                    worst_idx = min(
-                        range(len(corpus)), key=lambda i: energy.get(corpus[i][0], 1.0)
+        # ── parallel fuzzing with 2 worker threads ──────────────────────
+        exec_time_window = []
+        completed_iterations = 0  # Tracks actual completed work for calibration
+        MAX_WINDOW = 100
+        
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = {}
+            next_iter = 1
+            pending_futures = set()
+            
+            def submit_next():
+                """Submit the next iteration to the thread pool."""
+                nonlocal next_iter
+                if next_iter <= max_iters and not _shutdown.is_set():
+                    future = executor.submit(
+                        _fuzz_one_iteration,
+                        config, oracle, corpus, energy, engine, timeout
                     )
-                    removed_str, _ = corpus.pop(worst_idx)
-                    energy.pop(removed_str, None)
-            else:
-                # decay seed if it didn't find anything
-                energy[seed] = max(0.1, energy.get(seed, 1.0) * 0.95)
-
-            # AFL-style energy decay — prevents one strategy dominating
-            engine.decay()
-
-            # global energy decay to prevent domination
-            for s in energy:
-                energy[s] = max(0.1, energy[s] * 0.999)
-
-            # ── 6. log bugs ───────────────────────────────────────────────
-            if bug.is_bug():
-                bug_logger.log(bug, config)
-                total_bugs += 1
-                last_bug = bug
-                strategy_counts[strategy] = strategy_counts.get(strategy, 0) + 1
-
-            # ── 7. live status redraw ─────────────────────────────────────
-            elapsed = time.monotonic() - start
-
-            if (
-                time.monotonic() - getattr(print_fuzz_status, "last_draw", 0)
-            ) > DISPLAY_TIME_INT or iteration == 1:
-                execs_sec = iteration / elapsed if elapsed > 0 else 0.0
-                print_fuzz_status.last_draw = time.monotonic()
-                print_fuzz_status(
-                    config=config,
-                    iteration=iteration,
-                    total_bugs=total_bugs,
-                    new_paths=new_paths,
-                    corpus_len=len(corpus),
-                    execs_sec=execs_sec,
-                    elapsed=elapsed,
-                    duration=duration,
-                    max_iters=max_iters,
-                    last_bug=last_bug,
-                    last_report=refresher.elapsed_since_last(time.monotonic()),
-                    strategy_counts=strategy_counts,
+                    futures[future] = next_iter
+                    pending_futures.add(future)
+                    next_iter += 1
+            
+            # ── prime the pump: submit first 2 iterations ───────────────
+            submit_next()
+            submit_next()
+            
+            # ── main collection loop ────────────────────────────────────
+            while pending_futures and not _shutdown.is_set():
+                # Check stop conditions
+                elapsed = time.monotonic() - start
+                if duration is not None and elapsed >= duration:
+                    break
+                
+                # Collect results as they complete
+                done_set, pending_futures = wait(
+                    pending_futures, timeout=DISPLAY_TIME_INT, return_when=FIRST_COMPLETED
                 )
+                
+                for future in done_set:
+                    iteration = futures[future]
+                    try:
+                        bug, found_new, child_depth, exec_time = future.result()
+                        
+                        # ── Update stats with lock ────────────────────────────────────
+                        with _stats_lock:
+                            completed_iterations += 1
+                            exec_time_window.append(exec_time)
+                            if len(exec_time_window) > MAX_WINDOW:
+                                exec_time_window.pop(0)
+                        
+                        # ── Log aggregated results ────────────────────────────────────
+                        if found_new:
+                            new_paths += 1
+                        if bug.is_bug():
+                            total_bugs += 1
+                            last_bug = bug
+                            strategy_counts[bug.strategy] = strategy_counts.get(bug.strategy, 0) + 1
+                        
+                        # ── Calibrate timeout based on completed iterations ───────────
+                        with _stats_lock:
+                            if completed_iterations == CALIBRATION_WINDOW or (
+                                completed_iterations > CALIBRATION_WINDOW 
+                                and completed_iterations % RECALIBRATE_EVERY == 0
+                            ):
+                                if exec_time_window:
+                                    avg = sum(exec_time_window) / len(exec_time_window)
+                                    new_timeout = max(TIMEOUT_FLOOR, TIMEOUT_MULTIPLIER * avg)
+                                    if abs(new_timeout - timeout) > 0.5:
+                                        timeout = round(new_timeout, 1)
+                        
+                    except Exception as e:
+                        print(C.red(f"  [error] iteration {iteration} failed: {e}"))
+                    finally:
+                        del futures[future]
+                    
+                    # Submit next iteration
+                    submit_next()
+                
+                # ── live status redraw ─────────────────────────────────────
+                elapsed = time.monotonic() - start
+                if (
+                    time.monotonic() - getattr(print_fuzz_status, "last_draw", 0)
+                ) > DISPLAY_TIME_INT or next_iter == 2:
+                    with _stats_lock:
+                        current_completed = completed_iterations
+                    execs_sec = current_completed / elapsed if elapsed > 0 else 0.0
+                    print_fuzz_status.last_draw = time.monotonic()
+                    print_fuzz_status(
+                        config=config,
+                        iteration=current_completed,
+                        total_bugs=total_bugs,
+                        new_paths=new_paths,
+                        corpus_len=len(corpus),
+                        execs_sec=execs_sec,
+                        elapsed=elapsed,
+                        duration=duration,
+                        max_iters=max_iters,
+                        last_bug=last_bug,
+                        last_report=refresher.elapsed_since_last(time.monotonic()),
+                        strategy_counts=strategy_counts,
+                    )
 
     finally:
         # ── shutdown sequence ─────────────────────────────────────────────
         elapsed = time.monotonic() - start
 
         # Issue final redraw to ensure 100% accurate final stats
-        execs_sec = iteration / elapsed if elapsed > 0 else 0.0
+        with _stats_lock:
+            current_completed = completed_iterations
+        execs_sec = current_completed / elapsed if elapsed > 0 else 0.0
         print_fuzz_status(
             config=config,
-            iteration=iteration,
+            iteration=current_completed,
             total_bugs=total_bugs,
             new_paths=new_paths,
             corpus_len=len(corpus),
@@ -784,7 +864,7 @@ def run_fuzz_mode(
 
         print_summary(
             label="fuzz",
-            n_run=iteration,
+            n_run=current_completed,
             total_bugs=total_bugs,
             new_paths=new_paths,
             corpus_len=len(corpus),

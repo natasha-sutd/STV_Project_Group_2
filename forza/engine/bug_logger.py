@@ -8,6 +8,8 @@ Files written to results/<target>/<run_id>/:
     - tracebacks.log: raw stdout for anything that is not NORMAL
 """
 
+import threading
+
 from engine import firestore_client
 from engine.types import BugResult, BugType
 from pathlib import Path
@@ -107,8 +109,14 @@ class FuzzLogger:
             self._seen_keys.add(result.bug_key)
             self._unique_bugs += 1
 
+            if (
+                result.bug_type is not BugType.NORMAL
+                and result.bug_type not in self._first_by_type
+            ):
+                self._first_by_type[result.bug_type] = result
+
             with open(self._bug_path, "a", newline="", encoding="utf-8") as f:
-                writer = csv.DictWriter(f, fieldnames=self.BUGS_FIELDS)
+                writer = csv.DictWriter(f, fieldnames=self.BUGS_FIELDS, quoting=csv.QUOTE_ALL)
                 writer.writerow(
                     {
                         "target": self.target,
@@ -122,7 +130,7 @@ class FuzzLogger:
                         "crashed": result.crashed,
                         "strategy": result.strategy,
                         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-                        "is_representative": result.bug_type in self._first_by_type and self._first_by_type[result.bug_type].bug_key == result.bug_key,
+                        "is_representative": result.bug_type is not BugType.NORMAL and result.bug_type not in self._first_by_type,
                     }
                 )
 
@@ -222,7 +230,7 @@ class FuzzLogger:
     @property
     def first_bugs(self) -> dict[BugType, BugResult]:
         """One representative BugResult per BugType, in discovery order.
-        
+
         At most 11 entries (one per category). Use this for report.html
         instead of the full bugs list to avoid duplicates flooding the report.
         """
@@ -231,18 +239,21 @@ class FuzzLogger:
 
 # Singleton logger, reset per target
 _logger: FuzzLogger | None = None
+_logger_lock = threading.Lock()
 
 
 def log(bug: BugResult, config: dict) -> None:
     global _logger
     target = bug.target or config.get("name", "unknown")
 
-    if _logger is None or _logger.target != target:
-        _logger = FuzzLogger(target=target)
+    with _logger_lock:
+        if _logger is None or _logger.target != target:
+            _logger = FuzzLogger(target=target)
 
     _logger.record(bug)
 
 
 def reset() -> None:
     global _logger
-    _logger = None
+    with _logger_lock:
+        _logger = None
