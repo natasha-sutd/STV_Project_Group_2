@@ -42,6 +42,7 @@ import yaml
 from pathlib import Path
 from typing import Any
 import copy
+import ast
 
 
 # ---------------------------------------------------------------------------
@@ -93,7 +94,7 @@ def gen_null(spec: dict) -> str:
 @register_type("any")
 def gen_any(spec: dict) -> str:
     """Generate a random value of any basic type."""
-    choice = random.choice(["int", "string", "boolean", "null"])
+    choice = random.choice(["int", "string", "boolean", "null", "hex"])
     return generate_from_spec({"type": choice, "min": 0, "max": 100})
 
 
@@ -108,7 +109,7 @@ def gen_array(spec: dict) -> str:
                             spec.get("max_length", 3))
     element_spec = spec.get("element", {"type": "int", "min": 0, "max": 100})
     items = [generate_from_spec(element_spec) for _ in range(length)]
-    return str(items)
+    return repr(items)
 
 
 @register_type("object")
@@ -144,7 +145,7 @@ def gen_object(spec: dict) -> str:
 
     encoding = spec.get("encoding", "json")
     if encoding == "dict_str":
-        return str(obj)
+        return repr(obj)
     # Default: proper JSON encoding
     return json.dumps(obj)
 
@@ -238,22 +239,34 @@ def build_tree_from_spec(spec: dict, depth=0, max_depth=5) -> CFGNode:
     if t in ("int", "hex", "string", "boolean", "null", "any", "literal"):
         return CFGNode(spec, value=generate_from_spec(spec))
 
-    # one_of / weighted_one_of
-    if t in ("one_of", "weighted_one_of"):
+    # one_of 
+    if t == "one_of":
         options = spec.get("options", [])
         if not options:
             return CFGNode(spec, value="")
-        weights = [float(o.get("weight", 1.0)) for o in options]
+        return CFGNode(spec, [
+            build_tree_from_spec(random.choice(options), depth + 1, max_depth)
+        ])
+
+    # weighted_one_of
+    if t == "weighted_one_of":
+        options = spec.get("options", [])
+        if not options:
+            return CFGNode(spec, value="")
+        weights = [o.get("weight", 1.0) for o in options]
         chosen = random.choices(options, weights=weights, k=1)[0]
-        return CFGNode(spec, [build_tree_from_spec(chosen, depth + 1, max_depth)])
+        return CFGNode(spec, [
+            build_tree_from_spec(chosen, depth + 1, max_depth)
+        ])
 
     # sequence
     if t == "sequence" and "count" in spec:
         return CFGNode(spec, [
             build_tree_from_spec(spec["element"], depth + 1, max_depth)
-            for _ in range(spec["count"])
+            for _ in range(spec.get("count", 1))
         ])
     
+    # concat
     if t in ("sequence", "concat"):
         return CFGNode(spec, [
             build_tree_from_spec(p, depth + 1, max_depth)
@@ -263,27 +276,30 @@ def build_tree_from_spec(spec: dict, depth=0, max_depth=5) -> CFGNode:
     # array
     if t == "array":
         length = random.randint(spec.get("min_length", 1), spec.get("max_length", 3))
+        element_spec = spec.get("element", {"type": "any"})
+        if not isinstance(element_spec, dict):
+            element_spec = {"type": "any"}
         return CFGNode(spec, [
-            build_tree_from_spec(spec.get("element", {"type": "int"}), depth + 1, max_depth)
+            build_tree_from_spec(element_spec, depth + 1, max_depth)
             for _ in range(length)
         ])
 
     # object
     if t == "object":
         key_spec = spec.get("key_schema") or spec.get("key", {"type": "string"})
-        value_spec = spec.get("value_schema") or spec.get("value", {"type": "int"})
+        value_spec = spec.get("value_schema") or spec.get("value", {"type": "any"})
         children = []
         for _ in range(random.randint(1, spec.get("max_fields", 3))):
             k = build_tree_from_spec(key_spec, depth + 1, max_depth)
             v = build_tree_from_spec(value_spec, depth + 1, max_depth)
             children.append((k, v))
         return CFGNode(spec, children)
-    return CFGNode(spec, value=generate_from_spec(spec))
+    return CFGNode(spec, value=str(generate_from_spec(spec)))
 
 def tree_to_string(node: CFGNode) -> str:
     """
     Convert a CFGNode tree back to a string by concatenating terminal values
-    """
+    """    
     spec = node.spec
 
     if node.value is not None:
@@ -301,34 +317,169 @@ def tree_to_string(node: CFGNode) -> str:
     if t == "array":
         result = []
         for c in node.children:
-            s = tree_to_string(c)
-            try:
-                val = json.loads(s)
-            except:
-                val = s
-            result.append(val)
-        return json.dumps(result)
-
+            result.append(tree_to_string(c))
+        return str(result)
+    
     if t == "object":
         obj = {}
         for k, v in node.children:
             key = tree_to_string(k)
-            val_str = tree_to_string(v)
-            try:
-                val = json.loads(val_str)
-            except:
-                val = val_str
+            val = tree_to_string(v)
             obj[str(key)] = val
-        return json.dumps(obj)
+        return str(obj)
 
     if t in ("one_of", "weighted_one_of"):
         return tree_to_string(node.children[0]) if node.children else ""
 
     return "".join(tree_to_string(c) for c in node.children)
 
+def parse_string_to_tree(seed: str, spec: dict) -> CFGNode:
+    """
+    Hybrid parser:
+    - Tries to parse seed into CFG tree
+    - Falls back to generation if parsing fails
+    """
+    try:
+        t = spec.get("type", "")
+
+        # terminals
+        if t in ("int", "hex", "string", "boolean", "null", "float"):
+            return CFGNode(spec, value=seed)
+
+        # sequence
+        if t == "sequence":
+            sep = spec.get("separator", "")
+            parts = seed.split(sep) if sep else list(seed)
+            element_spec = spec.get("element", {})
+            children = [
+                parse_string_to_tree(p, element_spec)
+                for p in parts
+            ]
+            return CFGNode(spec, children)
+
+        # array
+        if t == "array":
+            arr = ast.literal_eval(seed)
+            element_spec = spec.get("element", {"type": "any"})
+            if not isinstance(element_spec, dict):
+                element_spec = {"type": "any"}
+            children = [
+                parse_string_to_tree(str(x), element_spec)
+                for x in arr
+            ]
+            return CFGNode(spec, children)
+
+        # object
+        if t == "object":
+            obj = ast.literal_eval(seed)
+            key_spec = spec.get("key_schema") or spec.get("key", {"type": "string"})
+            value_spec = spec.get("value_schema") or spec.get("value", {"type": "any"})
+            children = []
+            for k, v in obj.items():
+                k_node = parse_string_to_tree(str(k), key_spec)
+                v_node = parse_string_to_tree(str(v), value_spec)
+                children.append((k_node, v_node))
+            return CFGNode(spec, children)
+
+        # one_of / weighted_one_of
+        if t in ("one_of", "weighted_one_of"):
+            for opt in spec.get("options", []):
+                try:
+                    child = parse_string_to_tree(seed, opt)
+                    return CFGNode(spec, [child])
+                except:
+                    continue
+        
+        # concat
+        if t == "concat":
+            children = []
+            remaining = seed
+            for part_spec in spec.get("parts", []):
+                part_type = part_spec.get("type", "")
+                # int
+                if part_type == "int":
+                    i = 0
+                    while i < len(remaining) and (remaining[i].isdigit() or (i == 0 and remaining[i] == "-")):
+                        i += 1
+                    part = remaining[:i]
+                    remaining = remaining[i:]
+                # string
+                elif part_type == "string":
+                    part = remaining
+                    remaining = ""
+                else:
+                    # fallback to generation for unsupported types
+                    part = remaining
+                    remaining = ""
+                children.append(parse_string_to_tree(part, part_spec))
+            return CFGNode(spec, children)
+        
+        # literal
+        if t == "literal":
+            expected = str(spec.get("value", ""))
+            if seed == expected:
+                return CFGNode(spec, value=seed)
+            else:
+                raise ValueError(f"Literal mismatch: expected {expected}, got {seed}")
+
+        # fallback, generate a new tree from spec
+        return build_tree_from_spec(spec)
+
+    except Exception:
+        return build_tree_from_spec(spec)
+
 # ---------------------------------------------------------------------------
 # Grammar-aware mutation
 # ---------------------------------------------------------------------------
+
+def generate_invalid_value(spec: dict) -> str:
+    import string
+    import random
+
+    t = spec.get("type", "")
+
+    if t == "int":
+        min_v = spec.get("min", 0)
+        max_v = spec.get("max", 100)
+
+        return random.choice([
+            str(min_v - random.randint(1, 100)), # below min
+            str(max_v + random.randint(1, 100)), # above max
+            "".join(random.choices(string.ascii_letters, k=5)), # wrong type
+            "",  # empty
+        ])
+
+    if t == "hex":
+        valid_chars = set("0123456789abcdefABCDEF")
+        invalid_chars = list(set(string.printable) - valid_chars)
+        return "".join(random.choice(invalid_chars) for _ in range(random.randint(1, 6)))
+
+    if t == "string":
+        valid_chars = set(spec.get("chars", string.ascii_letters))
+        invalid_chars = list(set(string.printable) - valid_chars)
+        max_len = spec.get("max", 10)
+        return random.choice([
+            "", # too short
+            "".join(random.choice(list(valid_chars)) for _ in range(max_len + random.randint(1, 20))), # too long
+            "".join(random.choice(invalid_chars) for _ in range(5)), # invalid chars
+        ])
+
+    if t == "boolean":
+        return "".join(random.choices(string.ascii_letters, k=5))
+
+    if t == "null":
+        return random.choice(["None", "", "0"])
+
+    if t == "float":
+        return random.choice([
+            "NaN",
+            "inf",
+            "-inf",
+            "".join(random.choices(string.ascii_letters, k=5)),
+            ""
+        ])
+
+    return ""
 
 def mutate_tree(node: CFGNode, prob=0.2) -> CFGNode:
     """
@@ -340,11 +491,18 @@ def mutate_tree(node: CFGNode, prob=0.2) -> CFGNode:
         return build_tree_from_spec(node.spec)
 
     if node.spec.get("type") == "object":
+        max_fields = node.spec.get("max_fields", 3)
         new_children = []
-        for k, v in node.children:
+        for pair in node.children:
+            if isinstance(pair, tuple):
+                k, v = pair
+            else:
+                k, v = pair.children if pair.children else (pair, pair)
             k = mutate_tree(k, prob)
             v = mutate_tree(v, prob)
             new_children.append((k, v))
+            if len(new_children) >= max_fields:
+                break
         node.children = new_children
         return node
 
@@ -356,24 +514,92 @@ def violate_tree(node: CFGNode) -> CFGNode:
     """
     Break grammar intentionally at tree level.
     """
+    node = copy.deepcopy(node)
+
     t = node.spec.get("type", "")
 
-    if t == "int":
-        node.value = random.choice(["999999", "-999999", "NaN", ""])
+    if node.value is not None:
+        node.value = generate_invalid_value(node.spec)
         return node
 
-    if t == "hex":
-        node.value = random.choice(["GGGG", "-1", ""])
+    if t in ("one_of", "weighted_one_of"):
+        if node.children:
+            node.children[0] = violate_tree(node.children[0])
         return node
 
     if t == "sequence" and "count" in node.spec:
+        expected = node.spec["count"]
+        wrong_count = expected + random.choice([
+            -expected, # collapse to 0
+            -random.randint(1, expected), # partial collapse
+            random.randint(2, 5) # controlled expansion
+        ])
+        wrong_count = max(1, wrong_count)
+        element_spec = node.spec["element"]
         node.children = [
-            build_tree_from_spec(node.spec["element"])
-            for _ in range(max(0, node.spec["count"] + random.choice([-2, 2])))
+            build_tree_from_spec(element_spec)
+            for _ in range(wrong_count)
         ]
+        return node
+    
+    if t == "array":
+        min_len = node.spec.get("min_length", 0)
+        max_len = node.spec.get("max_length", 10)
+        current = len(node.children)
+        if random.random() < 0.5:
+            # underflow, array too small
+            target_len = max(0, min_len - random.randint(1, 3))
+        else:
+            # overflow, array too large
+            target_len = max_len + random.randint(1, 3)
+        if target_len < current:
+            # truncation
+            node.children = node.children[:target_len]
+        else:
+            # expansion
+            element_spec = node.spec.get("element", {"type": "int"})
+            for _ in range(target_len - current):
+                node.children.append(build_tree_from_spec(element_spec))
+        return node
+
+    if t == "object":
+        current = len(node.children)
+        mode = random.choices(
+            ["overflow", "underflow", "key_break", "value_break"],
+            weights=[0.3, 0.3, 0.2, 0.2]
+        )[0]
+        key_spec = node.spec.get("key_schema") or node.spec.get("key", {"type": "string"})
+        value_spec = node.spec.get("value_schema") or node.spec.get("value", {"type": "int"})
+        if mode == "overflow":
+            extra = random.randint(1, 3)
+            for _ in range(extra):
+                k = build_tree_from_spec(key_spec)
+                v = build_tree_from_spec(value_spec)
+                node.children.append((k, v))
+        elif mode == "underflow":
+            node.children = node.children[:max(0, len(node.children) - random.randint(1, len(node.children) or 1))]
+        elif mode == "key_break":
+            if node.children:
+                i = random.randint(0, len(node.children) - 1)
+                k, v = node.children[i]
+                # corrupt key only
+                node.children[i] = (
+                    CFGNode(key_spec, value=generate_invalid_value(key_spec)),
+                    v
+                )
+        elif mode == "value_break":
+            if node.children:
+                i = random.randint(0, len(node.children) - 1)
+                k, v = node.children[i]
+                # corrupt value only
+                node.children[i] = (
+                    k,
+                    CFGNode(value_spec, value=generate_invalid_value(value_spec))
+                )
         return node
 
     if node.children:
+        # Recursive Fallback
         i = random.randint(0, len(node.children) - 1)
         node.children[i] = violate_tree(node.children[i])
 
@@ -386,25 +612,16 @@ def mutate_from_spec(seed: str, spec: dict) -> str:
     if not spec:
         return seed
     try:
-        tree = build_tree_from_spec(spec)
+        tree = parse_string_to_tree(seed, spec)
         choice = random.choice(["fresh", "mutate", "violate"])
         if choice == "fresh":
-            return tree_to_string(tree)
+            return generate_from_spec(spec)
         elif choice == "mutate":
             return tree_to_string(mutate_tree(tree))
         elif choice == "violate":
             return tree_to_string(violate_tree(tree))
     except Exception:
         return generate_from_spec(spec)
-
-def violate_constraints(seed: str, spec: dict) -> str:
-    from engine.mutation_engine import insert_special_char
-    t = spec.get("type") if spec else ""
-    if t == "int":
-        return random.choice(["999", "-1", "NaN", ""])
-    if t == "sequence" and spec and "count" in spec:
-        return seed + ".extra"
-    return insert_special_char(seed)
 
 
 # ---------------------------------------------------------------------------
