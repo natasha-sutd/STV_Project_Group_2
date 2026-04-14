@@ -46,25 +46,17 @@ def _init_firebase_archive() -> bool:
     _archive_initialized = True
 
     if not FIREBASE_AVAILABLE:
-        print(
-            "[firestore-archive] firebase-admin not installed. Run: pip install firebase-admin")
         return False
 
     if not _ARCHIVE_CREDS_PATH.exists():
-        print(
-            f"[firestore-archive] Credentials not found at {_ARCHIVE_CREDS_PATH}")
-        print(
-            "[firestore-archive] Archive uploads disabled - results saved locally only")
         return False
 
     try:
         cred = credentials.Certificate(str(_ARCHIVE_CREDS_PATH))
         app = firebase_admin.initialize_app(cred, name='archive')
         _archive_db = firestore.client(app)
-        print("[firestore-archive] Connected to Archive Firestore successfully")
         return True
-    except Exception as e:
-        print(f"[firestore-archive] Failed to initialize: {e}")
+    except Exception:
         return False
 
 
@@ -81,25 +73,17 @@ def _init_firebase_current() -> bool:
     _current_initialized = True
 
     if not FIREBASE_AVAILABLE:
-        print(
-            "[firestore-current] firebase-admin not installed. Run: pip install firebase-admin")
         return False
 
     if not _CURRENT_CREDS_PATH.exists():
-        print(
-            f"[firestore-current] Credentials not found at {_CURRENT_CREDS_PATH}")
-        print(
-            "[firestore-current] Current uploads disabled - results saved locally only")
         return False
 
     try:
         cred = credentials.Certificate(str(_CURRENT_CREDS_PATH))
         app = firebase_admin.initialize_app(cred, name='current')
         _current_db = firestore.client(app)
-        print("[firestore-current] Connected to Current Firestore successfully")
         return True
-    except Exception as e:
-        print(f"[firestore-current] Failed to initialize: {e}")
+    except Exception:
         return False
 
 
@@ -156,21 +140,13 @@ def clear_current_db(run_id: str) -> bool:
             collection_ref = db.collection(collection_name)
             docs = collection_ref.stream()
 
-            deleted_count = 0
             for doc in docs:
                 doc.reference.delete()
-                deleted_count += 1
-
-            if deleted_count > 0:
-                print(
-                    f"[firestore-current] Cleared {deleted_count} documents from '{collection_name}' collection")
 
         _current_run_id = run_id
-        print(f"[firestore-current] Database cleared for new run: {run_id}")
         return True
 
-    except Exception as e:
-        print(f"[firestore-current] Failed to clear database: {e}")
+    except Exception:
         return False
 
 
@@ -211,14 +187,14 @@ def upload_bug(result: BugResult, run_id: str = "", is_representative: bool = Fa
             doc_ref = archive_db.collection("bugs").add(doc_data)
             doc_id = doc_ref[1].id
         except Exception as e:
-            print(f"[firestore-archive] Failed to upload bug: {e}")
+            pass
 
     # Upload to current database
     if current_db is not None:
         try:
             current_db.collection("bugs").add(doc_data)
         except Exception as e:
-            print(f"[firestore-current] Failed to upload bug: {e}")
+            pass
 
     return doc_id
 
@@ -258,14 +234,14 @@ def upload_stats(
             doc_ref = archive_db.collection("stats").add(doc_data)
             doc_id = doc_ref[1].id
         except Exception as e:
-            print(f"[firestore-archive] Failed to upload stats: {e}")
+            pass
 
     # Upload to current database
     if current_db is not None:
         try:
             current_db.collection("stats").add(doc_data)
         except Exception as e:
-            print(f"[firestore-current] Failed to upload stats: {e}")
+            pass
 
     return doc_id
 
@@ -297,14 +273,14 @@ def upload_crash(
             doc_ref = archive_db.collection("crashes").add(doc_data)
             doc_id = doc_ref[1].id
         except Exception as e:
-            print(f"[firestore-archive] Failed to upload crash: {e}")
+            pass
 
     # Upload to current database
     if current_db is not None:
         try:
             current_db.collection("crashes").add(doc_data)
         except Exception as e:
-            print(f"[firestore-current] Failed to upload crash: {e}")
+            pass
 
     return doc_id
 
@@ -354,13 +330,13 @@ def upload_coverage(
             doc_ref = archive_db.collection("coverage").add(doc_data)
             doc_id = doc_ref[1].id
         except Exception as e:
-            print(f"[firestore-archive] Failed to upload coverage: {e}")
+            pass
 
     # Upload to current database
     if current_db is not None:
         try:
             current_db.collection("coverage").add(doc_data)
         except Exception as e:
-            print(f"[firestore-current] Failed to upload coverage: {e}")
+            pass
 
     return doc_id

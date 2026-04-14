@@ -81,8 +81,6 @@ class FuzzLogger:
         # Only these representative bugs are surfaced in report.html.
         self._first_by_type: dict[BugType, BugResult] = {}
 
-        print(f"[logger] Writing results to: {run_dir}")
-
         firestore_client.clear_current_db(run_id)
 
     # Public API
