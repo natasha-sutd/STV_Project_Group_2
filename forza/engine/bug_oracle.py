@@ -261,24 +261,19 @@ class BugOracle:
                 raw=raw,
             )
 
-        # 9. MISMATCH
-        if ref is not None:
-            pattern = config.get("output_pattern")
-            norm_out = _extract_output(stdout, pattern)
-            norm_ref = _extract_output(ref.stdout, pattern)
-            # Only mark as mismatch if both extractions succeeded and outputs differ
-            if pattern and norm_out is not None and norm_ref is not None and norm_out != norm_ref:
-                return self._make_result(
-                    bug_type=BugType.MISMATCH,
-                    raw_key=(
-                        "mismatch",
-                        "OutputMismatch",
-                        f"out={norm_out} ref={norm_ref}",
-                    ),
-                    input_data=input_data,
-                    target=target,
-                    raw=raw,
-                )
+        # 11. MISMATCH
+        if ref is not None and ref.stdout.strip() != raw.stdout.strip():
+            return self._make_result(
+                bug_type=BugType.MISMATCH,
+                raw_key=(
+                    "mismatch",
+                    "OutputMismatch",
+                    f"out='{raw.stdout.strip()}' ref='{ref.stdout.strip()}'",
+                ),
+                input_data=input_data,
+                target=target,
+                raw=raw,
+            )
 
         return self._make_result(
             bug_type=BugType.NORMAL,

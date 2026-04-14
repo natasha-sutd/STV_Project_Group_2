@@ -109,10 +109,12 @@ class FuzzLogger:
             self._seen_keys.add(result.bug_key)
             self._unique_bugs += 1
 
-            if (
+            is_representative = (
                 result.bug_type is not BugType.NORMAL
                 and result.bug_type not in self._first_by_type
-            ):
+            )
+
+            if is_representative:
                 self._first_by_type[result.bug_type] = result
 
             with open(self._bug_path, "a", newline="", encoding="utf-8") as f:
@@ -130,11 +132,13 @@ class FuzzLogger:
                         "crashed": result.crashed,
                         "strategy": result.strategy,
                         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-                        "is_representative": result.bug_type is not BugType.NORMAL and result.bug_type not in self._first_by_type,
+                        "is_representative": is_representative,
                     }
                 )
 
-            firestore_client.upload_bug(result, run_id=self._run_id)
+            firestore_client.upload_bug(
+                result, run_id=self._run_id, is_representative=is_representative
+            )
 
         # Track the first-ever input for each BugType (used by report.html).
         # NORMAL results are excluded -- only real bug categories are recorded.
