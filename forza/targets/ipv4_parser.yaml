@@ -29,7 +29,8 @@ bug_keywords:
   - "ParseException"
 
 # differential output comparison
-output_pattern: "Output: [{value}]"
+buggy_output_pattern: "Output: [{value}]"
+reference_output_pattern: "Output: [{value}]"
 
 # coverage
 coverage_enabled: false

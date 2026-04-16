@@ -23,22 +23,6 @@ def _extract_output(stdout: str, pattern: str) -> Optional[str]:
     match = re.search(regex, stdout)
     return match.group(1).strip() if match else None
 
-# def _extract_output(text, pattern):
-#     if not pattern:
-#         return text.strip()
-
-#     # Try to find the pattern
-#     match = re.search(pattern, text)
-#     if match:
-#         # If the pattern has a group, return it, else the whole match
-#         return match.group(1).strip() if match.groups() else match.group(0).strip()
-
-#     # FALLBACK: If pattern fails, return the last non-empty line
-#     # This usually catches the clean output of a reference script
-#     lines = [l for l in text.strip().split('\n') if l.strip()]
-#     return lines[-1] if lines else ""
-
-
 class BugOracle:
     """
     Classifies a RawResult into a BugResult.
@@ -247,15 +231,16 @@ class BugOracle:
         # 11. MISMATCH
         if ref is not None:
             pattern = config.get("output_pattern")
-            norm_out = _extract_output(stdout, pattern)
+            bug_out = _extract_output(stdout, pattern)
+            ref_out = _extract_output(ref.stdout, pattern) if ref.stdout else None
             # Only mark as mismatch if both extractions succeeded and outputs differ
-            if pattern and norm_out is not None and ref.stdout is not None and norm_out != ref.stdout.strip():
+            if pattern and bug_out is not None and ref_out is not None and bug_out != ref_out:
                 return self._make_result(
                     bug_type=BugType.MISMATCH,
                     raw_key=(
                         "mismatch",
                         "OutputMismatch",
-                        f"out={norm_out} ref={ref.stdout.strip()}",
+                        f"out={bug_out} ref={ref_out}",
                     ),
                     input_data=input_data,
                     target=target,

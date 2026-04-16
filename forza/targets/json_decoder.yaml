@@ -39,7 +39,8 @@ bug_keywords:
   - "JSONDecodeError"
 
 # differential output comparison
-output_pattern: "Output decoded data: {value} of type"
+buggy_output_pattern: "Output decoded data: {value} of type"
+reference_output_pattern: "{value}"
 
 # coverage
 coverage_enabled: true

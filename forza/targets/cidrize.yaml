@@ -7,9 +7,9 @@ buggy_cmd:
 buggy_cwd: "../../cidrize-runner-main"
 
 reference_cmd:
-  windows: ["python", "cidrize.py", "{input}"]
-  mac: ["python3", "cidrize.py", "{input}"]
-reference_cwd: "../../cidrize-runner-main/cidrize"
+  windows: ["python", "cidrize/cidrize.py", "{input}"]
+  mac: ["python3", "cidrize/cidrize.py", "{input}"]
+reference_cwd: "../../cidrize-runner-main"
 
 # input
 input_mode: arg
@@ -32,7 +32,8 @@ bug_keywords:
   - "CidrizeError"
 
 # differential output comparison
-output_pattern: "IPNetwork('{value}')"
+buggy_output_pattern: "IPNetwork('{value}')"
+reference_output_pattern: "{value}"
 
 # coverage
 coverage_enabled: false
