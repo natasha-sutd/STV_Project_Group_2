@@ -48,12 +48,16 @@ class BugOracle:
         r"([A-Z][A-Za-z]*(?:Error|Exception|Warning|Fault))\s*[:\(]"
     )
 
+    # Matches "File "...", line xxx" from Python tracebacks
+    _TRACEBACK_LINE_RE = re.compile(r'File ".*?", line (\d+)')
+
     _BUG_COUNT_RE = re.compile(
         r"Final bug count: defaultdict\(<class 'int'>, \{(.*)\}\)"
     )
     _BUG_ENTRY_RE = re.compile(
         r"\('(\w+)', <class '([^']+)'>, '([^']*)', '[^']*', \d+\)"
     )
+
 
     def classify(
         self,
@@ -216,13 +220,12 @@ class BugOracle:
             )
 
         if raw.returncode != 0:
-            # Dedup by (exit_code, exception_class) — NOT the full error message.
-            # e.g. all JSONDecodeErrors from json_decoder are the same bug,
-            # regardless of which column/position triggered the error.
+            # Dedup by (exit_code, exception_class, line_number)
             exc_class = self._extract_exc_class(combined)
+            line_num = self._extract_line_number(combined)
             return self._make_result(
                 bug_type=BugType.RELIABILITY,
-                raw_key=("reliability", str(raw.returncode), exc_class),
+                raw_key=("reliability", str(raw.returncode), exc_class, line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
@@ -273,6 +276,11 @@ class BugOracle:
         match = cls._EXC_CLASS_RE.search(text)
         return match.group(1) if match else "UnknownError"
 
+
+    @classmethod
+    def _extract_line_number(cls, text: str) -> str:
+        match = cls._TRACEBACK_LINE_RE.search(text)
+        return match.group(1) if match else ""
     @staticmethod
     def _make_result(
         bug_type: BugType,
