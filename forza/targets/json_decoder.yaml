@@ -3,7 +3,7 @@ name: json_decoder
 # commands
 buggy_cmd:
   windows: ["python", "json_decoder_stv.py", "--str-json", "{input}"]
-  mac: ["uv", "run", "json_decoder_stv.py", "--str-json", "{input}"]
+  mac: ["python3", "json_decoder_stv.py", "--str-json", "{input}"]
 buggy_cwd: "../../json-decoder"
 
 reference_cmd:
@@ -32,7 +32,6 @@ input:
     - type: string
       min: 0
       max: 100
-seeds_path: "../inputs/json_decoder/seeds.txt"
 
 # special bug keywords
 bug_keywords:

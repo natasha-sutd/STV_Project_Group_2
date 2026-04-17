@@ -157,6 +157,14 @@ class CoverageTracker:
         self.current_metric: int = 0
         self.last_iteration_id: int = 0
 
+        # Firestore uploads are throttled to avoid blocking the hot path.
+        try:
+            upload_every = int(config_dict.get("coverage_upload_interval", 25))
+        except (TypeError, ValueError):
+            upload_every = 25
+        self._coverage_upload_interval: int = max(1, upload_every)
+        self._last_uploaded_input_count: int = 0
+
         # AFL tuple bucketing for count coverage
         # Maps edge_id → set of observed bucket indices
         self.global_edge_buckets: dict[str, set[int]] = collections.defaultdict(set)
@@ -322,6 +330,13 @@ class CoverageTracker:
             branch_coverage = 0.0
             function_coverage = 0.0
         elif self.mode == "code_execution":
+            fallback_sig_novel = False
+            if payload_coverage_source == "proxy_none" and payload.output_signature:
+                sig = payload.output_signature
+                if sig not in self._seen_output_signatures:
+                    self._seen_output_signatures.add(sig)
+                    fallback_sig_novel = True
+
             prev_statement_cov = self._last_line_cov if self._last_line_cov is not None else 0.0
             prev_branch_cov = self._last_branch_cov if self._last_branch_cov is not None else prev_statement_cov
             prev_function_cov = self._last_function_cov if self._last_function_cov is not None else prev_statement_cov
@@ -363,13 +378,10 @@ class CoverageTracker:
                 function_coverage = prev_function_cov
             else:
                 # No coverage data from this run (target crashed / produced no
-                # --show-coverage output).  Fall back to bug-key novelty for
-                # corpus-growth decisions, but DO NOT mutate the logged coverage
-                # value — carry the last real measurement forward instead.
-                # The old formula `behavioral_metric * 2.0` created visible spikes
-                # in the coverage chart every time a bug was found without data.
-                self.current_metric = self.behavioral_metric
-                new_path_found = new_behavior_found
+                # --show-coverage output). Keep the execution-scale metric stable,
+                # and use output-signature novelty as a separate fallback signal.
+                self.current_metric = self.execution_metric
+                new_path_found = fallback_sig_novel
 
                 # No --show-coverage data this iteration (e.g. target crashed).
                 # Carry the last valid measurement forward so the chart stays
@@ -728,20 +740,28 @@ class CoverageTracker:
         with self.coverage_log_path.open("a", newline="", encoding="utf-8") as f:
             csv.writer(f).writerow([row.get(name, "") for name in fields])
 
-        firestore_client.upload_coverage(
-            target=self.target,
-            run_id=self.run_id,
-            iteration=self.last_iteration_id,
-            total_inputs=self.total_inputs,
-            tracking_mode=self.mode,
-            statement_coverage=statement_coverage,
-            branch_coverage=branch_coverage,
-            function_coverage=function_coverage,
-            new_path_found=new_path_found,
-            behavioral_metric=float(behavioral_metric),
-            execution_metric=float(execution_metric),
-            coverage_source=coverage_source,
+        should_upload = (
+            self.total_inputs == 1
+            or new_path_found
+            or (self.total_inputs - self._last_uploaded_input_count)
+            >= self._coverage_upload_interval
         )
+        if should_upload:
+            firestore_client.upload_coverage(
+                target=self.target,
+                run_id=self.run_id,
+                iteration=self.last_iteration_id,
+                total_inputs=self.total_inputs,
+                tracking_mode=self.mode,
+                statement_coverage=statement_coverage,
+                branch_coverage=branch_coverage,
+                function_coverage=function_coverage,
+                new_path_found=new_path_found,
+                behavioral_metric=float(behavioral_metric),
+                execution_metric=float(execution_metric),
+                coverage_source=coverage_source,
+            )
+            self._last_uploaded_input_count = self.total_inputs
 
     # --- Metric extraction from target output ---
 

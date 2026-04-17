@@ -23,8 +23,7 @@ input:
     type: hex
     min: 0
     max: 0xFFFF
-seeds_path: "../inputs/ipv6_parser/seeds.txt"
-seed_count: 30
+parallel_workers: 4
 
 # execution
 timeout: 60

@@ -12,6 +12,8 @@ import sys
 import tempfile
 import json
 import time
+import atexit
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path, PureWindowsPath
@@ -21,6 +23,30 @@ import yaml
 
 
 _FRIDA_SCRIPT_CACHE: dict[tuple[str, tuple[str, ...], bool, int], str] = {}
+_parallel_pool: ThreadPoolExecutor | None = None
+_parallel_pool_lock = threading.Lock()
+_instr_stats_lock = threading.Lock()
+_DEFAULT_PARALLEL_POOL_WORKERS = 4
+
+
+def _shutdown_parallel_pool() -> None:
+    global _parallel_pool
+    with _parallel_pool_lock:
+        pool = _parallel_pool
+        _parallel_pool = None
+    if pool is not None:
+        pool.shutdown(wait=False, cancel_futures=True)
+
+
+def get_parallel_pool() -> ThreadPoolExecutor:
+    global _parallel_pool
+    with _parallel_pool_lock:
+        if _parallel_pool is None:
+            _parallel_pool = ThreadPoolExecutor(max_workers=_DEFAULT_PARALLEL_POOL_WORKERS)
+        return _parallel_pool
+
+
+atexit.register(_shutdown_parallel_pool)
 
 
 def get_platform() -> str:
@@ -109,6 +135,26 @@ def resolve_cmd(cmd: list[str]) -> list[str]:
     return cmd
 
 
+def _resolve_executable_against_cwd(cmd: list[str], cwd: str | None) -> list[str]:
+    if not cmd:
+        return cmd
+    if not cwd:
+        return cmd
+
+    exe = cmd[0]
+    if os.path.isabs(exe):
+        return cmd
+
+    # Only rewrite explicit path-like executables (./bin/foo, bin\\foo.exe, etc.)
+    if not (exe.startswith(".") or "/" in exe or "\\" in exe):
+        return cmd
+
+    candidate = (Path(cwd) / exe).resolve()
+    if candidate.exists():
+        return [str(candidate)] + cmd[1:]
+    return cmd
+
+
 def _prepare_run_command(
     cmd_template: list[str],
     input_str: str,
@@ -164,12 +210,15 @@ def run_target(
             extra_flags=extra_flags,
         )
 
+        effective_cwd = cwd or None
+        cmd = _resolve_executable_against_cwd(cmd, effective_cwd)
+
         proc = subprocess.run(
             cmd,
             input=stdin_data,
             capture_output=True,
             timeout=timeout,
-            cwd=cwd or None,
+            cwd=effective_cwd,
         )
 
         return RawResult(
@@ -209,6 +258,50 @@ def run_target(
             os.remove(tmp_file)
 
 
+def _parse_coverage_json_to_summary(report_json_text: str) -> str:
+    """Parse coverage.py JSON totals and emit normalized summary lines."""
+    try:
+        payload = json.loads(report_json_text)
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return ""
+
+    if not isinstance(payload, dict):
+        return ""
+    totals = payload.get("totals")
+    if not isinstance(totals, dict):
+        return ""
+
+    stmts = _as_int(totals.get("num_statements"), 0, minimum=0)
+    covered_stmts = _as_int(
+        totals.get("covered_lines"),
+        default=max(0, stmts - _as_int(totals.get("missing_lines"), 0, minimum=0)),
+        minimum=0,
+        maximum=stmts,
+    )
+
+    branches = _as_int(totals.get("num_branches"), 0, minimum=0)
+    covered_branches = _as_int(
+        totals.get("covered_branches"),
+        default=max(0, branches - _as_int(totals.get("missing_branches"), 0, minimum=0)),
+        minimum=0,
+        maximum=branches,
+    )
+
+    line_pct = (covered_stmts / stmts * 100) if stmts else 0.0
+    branch_pct = (covered_branches / branches * 100) if branches else line_pct
+    combined_pct = (
+        ((covered_stmts + covered_branches) / (stmts + branches) * 100)
+        if (stmts + branches)
+        else line_pct
+    )
+
+    return (
+        f"line coverage     : {line_pct:.2f}%\n"
+        f"branch coverage   : {branch_pct:.2f}%\n"
+        f"combined coverage : {combined_pct:.2f}%\n"
+    )
+
+
 def _parse_coverage_report_to_summary(report_text: str) -> str:
     """
     Parse the TOTAL line from a 'coverage report' table and emit the summary
@@ -222,6 +315,10 @@ def _parse_coverage_report_to_summary(report_text: str) -> str:
         TOTAL   323   204   138   86   37%
     columns: Name Stmts Miss Branch BrPart Cover
     """
+    json_summary = _parse_coverage_json_to_summary(report_text)
+    if json_summary:
+        return json_summary
+
     for line in report_text.splitlines():
         parts = line.split()
         if not parts or parts[0].upper() != "TOTAL":
@@ -232,17 +329,25 @@ def _parse_coverage_report_to_summary(report_text: str) -> str:
                 stmts = int(parts[1])
                 miss_stmts = int(parts[2])
                 branches = int(parts[3])
-                br_part = int(parts[4])
+                cover_pct = float(parts[5].rstrip("%"))
                 covered_stmts = stmts - miss_stmts
-                covered_branches = br_part  # BrPart = partially/fully covered
 
                 line_pct = (covered_stmts / stmts * 100) if stmts else 0.0
-                branch_pct = (covered_branches / branches * 100) if branches else 0.0
-                combined_pct = (
-                    ((covered_stmts + covered_branches) / (stmts + branches) * 100)
-                    if (stmts + branches)
-                    else 0.0
-                )
+                combined_pct = max(0.0, min(100.0, cover_pct))
+
+                # BrPart does not represent covered-branch count. When only
+                # TOTAL text is available, estimate branch coverage by solving
+                # combined coverage for covered branches.
+                if branches:
+                    estimated_covered_branches = (
+                        (combined_pct / 100.0) * (stmts + branches)
+                    ) - covered_stmts
+                    estimated_covered_branches = max(
+                        0.0, min(float(branches), estimated_covered_branches)
+                    )
+                    branch_pct = estimated_covered_branches / branches * 100.0
+                else:
+                    branch_pct = line_pct
 
                 return (
                     f"line coverage     : {line_pct:.2f}%\n"
@@ -309,34 +414,40 @@ def run_reference_with_coverage(
         use_wsl=use_wsl,
     )
 
+    report_json_file: str | None = None
     try:
+        fd, report_json_file = tempfile.mkstemp(
+            prefix="forza_cov_report_", suffix=".json", dir=cwd or None
+        )
+        os.close(fd)
+
         report_proc = subprocess.run(
             [
                 sys.executable,
                 "-m",
                 "coverage",
-                "report",
+                "json",
                 f"--data-file={data_file}",
-                "--precision=2",
-                "-m",
+                "-o",
+                report_json_file,
             ],
             capture_output=True,
             timeout=15,
             cwd=cwd or None,
         )
-        report_out = report_proc.stdout.decode(errors="replace")
+
+        report_out = ""
+        if report_proc.returncode == 0 and os.path.exists(report_json_file):
+            with open(report_json_file, "r", encoding="utf-8", errors="replace") as f:
+                report_out = f.read()
 
         cov_lines = _parse_coverage_report_to_summary(report_out)
-
-        try:
-            cleanup_path = Path(cwd or ".") / data_file
-            if cleanup_path.exists():
-                cleanup_path.unlink()
-        except OSError:
-            pass
+        merged_stdout = run_result.stdout
+        if cov_lines:
+            merged_stdout = run_result.stdout + "\n" + cov_lines
 
         run_result = RawResult(
-            stdout=run_result.stdout + "\n" + cov_lines,
+            stdout=merged_stdout,
             stderr=run_result.stderr,
             returncode=run_result.returncode,
             timed_out=run_result.timed_out,
@@ -346,7 +457,21 @@ def run_reference_with_coverage(
             input_data=run_result.input_data,
         )
     except Exception:
-        pass 
+        pass
+    finally:
+        try:
+            cleanup_path = Path(cwd or ".") / data_file
+            if cleanup_path.exists():
+                cleanup_path.unlink()
+        except OSError:
+            pass
+
+        if report_json_file and os.path.exists(report_json_file):
+            try:
+                os.remove(report_json_file)
+            except OSError:
+                pass
+
     return run_result
 
 
@@ -592,13 +717,13 @@ def _classify_frida_error(raw_error: str) -> str:
     text = str(raw_error or "").strip()
     lowered = text.lower()
     if "access is denied" in lowered or "permission denied" in lowered:
-        return "frida attach failed: access denied (run terminal as administrator)"
+        return "frida setup failed: access denied (run terminal as administrator)"
     if "architecture mismatch" in lowered or "wrong architecture" in lowered:
-        return "frida attach failed: architecture mismatch between Python/Frida and target"
+        return "frida setup failed: architecture mismatch between Python/Frida and target"
     if "process not found" in lowered:
-        return "frida attach failed: target exited before instrumentation could attach"
+        return "frida setup failed: target exited before instrumentation could attach"
     if "unable to access process" in lowered:
-        return "frida attach failed: unable to access target process"
+        return "frida setup failed: unable to access target process"
     if text:
         return f"frida instrumentation failed: {text}"
     return "frida instrumentation failed"
@@ -611,6 +736,22 @@ def _is_transient_frida_attach_error(error_text: str) -> bool:
         or "unable to access process" in lowered
         or "target exited before instrumentation could attach" in lowered
     )
+
+
+def _wait_for_frida_process_exit(device: Any, pid: int, timeout_seconds: int) -> bool:
+    deadline = time.monotonic() + max(1, timeout_seconds)
+    while time.monotonic() < deadline:
+        try:
+            device.get_process(pid)
+        except Exception as exc:
+            lowered = str(exc).strip().lower()
+            if "process not found" in lowered or "unable to find process" in lowered:
+                return True
+            if "not found" in lowered:
+                return True
+            return True
+        time.sleep(0.01)
+    return False
 
 
 def _prepare_arg_mode_instrumentation_input(
@@ -859,7 +1000,6 @@ function unfollowAll() {{
     try {{ Stalker.unfollow(threadId); }} catch (_) {{}}
   }});
   followed.clear();
-  try {{ Stalker.garbageCollect(); }} catch (_) {{}}
 }}
 
 rpc.exports = {{
@@ -882,12 +1022,25 @@ rpc.exports = {{
     return true;
   }},
     flush() {{
+        try {{ Stalker.flush(); }} catch (err) {{
+            send({{ type: 'stalker_error', error: String(err) }});
+        }}
         flushBatch();
         return true;
     }},
   stop() {{
+        try {{ Stalker.flush(); }} catch (err) {{
+            send({{ type: 'stalker_error', error: String(err) }});
+        }}
+        
+        // Unfollow first so short-lived thread buffers are drained on the next flush.
+        unfollowAll();
+
+        try {{ Stalker.flush(); }} catch (err) {{
+            send({{ type: 'stalker_error', error: String(err) }});
+        }}
         flushBatch();
-    unfollowAll();
+        try {{ Stalker.garbageCollect(); }} catch (_) {{}}
     return true;
   }}
 }};
@@ -949,6 +1102,10 @@ def _run_frida_stalker_instrumentation(
         frida_cfg.get("capture_target_output"),
         default=False,
     )
+    inherit_target_output = _as_bool(
+        frida_cfg.get("inherit_target_output"),
+        default=False,
+    )
     attach_retries = _as_int(
         frida_cfg.get("attach_retries"),
         1,
@@ -977,9 +1134,11 @@ def _run_frida_stalker_instrumentation(
 
     cmd: list[str] = []
     tmp_file: str | None = None
-    proc: subprocess.Popen | None = None
     session = None
     script = None
+    frida_device = None
+    active_spawn_pid: int | None = None
+    output_handler_registered = False
     frida_errors: list[str] = []
     edge_counts: dict[str, int] = {}
 
@@ -1010,6 +1169,32 @@ def _run_frida_stalker_instrumentation(
             desc = message.get("description") or message.get("stack") or "script error"
             frida_errors.append(str(desc))
 
+    def _on_device_output(*args) -> None:
+        if not capture_target_output or active_spawn_pid is None:
+            return
+        if len(args) < 3:
+            return
+        try:
+            output_pid = int(args[0])
+            output_fd = int(args[1])
+            output_data = args[2]
+        except (TypeError, ValueError):
+            return
+        if output_pid != active_spawn_pid:
+            return
+        if not isinstance(output_data, (bytes, bytearray)):
+            return
+
+        text = bytes(output_data).decode(errors="replace")
+        parsed = _parse_coverage_freq_text(text)
+        for edge_id, count in parsed.items():
+            edge_counts[edge_id] = edge_counts.get(edge_id, 0) + count
+
+        if output_fd == 2:
+            first_line = text.strip().splitlines()
+            if first_line:
+                frida_errors.append(f"target stderr: {first_line[0]}")
+
     try:
         cmd, stdin_data, tmp_file = _prepare_run_command(
             cmd_template=cmd_template,
@@ -1018,19 +1203,32 @@ def _run_frida_stalker_instrumentation(
             use_wsl=False,
             extra_flags=None,
         )
+        cmd = _resolve_executable_against_cwd(cmd, instr_cwd)
+        frida_device = frida.get_local_device()
 
-        proc = subprocess.Popen(
-            cmd,
-            cwd=instr_cwd or None,
-            stdin=subprocess.PIPE if stdin_data is not None else None,
-            stdout=subprocess.PIPE if capture_target_output else subprocess.DEVNULL,
-            stderr=subprocess.PIPE if capture_target_output else subprocess.DEVNULL,
-        )
+        if capture_target_output:
+            try:
+                frida_device.on("output", _on_device_output)
+                output_handler_registered = True
+            except Exception as exc:
+                frida_errors.append(f"frida output capture disabled: {exc}")
 
         setup_error: str | None = None
         for attempt_idx in range(attach_retries):
             try:
-                session = frida.attach(proc.pid)
+                # Keep target stdout/stderr out of the live table unless explicitly requested.
+                spawn_stdio = (
+                    "inherit"
+                    if (inherit_target_output and stdin_data is None and not capture_target_output)
+                    else "pipe"
+                )
+                active_spawn_pid = frida_device.spawn(
+                    cmd,
+                    cwd=instr_cwd or None,
+                    stdio=spawn_stdio,
+                )
+
+                session = frida.attach(active_spawn_pid)
                 script = session.create_script(
                     _get_cached_frida_stalker_script(
                         target_module=target_module,
@@ -1042,64 +1240,78 @@ def _run_frida_stalker_instrumentation(
                 script.on("message", _on_frida_message)
                 script.load()
                 script.exports_sync.start()
+
+                frida_device.resume(active_spawn_pid)
+
+                if stdin_data is not None:
+                    frida_device.input(active_spawn_pid, stdin_data)
+                    frida_device.input(active_spawn_pid, b"")
+
+                if not _wait_for_frida_process_exit(
+                    frida_device,
+                    active_spawn_pid,
+                    run_timeout,
+                ):
+                    try:
+                        frida_device.kill(active_spawn_pid)
+                    except Exception:
+                        pass
+                    return "", f"instrumentation command timeout after {run_timeout}s"
+
+                try:
+                    script.exports_sync.flush()
+                except Exception:
+                    pass
+
                 setup_error = None
                 break
             except Exception as exc:
                 setup_error = _classify_frida_error(str(exc))
+                frida_errors.append(setup_error)
 
-                if session is not None:
+                if active_spawn_pid is not None:
                     try:
-                        session.detach()
+                        frida_device.kill(active_spawn_pid)
                     except Exception:
                         pass
-                    session = None
-                script = None
 
                 last_attempt = attempt_idx + 1 >= attach_retries
                 if last_attempt or not _is_transient_frida_attach_error(setup_error):
                     break
                 if attach_retry_delay_ms > 0:
                     time.sleep(attach_retry_delay_ms / 1000.0)
-
-        if setup_error:
-            frida_errors.append(setup_error)
-            if fail_fast_on_setup_error:
-                if proc.poll() is None:
+            finally:
+                if script is not None:
                     try:
-                        proc.kill()
+                        script.exports_sync.stop()
                     except Exception:
                         pass
-                try:
-                    proc.communicate()
-                except Exception:
-                    pass
-                return "", setup_error
+                if session is not None:
+                    try:
+                        session.detach()
+                    except Exception:
+                        pass
+                script = None
+                session = None
+                active_spawn_pid = None
 
-        try:
-            proc.communicate(input=stdin_data if stdin_data is not None else None, timeout=run_timeout)
-            if script is not None:
-                try:
-                    script.exports_sync.flush()
-                except Exception:
-                    pass
-        except subprocess.TimeoutExpired:
-            proc.kill()
-            proc.communicate()
-            return "", f"instrumentation command timeout after {run_timeout}s"
+        if setup_error:
+            if fail_fast_on_setup_error:
+                return "", setup_error
     except FileNotFoundError as exc:
         missing_binary = cmd[0] if cmd else (cmd_template[0] if cmd_template else "<unknown>")
         return "", f"Binary not found: {missing_binary} ({exc})"
     except Exception as exc:
         return "", f"frida instrumentation command failed: {exc}"
     finally:
-        if script is not None:
+        if active_spawn_pid is not None and frida_device is not None:
             try:
-                script.exports_sync.stop()
+                frida_device.kill(active_spawn_pid)
             except Exception:
                 pass
-        if session is not None:
+        if output_handler_registered and frida_device is not None:
             try:
-                session.detach()
+                frida_device.off("output", _on_device_output)
             except Exception:
                 pass
         if tmp_file and os.path.exists(tmp_file):
@@ -1246,6 +1458,7 @@ def run_blackbox_instrumentation(
                         use_call_summary: true         # optional (faster, less granular)
                         flush_event_count: 4096        # optional (message batch size)
                         capture_target_output: false   # optional (faster)
+                        inherit_target_output: false   # optional (default false keeps table output clean)
                         parallel_with_reference: true  # optional run_both optimization gate
           tinyinst:                        # optional tinyinst backend options
             cmd:
@@ -1314,25 +1527,33 @@ def _record_instrumentation_status(
     instrumentation_coverage_text: str,
     instr_err: str | None,
 ) -> None:
-    stats = config.get("_instr_stats")
-    if not isinstance(stats, dict):
-        stats = {}
-        config["_instr_stats"] = stats
+    with _instr_stats_lock:
+        stats = config.get("_instr_stats")
+        if not isinstance(stats, dict):
+            stats = {}
+            config["_instr_stats"] = stats
 
-    runs = _as_int(stats.get("runs"), 0, minimum=0)
-    data_hits = _as_int(stats.get("data_hits"), 0, minimum=0)
-    no_data_streak = _as_int(stats.get("no_data_streak"), 0, minimum=0)
+        runs = _as_int(stats.get("runs"), 0, minimum=0)
+        data_hits = _as_int(stats.get("data_hits"), 0, minimum=0)
+        no_data_streak = _as_int(stats.get("no_data_streak"), 0, minimum=0)
 
-    stats["runs"] = runs + 1
-    if instrumentation_coverage_text:
-        stats["data_hits"] = data_hits + 1
-        stats["no_data_streak"] = 0
-    else:
-        stats["data_hits"] = data_hits
-        stats["no_data_streak"] = no_data_streak + 1
+        runs += 1
+        stats["runs"] = runs
+        if instrumentation_coverage_text:
+            stats["data_hits"] = data_hits + 1
+            stats["no_data_streak"] = 0
+        else:
+            stats["data_hits"] = data_hits
+            stats["no_data_streak"] = no_data_streak + 1
 
-    if instr_err:
-        stats["last_error"] = str(instr_err).strip()
+        # Periodically relax long no-data streaks so reference parallelization
+        # can retry after transient instrumentation outages.
+        if runs % 100 == 0:
+            refreshed_streak = _as_int(stats.get("no_data_streak"), 0, minimum=0)
+            stats["no_data_streak"] = min(refreshed_streak, 2)
+
+        if instr_err:
+            stats["last_error"] = str(instr_err).strip()
 
 
 def _should_parallelize_instrumentation_with_reference(config: dict) -> bool:
@@ -1347,20 +1568,26 @@ def _should_parallelize_instrumentation_with_reference(config: dict) -> bool:
         if not _as_bool(frida_cfg.get("parallel_with_reference"), default=True):
             return False
 
-    stats = config.get("_instr_stats")
-    if not isinstance(stats, dict):
-        return False
+    with _instr_stats_lock:
+        stats = config.get("_instr_stats")
+        if not isinstance(stats, dict):
+            return False
 
-    data_hits = _as_int(stats.get("data_hits"), 0, minimum=0)
-    no_data_streak = _as_int(stats.get("no_data_streak"), 0, minimum=0)
-    return data_hits >= 3 and no_data_streak == 0
+        data_hits = _as_int(stats.get("data_hits"), 0, minimum=0)
+        no_data_streak = _as_int(stats.get("no_data_streak"), 0, minimum=0)
+    return data_hits >= 3 and no_data_streak <= 3
 
 
 def _should_parallelize_buggy_with_instrumentation(config: dict) -> bool:
     instr_cfg = config.get("blackbox_instrumentation")
     if not isinstance(instr_cfg, dict) or not instr_cfg.get("enabled", False):
         return False
-    if _resolve_instrumentation_kind(instr_cfg) != "frida_stalker":
+
+    kind = _resolve_instrumentation_kind(instr_cfg)
+    if kind == "afl_showmap":
+        return _as_bool(instr_cfg.get("parallel_with_buggy"), default=True)
+
+    if kind != "frida_stalker":
         return False
 
     frida_cfg = instr_cfg.get("frida_config")
@@ -1372,8 +1599,10 @@ def _should_parallelize_buggy_with_instrumentation(config: dict) -> bool:
 def _store_instrumentation_error(config: dict, instr_err: str | None) -> None:
     error_text = str(instr_err or "").strip()
     config["_last_instr_error"] = error_text
+    emit_warning = _as_bool(config.get("emit_instrumentation_warning"), default=False)
     if error_text and not config.get("_instr_warning_emitted"):
-        print(f"[instrumentation] {config.get('name', 'target')}: {error_text}")
+        if emit_warning:
+            print(f"[instrumentation] {config.get('name', 'target')}: {error_text}")
         config["_instr_warning_emitted"] = True
 
 
@@ -1417,28 +1646,28 @@ def run_both(
     )
 
     if parallel_with_buggy:
-        with ThreadPoolExecutor(max_workers=2) as pool:
-            buggy_future = pool.submit(
-                run_target,
-                buggy_cmd,
-                input_str,
-                input_mode,
-                config.get("buggy_cwd"),
-                timeout,
-                use_wsl,
-                extra_flags,
-            )
-            instr_future = pool.submit(
-                run_blackbox_instrumentation,
-                config,
-                input_str,
-                timeout,
-                input_mode,
-                use_wsl,
-            )
+        pool = get_parallel_pool()
+        buggy_future = pool.submit(
+            run_target,
+            buggy_cmd,
+            input_str,
+            input_mode,
+            config.get("buggy_cwd"),
+            timeout,
+            use_wsl,
+            extra_flags,
+        )
+        instr_future = pool.submit(
+            run_blackbox_instrumentation,
+            config,
+            input_str,
+            timeout,
+            input_mode,
+            use_wsl,
+        )
 
-            buggy_result = buggy_future.result()
-            instrumentation_coverage_text, instr_err = instr_future.result()
+        buggy_result = buggy_future.result()
+        instrumentation_coverage_text, instr_err = instr_future.result()
 
         _record_instrumentation_status(
             config=config,
@@ -1490,28 +1719,34 @@ def run_both(
         _store_instrumentation_error(config, instr_err)
 
     if ref_cmd:
-        if can_parallelize:
-            with ThreadPoolExecutor(max_workers=2) as pool:
-                instr_future = pool.submit(
-                    run_blackbox_instrumentation,
-                    config,
-                    input_str,
-                    timeout,
-                    input_mode,
-                    use_wsl,
-                )
-                ref_future = pool.submit(
-                    run_target,
-                    ref_cmd[current_os],
-                    input_str,
-                    input_mode,
-                    config.get("reference_cwd"),
-                    timeout,
-                    use_wsl,
-                )
+        needs_reference_coverage = (
+            use_coverage
+            and not config.get("coverage_enabled")
+            and not instrumentation_coverage_text
+        )
 
-                instrumentation_coverage_text, instr_err = instr_future.result()
-                reference_result = ref_future.result()
+        if can_parallelize:
+            pool = get_parallel_pool()
+            instr_future = pool.submit(
+                run_blackbox_instrumentation,
+                config,
+                input_str,
+                timeout,
+                input_mode,
+                use_wsl,
+            )
+            ref_future = pool.submit(
+                run_target,
+                ref_cmd[current_os],
+                input_str,
+                input_mode,
+                config.get("reference_cwd"),
+                timeout,
+                use_wsl,
+            )
+
+            instrumentation_coverage_text, instr_err = instr_future.result()
+            reference_result = ref_future.result()
 
             _record_instrumentation_status(
                 config=config,
@@ -1519,8 +1754,19 @@ def run_both(
                 instr_err=instr_err,
             )
             _store_instrumentation_error(config, instr_err)
-        else:
-            reference_result = run_target(
+            needs_reference_coverage = (
+                use_coverage
+                and not config.get("coverage_enabled")
+                and not instrumentation_coverage_text
+            )
+
+            # Avoid re-running the reference target in this path. The reference
+            # process already executed in parallel above, so fallback coverage
+            # is skipped here to preserve throughput.
+            if needs_reference_coverage:
+                needs_reference_coverage = False
+        elif needs_reference_coverage:
+            reference_result = run_reference_with_coverage(
                 cmd_template=ref_cmd[current_os],
                 input_str=input_str,
                 input_mode=input_mode,
@@ -1528,14 +1774,8 @@ def run_both(
                 timeout=timeout,
                 use_wsl=use_wsl,
             )
-
-        needs_reference_coverage = (
-            use_coverage
-            and not config.get("coverage_enabled")
-            and not instrumentation_coverage_text
-        )
-        if needs_reference_coverage:
-            reference_result = run_reference_with_coverage(
+        else:
+            reference_result = run_target(
                 cmd_template=ref_cmd[current_os],
                 input_str=input_str,
                 input_mode=input_mode,

@@ -26,8 +26,6 @@ input:
   # - type: sequence, parts: [ { type: _ }, { type: _ }, ... ], separator: "_" 
   # - type: any
 
-seeds_path: "_"
-
 # target specific keywords
 bug_keywords:
   - "_"

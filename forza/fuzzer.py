@@ -93,13 +93,20 @@ TARGETS_DIR = Path(__file__).resolve().parent / "targets"
 KNOWN_YAMLS = [f.name for f in TARGETS_DIR.glob("*.yaml")]
 
 MAX_CORPUS = 10000
+ENERGY_MIN = 0.1
+ENERGY_DECAY_PER_ITER = 0.999
+ENERGY_DECAY_INTERVAL = 50
+DEFAULT_GENERATED_SEEDS = 30
+DEFAULT_PARALLEL_WORKERS = 2
+MAX_PARALLEL_WORKERS = 16
 
 # ─────────────────────────────────────────────────────────────────────
-# Threading for parallel fuzzing (2 workers)
+# Threading for parallel fuzzing
 # ─────────────────────────────────────────────────────────────────────
 _corpus_energy_lock = threading.Lock()  # Protects corpus and energy dict updates
 _engine_lock = threading.Lock()         # Protects MutationEngine state
 _stats_lock = threading.Lock()          # Protects exec_time_window and completed iteration count
+_energy_decay_counter = 0
 
 # ---------------------------------------------------------------------------
 # Config helpers
@@ -111,6 +118,126 @@ def get_input_type(config: dict) -> str:
     input_block = config.get("input", {})
     input_type = input_block.get("type", "") if isinstance(input_block, dict) else None
     return input_type
+
+
+def get_parallel_workers(config: dict) -> int:
+    """Resolve outer fuzz-loop worker count from target config."""
+    raw_workers = config.get("parallel_workers", DEFAULT_PARALLEL_WORKERS)
+    try:
+        workers = int(raw_workers)
+    except (TypeError, ValueError):
+        workers = DEFAULT_PARALLEL_WORKERS
+    return max(1, min(MAX_PARALLEL_WORKERS, workers))
+
+
+def _config_bool(config: dict, key: str, default: bool = False) -> bool:
+    raw = config.get(key, default)
+    if isinstance(raw, bool):
+        return raw
+    if isinstance(raw, (int, float)):
+        return bool(raw)
+    if isinstance(raw, str):
+        lowered = raw.strip().lower()
+        if lowered in {"1", "true", "yes", "on"}:
+            return True
+        if lowered in {"0", "false", "no", "off"}:
+            return False
+    return default
+
+
+def _dedupe_preserve_order(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        out.append(value)
+    return out
+
+
+def _load_static_seeds(config: dict) -> list[str]:
+    seeds_path = config.get("seeds_path")
+    if not seeds_path:
+        return []
+    return load_seeds(str(seeds_path))
+
+
+def _generate_grammar_seeds(config: dict, count: int) -> list[str]:
+    if count <= 0:
+        return []
+
+    input_spec = config.get("input")
+    if not input_spec:
+        return []
+
+    try:
+        from engine.seed_generator import generate_from_spec
+    except Exception as e:
+        print(f"[warn] seed_generator unavailable: {e}")
+        return []
+
+    generated: list[str] = []
+    for _ in range(count):
+        try:
+            seed = generate_from_spec(input_spec)
+        except Exception as e:
+            print(f"[warn] seed_generator failed: {e}")
+            break
+
+        if not isinstance(seed, str):
+            seed = str(seed)
+        if seed:
+            generated.append(seed)
+
+    return generated
+
+
+def _maybe_apply_plateau_escalation(config: dict, engine: MutationEngine) -> None:
+    """Increase aggressive strategy weights when coverage has plateaued."""
+    if not _config_bool(config, "plateau_escalation_enabled", default=False):
+        return
+
+    tracker = coverage_tracker.get_tracker()
+    if tracker is None or not tracker.is_plateau:
+        return
+
+    try:
+        cooldown = int(config.get("plateau_escalation_cooldown", 100))
+    except (TypeError, ValueError):
+        cooldown = 100
+    cooldown = max(1, cooldown)
+
+    try:
+        current_inputs = int(getattr(tracker, "total_inputs", 0))
+    except (TypeError, ValueError):
+        current_inputs = 0
+
+    try:
+        last_boost_at = int(config.get("_last_plateau_boost_input", -10**9))
+    except (TypeError, ValueError):
+        last_boost_at = -10**9
+
+    if current_inputs - last_boost_at < cooldown:
+        return
+
+    try:
+        constraint_factor = float(config.get("plateau_constraint_boost", 1.35))
+    except (TypeError, ValueError):
+        constraint_factor = 1.35
+    try:
+        grammar_factor = float(config.get("plateau_grammar_boost", 1.2))
+    except (TypeError, ValueError):
+        grammar_factor = 1.2
+    try:
+        dictionary_factor = float(config.get("plateau_dictionary_boost", 1.15))
+    except (TypeError, ValueError):
+        dictionary_factor = 1.15
+
+    engine.boost("constraint_violation", factor=max(1.0, constraint_factor))
+    engine.boost("grammar_mutate", factor=max(1.0, grammar_factor))
+    engine.boost("insert_dictionary_token", factor=max(1.0, dictionary_factor))
+    config["_last_plateau_boost_input"] = current_inputs
 
 
 # ---------------------------------------------------------------------------
@@ -482,9 +609,17 @@ def run_seed_mode(config: dict) -> None:
     Uses inline classifier — does not require output_parser.py.
     Useful for sanity-checking a new target config.
     """
-    seeds = load_seeds(config["seeds_path"])
+    seeds = _load_static_seeds(config)
     if not seeds:
-        print(C.yellow("  [warn] no seeds found — check seeds_path in YAML"))
+        seeds = _generate_grammar_seeds(config, DEFAULT_GENERATED_SEEDS)
+    seeds = _dedupe_preserve_order(seeds)
+
+    if not seeds:
+        print(
+            C.yellow(
+                "  [warn] no seeds available — set seeds_path or provide input grammar"
+            )
+        )
         return
 
     print_banner(config, mode="seed", duration=None, max_iters=len(seeds))
@@ -538,7 +673,7 @@ def _fuzz_one_iteration(
     
     Thread-safe: only acquires lock for corpus/energy reads and updates + engine operations.
     """
-    global _corpus_energy_lock, _engine_lock
+    global _corpus_energy_lock, _engine_lock, _energy_decay_counter
     
     # ── 1. pick seed and mutate (needs lock for corpus/energy and engine)
     with _corpus_energy_lock:
@@ -600,15 +735,19 @@ def _fuzz_one_iteration(
             engine.boost(strategy)
     else:
         with _corpus_energy_lock:
-            energy[seed] = max(0.1, energy.get(seed, 1.0) * 0.95)
+            energy[seed] = max(ENERGY_MIN, energy.get(seed, 1.0) * 0.95)
 
     # AFL-style energy decay
     with _engine_lock:
+        _maybe_apply_plateau_escalation(config, engine)
         engine.decay()
     
     with _corpus_energy_lock:
-        for s in energy:
-            energy[s] = max(0.1, energy[s] * 0.999)
+        _energy_decay_counter += 1
+        if _energy_decay_counter % ENERGY_DECAY_INTERVAL == 0:
+            decay_factor = ENERGY_DECAY_PER_ITER ** ENERGY_DECAY_INTERVAL
+            for s in list(energy.keys()):
+                energy[s] = max(ENERGY_MIN, energy[s] * decay_factor)
 
     # ── 6. log run (has internal lock)
     with _corpus_energy_lock:
@@ -656,10 +795,9 @@ def run_fuzz_mode(
     global _status_drawn
     _status_drawn = False
 
-    seeds = load_seeds(config["seeds_path"])
-    if not seeds:
-        print(C.yellow("  [warn] no seeds found — check seeds_path in YAML"))
-        return
+    seeds = _load_static_seeds(config)
+    if not seeds and config.get("seeds_path"):
+        print(C.yellow("  [warn] seeds_path provided but no seeds found — using grammar generation"))
 
     # Get the input spec from the config (the 'input:' section of YAML)
     grammar_spec = config.get("input", {})
@@ -667,6 +805,7 @@ def run_fuzz_mode(
     engine = MutationEngine(
         input_format=get_input_type(config),
         grammar_spec=grammar_spec,
+        mutation_dictionary=config.get("mutation_dictionary"),
         enabled_strategies=config.get("enabled_strategies"),
         disabled_strategies=config.get("disabled_strategies"),
     )
@@ -680,7 +819,10 @@ def run_fuzz_mode(
     used_as_parent: set[int] = set()
 
     # ── energy scheduling state ───────────────────────────────
-    energy = {s: 1.0 for s in corpus}
+    energy = {s[0]: 1.0 for s in corpus}
+
+    global _energy_decay_counter
+    _energy_decay_counter = 0
 
     def pick_seed(corpus, energy):
         # We extract the string (s[0]) from the (str, depth) tuple for the energy lookup
@@ -688,28 +830,30 @@ def run_fuzz_mode(
         return random.choices(range(len(corpus)), weights=weights, k=1)[0]
 
     # ── seed corpus initialisation ────────────────────────────────────────
-    # Augment static seeds.txt with dynamically generated seeds using the grammar defined in config["input"].
-    if config.get("input"):
-        try:
-            from engine.seed_generator import generate_from_spec
+    # Augment static seeds with grammar-generated seeds up to DEFAULT_GENERATED_SEEDS.
+    generated = _generate_grammar_seeds(config, max(0, DEFAULT_GENERATED_SEEDS - len(seeds)))
+    if generated:
+        for g in generated:
+            corpus.append((g, 1))
+            energy[g] = 1.0
 
-            input_spec = config["input"]
-            generated = []
-            for _ in range(30 - len(seeds)):
-                seed = generate_from_spec(input_spec)
-                # generate_from_spec may return non-str (e.g. dict, list) — coerce
-                if not isinstance(seed, str):
-                    seed = str(seed)
-                generated.append(seed)
-            for g in generated:
-                corpus.append((g, 1))
-                energy[g] = 1.0
-        except Exception as e:
-            print(
-                C.yellow(
-                    f"  [warn] seed_generator failed: {e} — using static seeds only"
-                )
+    deduped_corpus: list[tuple[str, int]] = []
+    seen_seed_values: set[str] = set()
+    for seed_value, depth in corpus:
+        if seed_value in seen_seed_values:
+            continue
+        seen_seed_values.add(seed_value)
+        deduped_corpus.append((seed_value, depth))
+    corpus = deduped_corpus
+    energy = {seed_value: energy.get(seed_value, 1.0) for seed_value, _ in corpus}
+
+    if not corpus:
+        print(
+            C.yellow(
+                "  [warn] no seeds available — set seeds_path or provide input grammar"
             )
+        )
+        return
 
     # Reset per-target state in module-level wrappers
     bug_logger.reset()
@@ -768,12 +912,13 @@ def run_fuzz_mode(
     iteration = 0
 
     try:
-        # ── parallel fuzzing with 2 worker threads ──────────────────────
+        # ── parallel fuzzing with configurable worker threads ────────────
         exec_time_window = []
         completed_iterations = 0  # Tracks actual completed work for calibration
         MAX_WINDOW = 100
+        parallel_workers = get_parallel_workers(config)
         
-        with ThreadPoolExecutor(max_workers=2) as executor:
+        with ThreadPoolExecutor(max_workers=parallel_workers) as executor:
             futures = {}
             next_iter = 1
             pending_futures = set()

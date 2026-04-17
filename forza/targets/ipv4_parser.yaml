@@ -3,7 +3,7 @@ name: ipv4_parser
 # commands
 buggy_cmd:
   windows:
-    ["../IPv4-IPv6-parser-main/bin/win-ipv4-parser.exe", "--ipstr", "{input}"]
+    ["./bin/win-ipv4-parser.exe", "--ipstr", "{input}"]
   linux: ["./bin/linux-ipv4-parser", "--ipstr", "{input}"]
   mac: ["./bin/mac-ipv4-parser", "--ipstr", "{input}"]
 buggy_cwd: "../../IPv4-IPv6-parser-main"
@@ -24,7 +24,7 @@ input:
     type: int
     min: 0
     max: 255
-seeds_path: "../inputs/ipv4_parser/seeds.txt"
+parallel_workers: 4
 
 # special bug keywords
 bug_keywords:
@@ -42,8 +42,8 @@ blackbox_instrumentation:
   kind_windows: frida_stalker
   frida_config:
     target_module: "win-ipv4-parser.exe"
-    use_call_summary: true
-    flush_event_count: 4096
+    use_call_summary: false
+    flush_event_count: 1024
     capture_target_output: false
     parallel_with_buggy: true
     parallel_with_reference: true

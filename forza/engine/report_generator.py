@@ -314,6 +314,15 @@ def _to_bool(row: dict, key: str) -> bool | None:
 
 def _render_coverage_quality_panel(all_coverage: dict[str, list[dict]], targets: list[str]) -> str:
     fallback_sources = {"reference_percentages", "proxy_none", "buggy_output"}
+    mode_tracking_tip = (
+        "How coverage_source is tracked: "
+        "whitebox_target/instrumented = direct target code percentages; "
+        "instrumentation_edges = blackbox edge-frequency instrumentation (drives map density, not code %); "
+        "reference_percentages = fallback coverage from the reference implementation; "
+        "buggy_output = percentages parsed directly from target output; "
+        "behavioral_signature = behavioral class fingerprinting for blackbox novelty; "
+        "proxy/proxy_none = no valid percentage signal this iteration."
+    )
     rows_html = ""
 
     for t in targets:
@@ -366,7 +375,10 @@ def _render_coverage_quality_panel(all_coverage: dict[str, list[dict]], targets:
 
     return f"""
 <div class="chart-box" style="grid-column:1/-1;">
-  <div class="chart-label">coverage quality and fallback diagnostics</div>
+  <div class="chart-label">
+    coverage quality and fallback diagnostics
+    <span class="chart-tooltip" data-tip="{_esc(mode_tracking_tip)}">ⓘ</span>
+  </div>
   <div class="table-wrap">
     <table>
       <thead><tr><th>target</th><th>points</th><th>fallback rows</th><th>invalid rows</th><th>top coverage sources</th><th>top instrumentation error</th></tr></thead>
@@ -615,11 +627,47 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
         ),
     }
 
+    direct_percentage_sources = {
+        "whitebox_target",
+        "instrumented",
+        "buggy_output",
+        "instrumented_percentages",
+    }
+
+    def _source_name(row: dict) -> str:
+        return str(row.get("coverage_source") or "").strip().lower()
+
+    direct_codecov_targets = {
+        t
+        for t in targets
+        if any(_source_name(row) in direct_percentage_sources for row in all_coverage.get(t, []))
+    }
+    fallback_only_targets = [
+        t
+        for t in targets
+        if all_coverage.get(t, []) and t not in direct_codecov_targets
+    ]
+    fallback_only_labels = ", ".join(_target_label(t) for t in fallback_only_targets)
+
     function_proxy_targets = [
         t for t in targets if _looks_like_combined_proxy(all_coverage.get(t, []))
     ]
     has_function_proxy = bool(function_proxy_targets)
     proxy_target_labels = ", ".join(_target_label(t) for t in function_proxy_targets)
+
+    reference_fallback_targets = [
+        t
+        for t in targets
+        if any(
+            str(row.get("coverage_source") or "").strip().lower()
+            == "reference_percentages"
+            for row in all_coverage.get(t, [])
+        )
+    ]
+    has_reference_fallback = bool(reference_fallback_targets)
+    reference_fallback_labels = ", ".join(
+        _target_label(t) for t in reference_fallback_targets
+    )
 
     palette = ["#00ff88", "#45aaf2", "#ffd32a", "#ff4757"]
     quality_panel_html = _render_coverage_quality_panel(all_coverage, targets)
@@ -633,12 +681,15 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
     ]
 
     charts_html = ""
+    rendered_code_chart = False
     for metric, metric_label in all_metrics:
         chart_id = f"cov_{metric}"
         datasets = []
         has_nonzero = False
 
         for i, t in enumerate(targets):
+            if metric != "map_density" and t not in direct_codecov_targets:
+                continue
             rows = all_coverage[t]
             if not rows:
                 continue
@@ -686,6 +737,15 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
         # Tooltip hint for this metric
         effective_metric_label = metric_label
         tip_text_value = tooltips.get(metric, "")
+
+        if metric != "map_density" and fallback_only_targets:
+            tip_text_value = (
+                "Fallback-only blackbox targets are hidden from this code-coverage chart and are "
+                "represented via map density instead. "
+                f"Hidden here: {fallback_only_labels}. "
+                + tip_text_value
+            )
+
         if metric == "function_coverage" and has_function_proxy:
             effective_metric_label = "function / combined proxy coverage (%)"
             tip_text_value = (
@@ -694,6 +754,17 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
                 f"Proxy detected for: {proxy_target_labels}. "
                 + tip_text_value
             )
+        if metric in {"statement_coverage", "branch_coverage", "function_coverage"} and has_reference_fallback:
+            effective_metric_label = f"{effective_metric_label} (includes reference fallback)"
+            tip_text_value = (
+                "At least one series uses reference-script fallback coverage rather than "
+                "direct target instrumentation. "
+                f"Fallback detected for: {reference_fallback_labels}. "
+                + tip_text_value
+            )
+
+        if metric != "map_density":
+            rendered_code_chart = True
 
         tip_text = _esc(tip_text_value)
 
@@ -737,9 +808,26 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
 }})();
 </script>"""
 
+    code_mode_note = ""
+    if not rendered_code_chart:
+        code_mode_note = (
+            "<div class=\"no-coverage-msg\" style=\"grid-column:1/-1;\">"
+            "<span class=\"nc-icon\">◇</span>"
+            "<div>"
+            "<div class=\"nc-title\">code-coverage charts hidden (no direct instrumentation percentages)</div>"
+            "<div class=\"nc-sub\">"
+            "This report is in blackbox mode for the selected targets. "
+            "Use <code>map density</code> for growth trends. "
+            "If source-level coverage is required, run a whitebox target with <code>coverage_enabled: true</code>"
+            " and <code>coverage_flag</code>."
+            "</div>"
+            "</div>"
+            "</div>"
+        )
+
     return f"""
 <div class="section-title">coverage over time</div>
-<div class="coverage-grid">{quality_panel_html}{charts_html}</div>"""
+<div class="coverage-grid">{quality_panel_html}{code_mode_note}{charts_html}</div>"""
 
 
 def render_bug_table(rows: list[dict], target: str) -> str:

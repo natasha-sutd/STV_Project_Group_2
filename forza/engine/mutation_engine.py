@@ -150,11 +150,13 @@ class MutationEngine:
         self,
         input_format: str = "*",
         grammar_spec: dict | None = None,
+        mutation_dictionary: list[str] | None = None,
         enabled_strategies: list[str] | None = None,
         disabled_strategies: list[str] | None = None,
     ) -> None:
         self.input_format = input_format
         self._grammar_spec = grammar_spec or {}
+        self._dictionary_tokens = self._normalize_dictionary_tokens(mutation_dictionary)
         self._last_strategy = "unknown"
 
         # Build active strategy list
@@ -175,6 +177,13 @@ class MutationEngine:
                 "name": "constraint_violation",
                 "fn": self._constraint_violation,
                 "weight": 2.0,  # High weight — directly targets logic bugs
+            })
+
+        if self._dictionary_tokens:
+            self.strategies.append({
+                "name": "insert_dictionary_token",
+                "fn": self._insert_dictionary_token,
+                "weight": 1.6,
             })
 
         if enabled_strategies:
@@ -240,6 +249,28 @@ class MutationEngine:
             return violate_constraints(seed, self._grammar_spec)
         except Exception:
             return insert_special_char(seed)
+
+    def _insert_dictionary_token(self, seed: str) -> str:
+        """Insert a target-specific dictionary token at a random offset."""
+        if not self._dictionary_tokens:
+            return insert_special_char(seed)
+        token = random.choice(self._dictionary_tokens)
+        idx = random.randint(0, len(seed))
+        return seed[:idx] + token + seed[idx:]
+
+    @staticmethod
+    def _normalize_dictionary_tokens(raw_tokens: list[str] | None) -> list[str]:
+        if not isinstance(raw_tokens, list):
+            return []
+        tokens: list[str] = []
+        seen: set[str] = set()
+        for raw in raw_tokens:
+            token = str(raw).strip()
+            if not token or token in seen:
+                continue
+            seen.add(token)
+            tokens.append(token)
+        return tokens
 
     # ── Internal ──────────────────────────────────────────────────────────
     def _weighted_choice(self) -> dict:
