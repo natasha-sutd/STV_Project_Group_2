@@ -1,6 +1,4 @@
-'''
-Firestore client module for uploading fuzzing results to Firebase Firestore.
-'''
+
 # Suppress gRPC debug logs
 import os
 os.environ["GRPC_VERBOSITY"] = "ERROR"
@@ -19,7 +17,7 @@ except ImportError:
     credentials = None
     firestore = None
 
-from engine.types import BugResult
+from .types import BugResult
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 _ARCHIVE_CREDS_PATH = _PROJECT_ROOT / "firebase-credentials.json"
@@ -61,10 +59,7 @@ def _init_firebase_archive() -> bool:
 
 
 def _init_firebase_current() -> bool:
-    """
-    Initialize Current Firebase app with service account credentials.
-    Returns True if successful, False otherwise.
-    """
+
     global _current_db, _current_initialized
 
     if _current_initialized:
@@ -88,45 +83,30 @@ def _init_firebase_current() -> bool:
 
 
 def get_db():
-    """Get Archive Firestore client (backwards compatibility), initializing if needed."""
     if not _archive_initialized:
         _init_firebase_archive()
     return _archive_db
 
 
 def get_archive_db():
-    """Get Archive Firestore client, initializing if needed."""
     if not _archive_initialized:
         _init_firebase_archive()
     return _archive_db
 
 
 def get_current_db():
-    """Get Current Firestore client, initializing if needed."""
     if not _current_initialized:
         _init_firebase_current()
     return _current_db
 
 
 def get_both_dbs() -> Tuple[Optional[object], Optional[object]]:
-    """
-    Get both Archive and Current Firestore clients.
-    Returns (archive_db, current_db) tuple.
-    """
+
     return get_archive_db(), get_current_db()
 
 
 def clear_current_db(run_id: str) -> bool:
-    """
-    Clear all collections in the Current database before starting a new run.
-    This ensures only the latest run data is stored.
 
-    Args:
-        run_id: The new run ID that will be stored
-
-    Returns:
-        True if successful, False otherwise
-    """
     global _current_run_id
 
     db = get_current_db()
@@ -151,14 +131,11 @@ def clear_current_db(run_id: str) -> bool:
 
 
 def upload_bug(result: BugResult, run_id: str = "", is_representative: bool = False) -> Optional[str]:
-    """
-    Upload a bug result to both Archive and Current Firestore databases.
+    # Upload a bug result to both Archive and Current Firestore databases.
 
-    Collection: 'bugs'
-    Document fields match BugResult dataclass.
-
-    Returns the document ID from archive if successful, None otherwise.
-    """
+    # Collection: 'bugs'
+    # Document fields match BugResult dataclass.
+    # Returns the document ID from archive if successful, None otherwise.
     archive_db, current_db = get_both_dbs()
 
     doc_data = {
@@ -208,11 +185,9 @@ def upload_stats(
     elapsed_s: float,
     runs_per_sec: float,
 ) -> Optional[str]:
-    """
-    Upload fuzzing statistics snapshot to both Archive and Current Firestore databases.
+    # Upload fuzzing statistics snapshot to both Archive and Current Firestore databases.
 
-    Collection: 'stats'
-    """
+    # Collection: 'stats'
     archive_db, current_db = get_both_dbs()
 
     doc_data = {
@@ -252,9 +227,7 @@ def upload_crash(
     input_data: str,
     error_type: str,
 ) -> Optional[str]:
-    """
-    Upload crash/timeout data to both Archive and Current 'crashes' collection.
-    """
+
     archive_db, current_db = get_both_dbs()
 
     doc_data = {
@@ -299,11 +272,7 @@ def upload_coverage(
     execution_metric: float = 0.0,
     coverage_source: str = "proxy",
 ) -> Optional[str]:
-    """
-    Upload one coverage snapshot to both Archive and Current Firestore databases.
 
-    Collection: 'coverage'
-    """
     archive_db, current_db = get_both_dbs()
 
     doc_data = {
