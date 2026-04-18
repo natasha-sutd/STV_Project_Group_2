@@ -3,13 +3,15 @@ name: cidrize
 # commands
 buggy_cmd: 
   windows: ["../cidrize-runner-main/bin/win-cidrize-runner.exe", "--func", "cidrize", "--ipstr", "{input}", "--raise-errors"]
+  linux: ["./bin/linux-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}", "--raise-errors"]
   mac: ["../cidrize-runner-main/bin/mac-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}", "--raise-errors"]
 buggy_cwd: "../../cidrize-runner-main"
 
 reference_cmd:
-  windows: ["python", "cidrize/cidrize.py", "{input}"]
-  mac: ["python3", "cidrize/cidrize.py", "{input}"]
-reference_cwd: "../../cidrize-runner-main"
+  windows: ["python", "cidrize.py", "{input}"]
+  linux: ["python3", "cidrize.py", "{input}"]
+  mac: ["python3", "cidrize.py", "{input}"]
+reference_cwd: "../../cidrize-runner-main/cidrize"
 
 # input
 input_mode: arg
@@ -26,6 +28,7 @@ input:
       min: 0
       max: 32
 seeds_path: "../inputs/cidrize/seeds.txt"
+parallel_workers: 4
 
 # special bug keywords
 bug_keywords:
@@ -37,4 +40,30 @@ reference_output_pattern: "{value}"
 
 # coverage
 coverage_enabled: false
-tracking_mode: behavioral
+tracking_mode: code_execution
+blackbox_instrumentation:
+  enabled: true
+  kind: frida_stalker
+  frida_config:
+    target_module: 
+      windows: "win-cidrize-runner.exe"
+      linux: "linux-cidrize-runner"
+      mac: "mac-cidrize-runner"
+    exclude_modules:
+      - "ntdll.dll"
+      - "kernel32.dll"
+      - "kernelbase.dll"
+      - "ucrtbase.dll"
+    use_call_summary: true
+    parallel_with_buggy: true
+    attach_retries: 3 
+    attach_retry_delay_ms: 50
+  cmd:
+    windows:
+      ["wsl", "--cd", "{buggy_cwd_wsl}", "afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/linux-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}", "--raise-errors"]
+    linux:
+      ["afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/linux-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}", "--raise-errors"]
+    mac:
+      ["afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/mac-cidrize-runner", "--func", "cidrize", "--ipstr", "{input}", "--raise-errors"]
+  timeout: 20
+  timeout_windows: 60

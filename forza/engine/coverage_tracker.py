@@ -37,6 +37,19 @@ _ENGINE_DIR = Path(__file__).resolve().parent
 _PROJECT_DIR = _ENGINE_DIR.parent
 _RESULTS_DIR = _PROJECT_DIR / "results"
 
+_COVERAGE_LOG_FIELDS = [
+    "timestamp",
+    "run_id",
+    "statement_coverage",
+    "branch_coverage",
+    "function_coverage",
+    "map_density",
+    "total_inputs",
+    "coverage_source",
+    "coverage_data_valid",
+    "instrumentation_error",
+]
+
 
 def get_bucket(count: int) -> int:
     """Map a raw hit count to one of AFL's 8 frequency buckets.
@@ -144,6 +157,14 @@ class CoverageTracker:
         self.current_metric: int = 0
         self.last_iteration_id: int = 0
 
+        # Firestore uploads are throttled to avoid blocking the hot path.
+        try:
+            upload_every = int(config_dict.get("coverage_upload_interval", 25))
+        except (TypeError, ValueError):
+            upload_every = 25
+        self._coverage_upload_interval: int = max(1, upload_every)
+        self._last_uploaded_input_count: int = 0
+
         # AFL tuple bucketing for count coverage
         # Maps edge_id → set of observed bucket indices
         self.global_edge_buckets: dict[str, set[int]] = collections.defaultdict(set)
@@ -191,6 +212,7 @@ class CoverageTracker:
         # None = not yet seen, use proxy metric instead
         self._last_line_cov: float | None = None
         self._last_branch_cov: float | None = None
+        self._last_function_cov: float | None = None
 
         # Current statement coverage (used in map_density calculation)
         self.current_statement_cov: float = 0.0
@@ -217,199 +239,281 @@ class CoverageTracker:
 
         _RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         self.coverage_log_path = _RESULTS_DIR / f"{self.target}_coverage.csv"
+        self._coverage_log_fields: list[str] = []
+        self._state_lock = threading.Lock()
+        self._coverage_log_lock = threading.Lock()
+        try:
+            flush_every = int(config_dict.get("coverage_flush_interval", 50))
+        except (TypeError, ValueError):
+            flush_every = 50
+        self._coverage_flush_interval = max(1, flush_every)
+        self._pending_coverage_rows: list[dict[str, Any]] = []
         self.ensure_log_file()
 
     def update(self, payload: FuzzIterationPayload) -> bool:
         """Update tracker state using one fuzz iteration payload."""
-        new_path_found = False
-        new_behavior_found = False
-        new_execution_found = False
-        bucket_novel = False
-        self.last_iteration_id = payload.iteration_id
-        self.total_inputs += 1
+        with self._state_lock:
+            new_path_found = False
+            new_behavior_found = False
+            new_execution_found = False
+            bucket_novel = False
+            self.last_iteration_id = payload.iteration_id
+            self.total_inputs += 1
 
-        # --- Update max depth (item geometry: levels) ---
-        if payload.input_depth > self._max_depth:
-            self._max_depth = payload.input_depth
+            # --- Update max depth (item geometry: levels) ---
+            if payload.input_depth > self._max_depth:
+                self._max_depth = payload.input_depth
 
-        if payload.bug_key and payload.bug_key not in self.seen_bug_keys:
-            self.seen_bug_keys.add(payload.bug_key)
-            new_behavior_found = True
+            if payload.bug_key and payload.bug_key not in self.seen_bug_keys:
+                self.seen_bug_keys.add(payload.bug_key)
+                new_behavior_found = True
 
-        newly_seen_lines = self.extract_line_identifiers(payload.execution_metrics)
-        coverage_percentages = self.extract_percentage_metrics(
-            payload.execution_metrics
-        )
-        if newly_seen_lines:
-            novel_lines = newly_seen_lines - self.covered_line_ids
-            if novel_lines:
-                self.covered_line_ids.update(novel_lines)
-                new_execution_found = True
+            newly_seen_lines = self.extract_line_identifiers(payload.execution_metrics)
+            coverage_percentages = self.extract_percentage_metrics(
+                payload.execution_metrics
+            )
+            payload_coverage_source = ""
+            payload_instrumentation_error = ""
+            if isinstance(payload.execution_metrics, dict):
+                raw_source = payload.execution_metrics.get("coverage_source")
+                if raw_source is not None:
+                    payload_coverage_source = str(raw_source).strip().lower()
+                raw_instr_err = payload.execution_metrics.get("instrumentation_error")
+                if raw_instr_err:
+                    payload_instrumentation_error = str(raw_instr_err).strip()
+            if newly_seen_lines:
+                novel_lines = newly_seen_lines - self.covered_line_ids
+                if novel_lines:
+                    self.covered_line_ids.update(novel_lines)
+                    new_execution_found = True
 
-                # Record which input first discovered each new edge
-                if payload.input_data:
-                    input_hash = hashlib.md5(
-                        payload.input_data[:200].encode(errors="replace")
-                    ).hexdigest()[:12]
-                    input_len = len(payload.input_data) if payload.input_data else 0
-                    for edge_id in novel_lines:
-                        if edge_id not in self._edge_discoverer:
-                            self._edge_discoverer[edge_id] = input_hash
-                        # Update favored input: prefer smaller/faster inputs
-                        self._update_favored(
-                            edge_id, input_hash, input_len, payload.exec_time_ms
-                        )
+                    # Record which input first discovered each new edge
+                    if payload.input_data:
+                        input_hash = hashlib.md5(
+                            payload.input_data[:200].encode(errors="replace")
+                        ).hexdigest()[:12]
+                        input_len = len(payload.input_data) if payload.input_data else 0
+                        for edge_id in novel_lines:
+                            if edge_id not in self._edge_discoverer:
+                                self._edge_discoverer[edge_id] = input_hash
+                            # Update favored input: prefer smaller/faster inputs
+                            self._update_favored(
+                                edge_id, input_hash, input_len, payload.exec_time_ms
+                            )
 
-        self.behavioral_metric = len(self.seen_bug_keys)
-        self.execution_metric = len(self.covered_line_ids)
+            self.behavioral_metric = len(self.seen_bug_keys)
+            self.execution_metric = len(self.covered_line_ids)
 
-        if self.mode == "behavioral":
-            self.current_metric = self.behavioral_metric
-
-            # --- Bitmap: mark bug_key slot ---
-            if payload.bug_key:
-                self.global_edge_buckets[payload.bug_key].add(0)  # 1-hit bucket
-                idx = _hash_edge_to_bitmap_idx(payload.bug_key)
-                self._bitmap[idx] = max(self._bitmap[idx], 1)
-                self._bitmap_virgin[idx] = 0xFF
-
-            # --- Bitmap: mark output-signature slot (blackbox behavioral edge) ---
-            # Every distinct output fingerprint (exit-code bucket + output shape)
-            # is treated as a new "edge" in the 64KB bitmap, exactly like AFL does
-            # for compiled targets.  This gives a meaningful, monotonically growing
-            # map_density for fully black-box targets.
-            new_sig_found = False
-            if payload.output_signature:
-                sig = payload.output_signature
-                if sig not in self._seen_output_signatures:
-                    self._seen_output_signatures.add(sig)
-                    sig_idx = _hash_edge_to_bitmap_idx(sig)
-                    self._bitmap[sig_idx] = max(self._bitmap[sig_idx], 1)
-                    self._bitmap_virgin[sig_idx] = 0xFF
-                    self.global_edge_buckets[sig].add(0)
-                    new_sig_found = True
-
-            new_path_found = new_behavior_found or new_sig_found
-
-            # Behavioral mode has NO source code instrumentation, so
-            # statement/branch/function coverage cannot exist — log 0.0.
-            # The map_density (computed below) is the meaningful metric.
-            statement_coverage = 0.0
-            branch_coverage = 0.0
-            function_coverage = 0.0
-        elif self.mode == "code_execution":
-            if coverage_percentages:
-                # Real instrumented percentages — detect novelty by comparing
-                # against the last recorded statement coverage value.
-                new_statement = coverage_percentages.get("statement", 0.0)
-                new_path_found = new_statement > (self._last_line_cov or 0.0)
-                self._last_line_cov = new_statement
-                self._last_branch_cov = coverage_percentages.get(
-                    "branch", self._last_branch_cov
-                )
-                self.current_metric = self.execution_metric
-            elif newly_seen_lines:
-                self.current_metric = self.execution_metric
-                new_path_found = new_execution_found
-            else:
-                # No coverage data from this run (target crashed / produced no
-                # --show-coverage output).  Fall back to bug-key novelty for
-                # corpus-growth decisions, but DO NOT mutate the logged coverage
-                # value — carry the last real measurement forward instead.
-                # The old formula `behavioral_metric * 2.0` created visible spikes
-                # in the coverage chart every time a bug was found without data.
+            if self.mode == "behavioral":
                 self.current_metric = self.behavioral_metric
-                new_path_found = new_behavior_found
 
-            if coverage_percentages:
-                statement_coverage = coverage_percentages.get(
-                    "statement", round(float(self.current_metric), 2)
-                )
-                branch_coverage = coverage_percentages.get("branch", statement_coverage)
-                function_coverage = coverage_percentages.get(
-                    "function", coverage_percentages.get("combined", statement_coverage)
-                )
-            else:
-                # No --show-coverage data this iteration (e.g. target crashed).
-                # Carry the last valid measurement forward so the chart stays
-                # flat during bad runs rather than spiking down to a raw count.
-                statement_coverage = self._last_line_cov if self._last_line_cov is not None else 0.0
-                branch_coverage = self._last_branch_cov if self._last_branch_cov is not None else 0.0
-                function_coverage = statement_coverage
-
-            # --- AFL bucket novelty detection ---
-            # Extract per-edge hit frequencies and check for new bucket entries.
-            # A new bucket for an EXISTING edge = new path (AFL virgin-bits).
-            line_frequencies = self.extract_line_frequencies(payload.execution_metrics)
-
-            # Bitmap-hash fast path: if the entire frequency dict hashes the
-            # same as last iteration, skip the per-edge bucket check.
-            bitmap_hash = hashlib.md5(
-                str(sorted(line_frequencies.items())).encode()
-            ).hexdigest()
-
-            if bitmap_hash != self._last_bitmap_hash:
-                self._last_bitmap_hash = bitmap_hash
-
-                for edge_id, count in line_frequencies.items():
-                    # Skip summary entries (line:N/M, branch:N/M)
-                    if edge_id.startswith(("line:", "branch:")):
-                        continue
-                    b = get_bucket(count)
-
-                    # --- Update the simulated 64KB bitmap ---
-                    idx = _hash_edge_to_bitmap_idx(edge_id)
-                    self._bitmap[idx] = max(self._bitmap[idx], b + 1)
+                # --- Bitmap: mark bug_key slot ---
+                if payload.bug_key:
+                    self.global_edge_buckets[payload.bug_key].add(0)  # 1-hit bucket
+                    idx = _hash_edge_to_bitmap_idx(payload.bug_key)
+                    self._bitmap[idx] = max(self._bitmap[idx], 1)
                     self._bitmap_virgin[idx] = 0xFF
 
-                    # Check if this bucket is NEW for this edge
-                    if b not in self.global_edge_buckets[edge_id]:
-                        # Skip variable edges for novelty decisions
-                        if edge_id not in self._variable_edges:
-                            bucket_novel = True
-                    self.global_edge_buckets[edge_id].add(b)
+                # --- Bitmap: mark output-signature slot (blackbox behavioral edge) ---
+                # Every distinct output fingerprint (exit-code bucket + output shape)
+                # is treated as a new "edge" in the 64KB bitmap, exactly like AFL does
+                # for compiled targets.  This gives a meaningful, monotonically growing
+                # map_density for fully black-box targets.
+                new_sig_found = False
+                if payload.output_signature:
+                    sig = payload.output_signature
+                    if sig not in self._seen_output_signatures:
+                        self._seen_output_signatures.add(sig)
+                        sig_idx = _hash_edge_to_bitmap_idx(sig)
+                        self._bitmap[sig_idx] = max(self._bitmap[sig_idx], 1)
+                        self._bitmap_virgin[sig_idx] = 0xFF
+                        self.global_edge_buckets[sig].add(0)
+                        new_sig_found = True
 
-                    # Update stability tracking
-                    self._edge_stability[edge_id].add(b)
+                new_path_found = new_behavior_found or new_sig_found
 
-            if bucket_novel:
-                new_path_found = True
+                # Behavioral mode has NO source code instrumentation, so
+                # statement/branch/function coverage cannot exist — log 0.0.
+                # The map_density (computed below) is the meaningful metric.
+                statement_coverage = 0.0
+                branch_coverage = 0.0
+                function_coverage = 0.0
+            elif self.mode == "code_execution":
+                fallback_sig_novel = False
+                if (
+                    payload_coverage_source in {"proxy_none", "reference_percentages"}
+                    and payload.output_signature
+                ):
+                    sig = payload.output_signature
+                    if sig not in self._seen_output_signatures:
+                        self._seen_output_signatures.add(sig)
+                        fallback_sig_novel = True
 
-        self.current_statement_cov = statement_coverage
+                prev_statement_cov = (
+                    self._last_line_cov if self._last_line_cov is not None else 0.0
+                )
+                prev_branch_cov = (
+                    self._last_branch_cov
+                    if self._last_branch_cov is not None
+                    else prev_statement_cov
+                )
+                prev_function_cov = (
+                    self._last_function_cov
+                    if self._last_function_cov is not None
+                    else prev_statement_cov
+                )
 
-        # --- Own finds tracking ---
-        if new_path_found:
-            self._own_finds += 1
+                if coverage_percentages:
+                    # Keep percentage-based coverage cumulative so charts represent
+                    # "coverage discovered so far" rather than per-input volatility.
+                    raw_statement_cov = coverage_percentages.get(
+                        "statement", round(float(self.current_metric), 2)
+                    )
+                    raw_branch_cov = coverage_percentages.get(
+                        "branch", raw_statement_cov
+                    )
+                    raw_function_cov = coverage_percentages.get(
+                        "function", coverage_percentages.get("combined", raw_statement_cov)
+                    )
 
-        # --- Plateau detection ---
-        if new_path_found:
-            self._iterations_since_new_cov = 0
-            self._is_plateau = False
-        else:
-            self._iterations_since_new_cov += 1
-            if self._iterations_since_new_cov >= self.PLATEAU_THRESHOLD:
-                self._is_plateau = True
+                    self._last_line_cov = max(prev_statement_cov, raw_statement_cov)
+                    self._last_branch_cov = max(prev_branch_cov, raw_branch_cov)
+                    self._last_function_cov = max(prev_function_cov, raw_function_cov)
 
-        # --- Update thread-safe cached metric strings ---
-        self._update_cached_metrics()
+                    statement_coverage = self._last_line_cov
+                    branch_coverage = self._last_branch_cov
+                    function_coverage = self._last_function_cov
 
-        # --- Periodic bitmap snapshot export ---
-        if self.total_inputs % self._snapshot_interval == 0:
-            self._export_bitmap_snapshot()
+                    coverage_improved = (
+                        statement_coverage > prev_statement_cov
+                        or branch_coverage > prev_branch_cov
+                        or function_coverage > prev_function_cov
+                    )
+                    new_path_found = coverage_improved
+                    self.current_metric = self.execution_metric
+                elif newly_seen_lines:
+                    self.current_metric = self.execution_metric
+                    new_path_found = new_execution_found
 
-        # --- Compute map density (universal metric for both modes) ---
-        map_density_pct = sum(1 for b in self._bitmap if b > 0) / MAP_SIZE * 100
+                    # No percentage metrics this iteration; retain the best known
+                    # percentages so missing data does not create visual drops.
+                    statement_coverage = prev_statement_cov
+                    branch_coverage = prev_branch_cov
+                    function_coverage = prev_function_cov
+                else:
+                    # No coverage data from this run (target crashed / produced no
+                    # --show-coverage output). Keep the execution-scale metric stable,
+                    # and use output-signature novelty as a separate fallback signal.
+                    self.current_metric = self.execution_metric
+                    new_path_found = fallback_sig_novel
+
+                    # No --show-coverage data this iteration (e.g. target crashed).
+                    # Carry the last valid measurement forward so the chart stays
+                    # flat during bad runs rather than spiking down to a raw count.
+                    statement_coverage = prev_statement_cov
+                    branch_coverage = prev_branch_cov
+                    function_coverage = prev_function_cov
+
+                # --- AFL bucket novelty detection ---
+                # Extract per-edge hit frequencies and check for new bucket entries.
+                # A new bucket for an EXISTING edge = new path (AFL virgin-bits).
+                line_frequencies = self.extract_line_frequencies(payload.execution_metrics)
+
+                # Bitmap-hash fast path: if the entire frequency dict hashes the
+                # same as last iteration, skip the per-edge bucket check.
+                bitmap_hash = hashlib.md5(
+                    str(sorted(line_frequencies.items())).encode()
+                ).hexdigest()
+
+                if bitmap_hash != self._last_bitmap_hash:
+                    self._last_bitmap_hash = bitmap_hash
+
+                    for edge_id, count in line_frequencies.items():
+                        # Skip summary entries (line:N/M, branch:N/M)
+                        if edge_id.startswith(("line:", "branch:")):
+                            continue
+                        b = get_bucket(count)
+
+                        # --- Update the simulated 64KB bitmap ---
+                        idx = _hash_edge_to_bitmap_idx(edge_id)
+                        self._bitmap[idx] = max(self._bitmap[idx], b + 1)
+                        self._bitmap_virgin[idx] = 0xFF
+
+                        # Check if this bucket is NEW for this edge
+                        if b not in self.global_edge_buckets[edge_id]:
+                            # Skip variable edges for novelty decisions
+                            if edge_id not in self._variable_edges:
+                                bucket_novel = True
+                        self.global_edge_buckets[edge_id].add(b)
+
+                        # Update stability tracking
+                        self._edge_stability[edge_id].add(b)
+
+                if bucket_novel:
+                    new_path_found = True
+
+            self.current_statement_cov = statement_coverage
+
+            # --- Own finds tracking ---
+            if new_path_found:
+                self._own_finds += 1
+
+            # --- Plateau detection ---
+            if new_path_found:
+                self._iterations_since_new_cov = 0
+                self._is_plateau = False
+            else:
+                self._iterations_since_new_cov += 1
+                if self._iterations_since_new_cov >= self.PLATEAU_THRESHOLD:
+                    self._is_plateau = True
+
+            # --- Update thread-safe cached metric strings ---
+            self._update_cached_metrics()
+
+            # --- Periodic bitmap snapshot export ---
+            if self.total_inputs % self._snapshot_interval == 0:
+                self._export_bitmap_snapshot()
+
+            # --- Compute map density (universal metric for both modes) ---
+            map_density_pct = sum(1 for b in self._bitmap if b > 0) / MAP_SIZE * 100
+            coverage_source_for_log = (
+                payload_coverage_source
+                if payload_coverage_source
+                else ("instrumented" if coverage_percentages else "proxy")
+            )
+            valid_coverage_sources = {
+                "whitebox_target",
+                "instrumentation_edges",
+                "buggy_output",
+                "instrumented",
+                "instrumented_percentages",
+            }
+            coverage_data_valid = (
+                self.mode == "behavioral"
+                or coverage_source_for_log in valid_coverage_sources
+                or bool(coverage_percentages)
+                or bool(newly_seen_lines)
+            )
+            total_inputs_for_log = self.total_inputs
+            iteration_id_for_log = self.last_iteration_id
+            current_metric_for_log = self.current_metric
+            behavioral_metric_for_log = self.behavioral_metric
+            execution_metric_for_log = self.execution_metric
 
         self.log_state(
-            current_metric=self.current_metric,
+            iteration_id=iteration_id_for_log,
+            total_inputs=total_inputs_for_log,
+            current_metric=current_metric_for_log,
             new_path_found=new_path_found,
-            behavioral_metric=self.behavioral_metric,
-            execution_metric=self.execution_metric,
+            behavioral_metric=behavioral_metric_for_log,
+            execution_metric=execution_metric_for_log,
             statement_coverage=statement_coverage,
             branch_coverage=branch_coverage,
             function_coverage=function_coverage,
             map_density=map_density_pct,
-            coverage_source=("instrumented" if coverage_percentages else "proxy"),
+            coverage_source=coverage_source_for_log,
+            coverage_data_valid=coverage_data_valid,
+            instrumentation_error=payload_instrumentation_error,
         )
         return new_path_found
 
@@ -610,27 +714,66 @@ class CoverageTracker:
     # --- Coverage log file ---
 
     def ensure_log_file(self) -> None:
-        # Create the log file with headers if it doesn't already exist
+        # Create the log file with headers if it doesn't already exist.
+        # If the file already exists, migrate legacy headers to include
+        # diagnostics columns while preserving prior rows.
         if self.coverage_log_path.exists():
+            try:
+                with self.coverage_log_path.open("r", newline="", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    existing_rows = list(reader)
+                    existing_fields = list(reader.fieldnames or [])
+
+                if not existing_fields:
+                    self._coverage_log_fields = list(_COVERAGE_LOG_FIELDS)
+                    return
+
+                missing_fields = [
+                    name for name in _COVERAGE_LOG_FIELDS if name not in existing_fields
+                ]
+                if missing_fields:
+                    with self.coverage_log_path.open("w", newline="", encoding="utf-8") as f:
+                        writer = csv.writer(f)
+                        writer.writerow(_COVERAGE_LOG_FIELDS)
+                        for row in existing_rows:
+                            writer.writerow([row.get(name, "") for name in _COVERAGE_LOG_FIELDS])
+                    self._coverage_log_fields = list(_COVERAGE_LOG_FIELDS)
+                else:
+                    self._coverage_log_fields = existing_fields
+            except Exception:
+                self._coverage_log_fields = list(_COVERAGE_LOG_FIELDS)
             return
 
         with self.coverage_log_path.open("w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(
-                [
-                    "timestamp",
-                    "run_id",
-                    "statement_coverage",
-                    "branch_coverage",
-                    "function_coverage",
-                    "map_density",
-                    "total_inputs",
-                    "coverage_source",
-                ]
-            )
+            writer.writerow(_COVERAGE_LOG_FIELDS)
+        self._coverage_log_fields = list(_COVERAGE_LOG_FIELDS)
+
+    def _drain_pending_rows_locked(self) -> list[dict[str, Any]]:
+        rows = self._pending_coverage_rows
+        self._pending_coverage_rows = []
+        return rows
+
+    def _flush_coverage_rows(self, rows: list[dict[str, Any]]) -> None:
+        if not rows:
+            return
+
+        fields = self._coverage_log_fields or list(_COVERAGE_LOG_FIELDS)
+        with self._coverage_log_lock:
+            with self.coverage_log_path.open("a", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                for row in rows:
+                    writer.writerow([row.get(name, "") for name in fields])
+
+    def flush(self) -> None:
+        with self._coverage_log_lock:
+            rows_to_flush = self._drain_pending_rows_locked()
+        self._flush_coverage_rows(rows_to_flush)
 
     def log_state(
         self,
+        iteration_id: int,
+        total_inputs: int,
         current_metric: int,
         new_path_found: bool,
         behavioral_metric: int,
@@ -640,38 +783,58 @@ class CoverageTracker:
         function_coverage: float,
         map_density: float,
         coverage_source: str,
+        coverage_data_valid: bool,
+        instrumentation_error: str,
     ) -> None:
 
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
-        with self.coverage_log_path.open("a", newline="", encoding="utf-8") as f:
-            csv.writer(f).writerow(
-                [
-                    timestamp,
-                    self.run_id,
-                    statement_coverage,
-                    branch_coverage,
-                    function_coverage,
-                    round(map_density, 4),
-                    self.total_inputs,
-                    coverage_source,
-                ]
-            )
+        row = {
+            "timestamp": timestamp,
+            "run_id": self.run_id,
+            "statement_coverage": statement_coverage,
+            "branch_coverage": branch_coverage,
+            "function_coverage": function_coverage,
+            "map_density": round(map_density, 4),
+            "total_inputs": total_inputs,
+            "coverage_source": coverage_source,
+            "coverage_data_valid": int(bool(coverage_data_valid)),
+            "instrumentation_error": instrumentation_error,
+        }
+        rows_to_flush: list[dict[str, Any]] = []
+        should_upload = False
 
-        firestore_client.upload_coverage(
-            target=self.target,
-            run_id=self.run_id,
-            iteration=self.last_iteration_id,
-            total_inputs=self.total_inputs,
-            tracking_mode=self.mode,
-            statement_coverage=statement_coverage,
-            branch_coverage=branch_coverage,
-            function_coverage=function_coverage,
-            new_path_found=new_path_found,
-            behavioral_metric=float(behavioral_metric),
-            execution_metric=float(execution_metric),
-            coverage_source=coverage_source,
-        )
+        with self._coverage_log_lock:
+            self._pending_coverage_rows.append(row)
+            if new_path_found or total_inputs == 1 or len(self._pending_coverage_rows) >= self._coverage_flush_interval:
+                rows_to_flush = self._drain_pending_rows_locked()
+
+            should_upload = (
+                total_inputs == 1
+                or new_path_found
+                or (total_inputs - self._last_uploaded_input_count)
+                >= self._coverage_upload_interval
+            )
+            if should_upload:
+                self._last_uploaded_input_count = total_inputs
+
+        self._flush_coverage_rows(rows_to_flush)
+
+        if should_upload:
+            firestore_client.upload_coverage(
+                target=self.target,
+                run_id=self.run_id,
+                iteration=iteration_id,
+                total_inputs=total_inputs,
+                tracking_mode=self.mode,
+                statement_coverage=statement_coverage,
+                branch_coverage=branch_coverage,
+                function_coverage=function_coverage,
+                new_path_found=new_path_found,
+                behavioral_metric=float(behavioral_metric),
+                execution_metric=float(execution_metric),
+                coverage_source=coverage_source,
+            )
 
     # --- Metric extraction from target output ---
 
@@ -877,81 +1040,135 @@ def _compute_output_signature(
     return f"rc={rc}|out={out_class}|err={err_class}"
 
 
+def _has_coverage_signal(stdout: str, stderr: str) -> bool:
+    text = (stdout or "") + "\n" + (stderr or "")
+    lo = text.lower()
+    return (
+        "coverage_freq:" in text
+        or "line coverage" in lo
+        or "branch coverage" in lo
+        or "combined coverage" in lo
+    )
+
+
 def update(
-    bug: BugResult, config: dict, input_depth: int = 1, reference_result=None
+    bug: BugResult,
+    config: dict,
+    input_depth: int = 1,
+    reference_result=None,
+    instrumentation_coverage_text: str = "",
 ) -> bool:
     """Translate a BugResult into a FuzzIterationPayload and update the tracker."""
     global _tracker, _iteration
     with _tracker_lock:
         _iteration += 1
+        iteration_id = _iteration
 
         if _tracker is None or _tracker.target != bug.target:
             _tracker = CoverageTracker(config)
+        tracker = _tracker
 
-        coverage_enabled = bool(config.get("coverage_enabled", False))
+    coverage_enabled = bool(config.get("coverage_enabled", False))
 
-        # For whitebox targets (coverage_enabled=True): coverage comes from the
-        # buggy target's own --show-coverage output (bug.stdout).
-        # For blackbox targets: use the reference's stdout/stderr ONLY if the
-        # tracker is in code_execution mode (i.e. it expects line-coverage text).
-        # In behavioral mode, we ignore reference output for coverage — only the
-        # buggy binary's behavioral fingerprint matters.
-        tracking_mode = str(config.get("tracking_mode", "behavioral")).strip().lower()
+    # For whitebox targets (coverage_enabled=True): coverage comes from the
+    # buggy target's own --show-coverage output (bug.stdout).
+    # For blackbox targets: use the reference's stdout/stderr ONLY if the
+    # tracker is in code_execution mode (i.e. it expects line-coverage text).
+    # In behavioral mode, we ignore reference output for coverage — only the
+    # buggy binary's behavioral fingerprint matters.
+    tracking_mode = str(config.get("tracking_mode", "behavioral")).strip().lower()
 
-        if coverage_enabled:
-            # Whitebox: always read from the buggy target itself
+    if coverage_enabled:
+        # Whitebox: always read from the buggy target itself
+        cov_stdout = bug.stdout
+        cov_stderr = bug.stderr
+        coverage_source = "whitebox_target"
+    elif tracking_mode == "code_execution":
+        if instrumentation_coverage_text:
+            # Preferred blackbox path: instrumentation emitted edge frequencies.
+            cov_stdout = instrumentation_coverage_text
+            cov_stderr = ""
+            coverage_source = "instrumentation_edges"
+        elif _has_coverage_signal(bug.stdout, bug.stderr):
+            # Some targets emit coverage directly from the buggy binary.
             cov_stdout = bug.stdout
             cov_stderr = bug.stderr
-        elif tracking_mode == "code_execution" and reference_result is not None:
-            # Blackbox + code_execution: reference emits "line coverage : N%"
+            coverage_source = "buggy_output"
+        elif reference_result is not None:
+            # Reference coverage can still be useful for diagnostics, but it is
+            # not coverage of the compiled binary, so never feed it into the
+            # target's code-coverage columns or edge map.
             cov_stdout = reference_result.stdout
             cov_stderr = reference_result.stderr
+            coverage_source = "reference_percentages"
         else:
-            # Behavioral blackbox: no coverage lines to parse; set empty so the
-            # tracker reaches the output-signature path cleanly
             cov_stdout = ""
             cov_stderr = ""
+            coverage_source = "proxy_none"
+    else:
+        # Behavioral blackbox: no coverage lines to parse; set empty so the
+        # tracker reaches the output-signature path cleanly
+        cov_stdout = ""
+        cov_stderr = ""
+        coverage_source = "behavioral_signature"
 
+    if coverage_source == "reference_percentages":
+        covered_lines = {}
+        coverage_percentages = {}
+    else:
         covered_lines = _extract_coverage_lines(cov_stdout, cov_stderr)
         coverage_percentages = _extract_coverage_percentages(cov_stdout, cov_stderr)
-        execution_metrics = {
-            "covered_lines": covered_lines,
-            "coverage_percentages": coverage_percentages,
-        }
+    instrumentation_error = str(config.get("_last_instr_error") or "").strip()
+    execution_metrics = {
+        "covered_lines": covered_lines,
+        "coverage_percentages": coverage_percentages,
+        "coverage_source": coverage_source,
+        "instrumentation_error": instrumentation_error,
+    }
 
-        # Compute a behavioral output fingerprint from the BUGGY target's output.
-        # This is always derived from bug.stdout/stderr/returncode — independent of
-        # whether a reference was run — because we want to characterise the behavior
-        # of the system-under-test, not its oracle.
-        output_sig = _compute_output_signature(
-            bug.stdout, bug.stderr, bug.returncode, bug.timed_out
-        )
+    # Compute a behavioral output fingerprint from the BUGGY target's output.
+    # This is always derived from bug.stdout/stderr/returncode — independent of
+    # whether a reference was run — because we want to characterise the behavior
+    # of the system-under-test, not its oracle.
+    output_sig = _compute_output_signature(
+        bug.stdout, bug.stderr, bug.returncode, bug.timed_out
+    )
 
-        payload = FuzzIterationPayload(
-            iteration_id=_iteration,
-            target_name=bug.target,
-            strategy_used=bug.strategy,
-            bug_key=bug.bug_key,
-            execution_metrics=execution_metrics,
-            input_data=bug.input_data,
-            exec_time_ms=bug.exec_time_ms,
-            input_depth=input_depth,
-            output_signature=output_sig,
-        )
+    payload = FuzzIterationPayload(
+        iteration_id=iteration_id,
+        target_name=bug.target,
+        strategy_used=bug.strategy,
+        bug_key=bug.bug_key,
+        execution_metrics=execution_metrics,
+        input_data=bug.input_data,
+        exec_time_ms=bug.exec_time_ms,
+        input_depth=input_depth,
+        output_signature=output_sig,
+    )
 
-        new_path = _tracker.update(payload)
+    new_path = tracker.update(payload)
 
-        if new_path:
-            bug.new_coverage = True
+    if new_path:
+        bug.new_coverage = True
 
-        return new_path
+    return new_path
 
 
 def reset() -> None:
     global _tracker, _iteration
     with _tracker_lock:
+        tracker = _tracker
         _tracker = None
         _iteration = 0
+    if tracker is not None:
+        tracker.flush()
+
+
+def flush() -> None:
+    with _tracker_lock:
+        tracker = _tracker
+    if tracker is not None:
+        tracker.flush()
 
 
 def get_tracker() -> CoverageTracker | None:
@@ -966,22 +1183,35 @@ def _extract_coverage_lines(stdout: str, stderr: str) -> set[str]:
         coverage: engine/json_decoder.py:42
         → assumes 1 hit
 
-    Format 2 — json_decoder's --show-coverage report:
+    Format 2 — json_decoder's --show-coverage summary:
         line coverage     : 63.16% (204/323)
         branch coverage   : 65.22% (90/138)
 
     Format 3 — edge frequency tracking (AFL-style):
         coverage_freq: engine/foo.py:40->42=5
         → tracks edge 40→42 with count of 5
+
+    Format 4 — coverage.py table (per-file Stmts/Miss/Missing):
+        buggy_json\\decoder_stv.py     224    174     78     13    21%   3-85, 101, ...
+        → Infers covered lines by subtracting Missing ranges from 1..Stmts
+        → Generates entries like 'decoder_stv.py:L42' for each covered line
+        → Also parses 'X->Y' branch entries as 'decoder_stv.py:B42->44'
     """
     frequencies: dict[str, int] = {}
     combined = stdout + "\n" + stderr
+
+    # --- Coverage table regex (coverage.py format) ---
+    # Matches lines like:
+    #   buggy_json\decoder_stv.py     224    174     78     13    21%   3-85, 101, ...
+    _COV_TABLE_RE = re.compile(
+        r'^(\S+\.py)\s+(\d+)\s+(\d+)\s+\d+\s+\d+\s+\d+%\s*(.*)?$'
+    )
 
     for line in combined.splitlines():
         stripped = line.strip()
 
         if stripped.startswith("coverage_freq:"):
-            parts = stripped[len("coverage_freq:") :].split("=")
+            parts = stripped[len("coverage_freq:"):].split("=")
             if len(parts) == 2:
                 loc = parts[0].strip()
                 try:
@@ -990,7 +1220,7 @@ def _extract_coverage_lines(stdout: str, stderr: str) -> set[str]:
                     pass
 
         elif stripped.startswith("coverage:"):
-            loc = stripped[len("coverage:") :].strip()
+            loc = stripped[len("coverage:"):].strip()
             frequencies[loc] = frequencies.get(loc, 0) + 1
 
         elif "line coverage" in stripped.lower() and "%" in stripped:
@@ -1002,6 +1232,55 @@ def _extract_coverage_lines(stdout: str, stderr: str) -> set[str]:
             m = re.search(r"(\d+)/(\d+)", stripped)
             if m:
                 frequencies[f"branch:{m.group(1)}/{m.group(2)}"] = 1
+
+        else:
+            # Format 4: coverage.py table row
+            m = _COV_TABLE_RE.match(stripped)
+            if m:
+                fname = m.group(1).replace("\\", "/")
+                # Use just the basename for shorter keys
+                base = fname.rsplit("/", 1)[-1] if "/" in fname else fname
+                total_stmts = int(m.group(2))
+                miss_count = int(m.group(3))
+                missing_str = (m.group(4) or "").strip()
+
+                # Parse the Missing column into a set of line numbers
+                missing_lines: set[int] = set()
+                if missing_str:
+                    for part in missing_str.split(","):
+                        part = part.strip()
+                        if not part:
+                            continue
+                        # Skip branch entries like "105->109" — those are branches, not lines
+                        if "->" in part:
+                            # Parse as a branch edge: "105->109"
+                            br_parts = part.split("->")
+                            if len(br_parts) == 2:
+                                try:
+                                    src = int(br_parts[0].strip())
+                                    dst = int(br_parts[1].strip())
+                                    # This is a MISSING branch — we don't add it
+                                except ValueError:
+                                    pass
+                            continue
+                        # Line range: "3-85" or single line: "101"
+                        range_match = re.match(r"(\d+)-(\d+)", part)
+                        if range_match:
+                            lo = int(range_match.group(1))
+                            hi = int(range_match.group(2))
+                            missing_lines.update(range(lo, hi + 1))
+                        else:
+                            try:
+                                missing_lines.add(int(part))
+                            except ValueError:
+                                pass
+
+                # Generate covered line entries: all lines in 1..total_stmts
+                # that are NOT in the missing set
+                for line_no in range(1, total_stmts + 1):
+                    if line_no not in missing_lines:
+                        edge_key = f"{base}:L{line_no}"
+                        frequencies[edge_key] = frequencies.get(edge_key, 0) + 1
 
     return frequencies
 

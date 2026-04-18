@@ -1,9 +1,5 @@
 """
 Take a RawResult from target_runner.py and classify it into a structured BugResult
-
-YAML fields read:
-    - bug_keywords: list[str]
-    - output_pattern: str | None
 """
 
 from __future__ import annotations
@@ -16,12 +12,43 @@ from engine.types import BugResult, BugType
 from engine.target_runner import RawResult
 
 
+def _last_meaningful_line(stdout: str) -> Optional[str]:
+    lines: list[str] = []
+    for raw_line in stdout.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        lower = line.lower()
+        if lower.startswith(
+            (
+                "line coverage",
+                "branch coverage",
+                "combined coverage",
+                "coverage data saved to",
+                "saved bug count report",
+                "loading existing coverage data from",
+                "final bug count:",
+            )
+        ):
+            continue
+        if set(line) == {"="}:
+            continue
+        lines.append(line)
+    return lines[-1] if lines else None
+
+
 def _extract_output(stdout: str, pattern: str) -> Optional[str]:
     if not pattern or "{value}" not in pattern:
         return None
+    if pattern == "{value}":
+        return stdout.strip()
     regex = re.escape(pattern).replace(r"\{value\}", r"(.+?)")
-    match = re.search(regex, stdout)
-    return match.group(1).strip() if match else None
+    regex = regex.replace(r"\ ", r"\s*")
+    match = re.search(regex, stdout, flags=re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    return _last_meaningful_line(stdout)
+
 
 class BugOracle:
     """
@@ -29,31 +56,22 @@ class BugOracle:
 
     Classification priority:
         1.  TIMEOUT
-        2.  Structured (explicitly stated)
-        3.  PERFORMANCE
-        4.  INVALIDITY
-        5.  VALIDITY
-        6.  SYNTACTIC
-        7.  FUNCTIONAL
-        8.  BOUNDARY
-        9.  BONUS
-        10. RELIABILITY
-        11. MISMATCH
+        2.  PERFORMANCE
+        3.  INVALIDITY
+        4.  VALIDITY
+        5.  SYNTACTIC
+        6.  FUNCTIONAL
+        7.  BOUNDARY
+        8.  BONUS
+        9.  RELIABILITY
+        10. MISMATCH
     """
-
-    _PARSE_EXC_RE = re.compile(r"ParseException: (.+?)(?:\n|$)", re.MULTILINE)
 
     # Matches Python exception class names like "JSONDecodeError:", "ValueError:", etc.
     _EXC_CLASS_RE = re.compile(
         r"([A-Z][A-Za-z]*(?:Error|Exception|Warning|Fault))\s*[:\(]"
     )
-
-    _BUG_COUNT_RE = re.compile(
-        r"Final bug count: defaultdict\(<class 'int'>, \{(.*)\}\)"
-    )
-    _BUG_ENTRY_RE = re.compile(
-        r"\('(\w+)', <class '([^']+)'>, '([^']*)', '[^']*', \d+\)"
-    )
+    _TRACEBACK_LINE_RE = re.compile(r'File ".*?", line (\d+)')
 
     def classify(
         self,
@@ -67,7 +85,17 @@ class BugOracle:
         stdout = raw.stdout
         stderr = raw.stderr
         combined = stdout + "\n" + stderr
+        lower = combined.lower()
+
+        # for analysis:
+        # matches = self._TRACEBACK_LINE_RE.findall(combined)
+        # print(f"[DEBUG] traceback line matches: {matches}")
+        # print(f"[DEBUG] fingerprint: {self._extract_line_number(combined)}")
+
         bug_keywords = config.get("bug_keywords", [])
+
+        exc_class = self._extract_exc_class(combined)
+        line_num = self._extract_line_number(combined)
 
         # 1. TIMEOUT
         if raw.timed_out:
@@ -79,168 +107,114 @@ class BugOracle:
                 raw=raw,
             )
 
-        # 2. Structured (explicitly stated)
-        count_match = self._BUG_COUNT_RE.search(combined)
-        if count_match:
-            entries_str = count_match.group(1).strip()
-            if entries_str:
-                entry_match = self._BUG_ENTRY_RE.search(entries_str)
-                if entry_match:
-                    category = entry_match.group(1)
-                    exc_type = entry_match.group(2)
-                    # Dedup by (category, exception_class) only.
-                    # The err_msg contains position-specific details like
-                    # "Expected '.', found '1' (at char 3)" which differ per
-                    # input but represent the same bug class.
-                    return self._make_result(
-                        bug_type=self._category_to_bug_type(category),
-                        raw_key=(category, exc_type),
-                        input_data=input_data,
-                        target=target,
-                        raw=raw,
-                    )
-
-        exc_match = self._PARSE_EXC_RE.search(combined)
-        exc_msg = exc_match.group(
-            1)[:120] if exc_match else combined[-120:].strip()
-        lower = combined.lower()
-
-        # # 3. BONUS ??
-        # # Check BEFORE "invalidity" because "An invalidity bug has been triggered:"
-        # # might contain JSONDecodeError class name. If it's unhandled (has Traceback),
-        # # it's a bonus bug, not a seeded invalidity bug.
-        # if "Traceback (most recent" in combined:
-
-        #     if "JSONDecodeError" in combined or "CidrizeError" in combined:
-        #         exc_snippet = (
-        #             combined[-200:] if len(combined) > 200 else combined
-        #         ).strip()
-        #         return self._make_result(
-        #             bug_type=BugType.BONUS,
-        #             raw_key=(
-        #                 "bonus_unhandled",
-        #                 "JSONDecodeError|CidrizeError",
-        #                 exc_snippet,
-        #             ),
-        #             input_data=input_data,
-        #             target=target,
-        #             raw=raw,
-        #         )
-
-        # 3. PERFORMANCE
+        # 2. PERFORMANCE
         if "performance bug" in lower or "PerformanceBug" in combined:
             return self._make_result(
                 bug_type=BugType.PERFORMANCE,
-                raw_key=("performance", "PerformanceBug"),
+                raw_key=("performance", "PerformanceBug", line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 4. INVALIDITY
+        # 3. INVALIDITY
         if "invalidity" in lower or "InvalidityBug" in combined:
             return self._make_result(
                 bug_type=BugType.INVALIDITY,
-                raw_key=("invalidity", "InvalidityBug"),
+                raw_key=("invalidity", "InvalidityBug", line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 5. VALIDITY
+        # 4. VALIDITY
         if "validity" in lower or "ValidityBug" in combined:
             return self._make_result(
                 bug_type=BugType.VALIDITY,
-                raw_key=("validity", "ValidityBug"),
+                raw_key=("validity", "ValidityBug", line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 6. SYNTACTIC
+        # 5. SYNTACTIC
         if (
             "syntactic" in lower
             or "syntax error" in lower
             or "AddrFormatError" in combined
         ):
-            # Dedup by exception class only — "AddrFormatError: '999.0.0.1'" and
-            # "AddrFormatError: 'abc'" are the same bug class.
             return self._make_result(
                 bug_type=BugType.SYNTACTIC,
-                raw_key=("syntactic", "AddrFormatError"),
+                raw_key=("syntactic", "AddrFormatError", line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 7. FUNCTIONAL
-        if "functional" in lower and "functional bug" in lower:
+        # 6. FUNCTIONAL
+        if "functional" in lower and "FunctionalBug" in lower:
             return self._make_result(
                 bug_type=BugType.FUNCTIONAL,
-                raw_key=("functional", "FunctionalBug"),
+                raw_key=("functional", "FunctionalBug", line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 8. BOUNDARY
+        # 7. BOUNDARY
         if "boundary" in lower or "BoundaryBug" in combined:
             return self._make_result(
                 bug_type=BugType.BOUNDARY,
-                raw_key=("boundary", "BoundaryBug"),
+                raw_key=("boundary", "BoundaryBug", line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 9. BONUS
+        # 8. BONUS
         if "bonus" in lower or any(key.lower() in lower for key in bug_keywords):
-            # Extract exception class name for dedup (e.g. "JSONDecodeError")
-            exc_class = self._extract_exc_class(combined)
+
             return self._make_result(
                 bug_type=BugType.BONUS,
-                raw_key=("bonus", exc_class),
+                raw_key=("bonus", exc_class, line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 10. RELIABILITY
+        # 9. RELIABILITY
         if "reliability" in lower or "ReliabilityBug" in combined:
             return self._make_result(
                 bug_type=BugType.RELIABILITY,
-                raw_key=("reliability_seeded", "ReliabilityBug"),
+                raw_key=("reliability_seeded", "ReliabilityBug", line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
         if raw.returncode != 0:
-            # Dedup by (exit_code, exception_class) — NOT the full error message.
-            # e.g. all JSONDecodeErrors from json_decoder are the same bug,
-            # regardless of which column/position triggered the error.
-            exc_class = self._extract_exc_class(combined)
+            line_num = self._extract_line_number(combined)
             return self._make_result(
                 bug_type=BugType.RELIABILITY,
-                raw_key=("reliability", str(raw.returncode), exc_class),
+                raw_key=("reliability", str(raw.returncode), exc_class, line_num),
                 input_data=input_data,
                 target=target,
                 raw=raw,
             )
 
-        # 11. MISMATCH
+        # 10. MISMATCH
         if ref is not None:
-            pattern = config.get("output_pattern")
-            bug_out = _extract_output(stdout, pattern)
-            ref_out = _extract_output(ref.stdout, pattern) if ref.stdout else None
-            # Only mark as mismatch if both extractions succeeded and outputs differ
-            if pattern and bug_out is not None and ref_out is not None and bug_out != ref_out:
+            norm_out = _extract_output(stdout, config.get("buggy_output_pattern"))
+            norm_ref = _extract_output(
+                ref.stdout, config.get("reference_output_pattern")
+            )
+            if norm_out is not None and norm_ref is not None and norm_out != norm_ref:
                 return self._make_result(
                     bug_type=BugType.MISMATCH,
                     raw_key=(
                         "mismatch",
                         "OutputMismatch",
-                        f"out={bug_out} ref={ref_out}",
+                        f"out={norm_out} ref={norm_ref}",
                     ),
                     input_data=input_data,
                     target=target,
@@ -256,22 +230,18 @@ class BugOracle:
         )
 
     # Helper functions
-
     @classmethod
     def _extract_exc_class(cls, text: str) -> str:
-        """Extract the exception class name from combined output.
-
-        Examples:
-            'json.decoder.JSONDecodeError: ...' → 'JSONDecodeError'
-            'netaddr.core.AddrFormatError: ...'  → 'AddrFormatError'
-            'ValueError: ...'                    → 'ValueError'
-            'no exception found'                 → 'UnknownError'
-
-        Used for bug deduplication: two triggers of the same exception class
-        are the same bug, regardless of the specific error message.
-        """
+        """Extract the exception class name from combined output: 'ValueError: ...' -> 'ValueError'"""
         match = cls._EXC_CLASS_RE.search(text)
         return match.group(1) if match else "UnknownError"
+
+    @classmethod
+    def _extract_line_number(cls, text: str, max_frames: int = 2) -> str:
+        matches = cls._TRACEBACK_LINE_RE.findall(text)
+        if matches:
+            return ":".join(matches[-max_frames:])
+        return _last_meaningful_line(text) or ""
 
     @staticmethod
     def _make_result(
@@ -299,16 +269,3 @@ class BugOracle:
             timed_out=raw.timed_out,
             crashed=raw.crashed,
         )
-
-    @staticmethod
-    def _category_to_bug_type(category: str) -> BugType:
-        return {
-            "invalidity": BugType.INVALIDITY,
-            "bonus": BugType.BONUS,
-            "syntactic": BugType.SYNTACTIC,
-            "functional": BugType.FUNCTIONAL,
-            "boundary": BugType.BOUNDARY,
-            "validity": BugType.VALIDITY,
-            "performance": BugType.PERFORMANCE,
-            "reliability": BugType.RELIABILITY,
-        }.get(category, BugType.RELIABILITY)

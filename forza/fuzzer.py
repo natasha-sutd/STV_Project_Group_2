@@ -30,7 +30,7 @@ fuzzer.py
     └── bug_logger.log()                     →  CSV + crash file
             │
             ▼
-    report_generator.generate()              →  report.html
+    report_generator.generate()              →  report_<target_name>.html
 
 fuzzer.py
 =========
@@ -75,6 +75,7 @@ import time
 from pathlib import Path
 
 from engine.types import BugResult
+from engine.seed_generator import generate_seeds_from_yaml
 from engine.mutation_engine import MutationEngine
 from engine.bug_oracle import BugOracle
 from engine.target_runner import load_config, load_seeds, run_both
@@ -93,13 +94,20 @@ TARGETS_DIR = Path(__file__).resolve().parent / "targets"
 KNOWN_YAMLS = [f.name for f in sorted(TARGETS_DIR.glob("*.yaml"))]
 
 MAX_CORPUS = 10000
+ENERGY_MIN = 0.1
+ENERGY_DECAY_PER_ITER = 0.999
+ENERGY_DECAY_INTERVAL = 50
+DEFAULT_GENERATED_SEEDS = 30
+DEFAULT_PARALLEL_WORKERS = 2
+MAX_PARALLEL_WORKERS = 16
 
 # ─────────────────────────────────────────────────────────────────────
-# Threading for parallel fuzzing (2 workers)
+# Threading for parallel fuzzing
 # ─────────────────────────────────────────────────────────────────────
 _corpus_energy_lock = threading.Lock()  # Protects corpus and energy dict updates
 _engine_lock = threading.Lock()         # Protects MutationEngine state
 _stats_lock = threading.Lock()          # Protects exec_time_window and completed iteration count
+_energy_decay_counter = 0
 
 # ---------------------------------------------------------------------------
 # Config helpers
@@ -111,6 +119,96 @@ def get_input_type(config: dict) -> str:
     input_block = config.get("input", {})
     input_type = input_block.get("type", "") if isinstance(input_block, dict) else None
     return input_type
+
+
+def get_parallel_workers(config: dict) -> int:
+    """Resolve outer fuzz-loop worker count from target config."""
+    raw_workers = config.get("parallel_workers", DEFAULT_PARALLEL_WORKERS)
+    try:
+        workers = int(raw_workers)
+    except (TypeError, ValueError):
+        workers = DEFAULT_PARALLEL_WORKERS
+    return max(1, min(MAX_PARALLEL_WORKERS, workers))
+
+
+def _config_bool(config: dict, key: str, default: bool = False) -> bool:
+    raw = config.get(key, default)
+    if isinstance(raw, bool):
+        return raw
+    if isinstance(raw, (int, float)):
+        return bool(raw)
+    if isinstance(raw, str):
+        lowered = raw.strip().lower()
+        if lowered in {"1", "true", "yes", "on"}:
+            return True
+        if lowered in {"0", "false", "no", "off"}:
+            return False
+    return default
+
+
+def _dedupe_preserve_order(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    out: list[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        out.append(value)
+    return out
+
+
+def _load_static_seeds(config: dict) -> list[str]:
+    seeds_path = config.get("seeds_path")
+    if not seeds_path:
+        return []
+    return load_seeds(str(seeds_path))
+
+
+def _maybe_apply_plateau_escalation(config: dict, engine: MutationEngine) -> None:
+    """Increase aggressive strategy weights when coverage has plateaued."""
+    if not _config_bool(config, "plateau_escalation_enabled", default=False):
+        return
+
+    tracker = coverage_tracker.get_tracker()
+    if tracker is None or not tracker.is_plateau:
+        return
+
+    try:
+        cooldown = int(config.get("plateau_escalation_cooldown", 100))
+    except (TypeError, ValueError):
+        cooldown = 100
+    cooldown = max(1, cooldown)
+
+    try:
+        current_inputs = int(getattr(tracker, "total_inputs", 0))
+    except (TypeError, ValueError):
+        current_inputs = 0
+
+    try:
+        last_boost_at = int(config.get("_last_plateau_boost_input", -10**9))
+    except (TypeError, ValueError):
+        last_boost_at = -10**9
+
+    if current_inputs - last_boost_at < cooldown:
+        return
+
+    try:
+        constraint_factor = float(config.get("plateau_constraint_boost", 1.35))
+    except (TypeError, ValueError):
+        constraint_factor = 1.35
+    try:
+        grammar_factor = float(config.get("plateau_grammar_boost", 1.2))
+    except (TypeError, ValueError):
+        grammar_factor = 1.2
+    try:
+        dictionary_factor = float(config.get("plateau_dictionary_boost", 1.15))
+    except (TypeError, ValueError):
+        dictionary_factor = 1.15
+
+    engine.boost("constraint_violation", factor=max(1.0, constraint_factor))
+    engine.boost("grammar_mutate", factor=max(1.0, grammar_factor))
+    engine.boost("insert_dictionary_token", factor=max(1.0, dictionary_factor))
+    config["_last_plateau_boost_input"] = current_inputs
 
 
 # ---------------------------------------------------------------------------
@@ -201,10 +299,10 @@ def print_banner(
     dur_str = f"{duration:.0f}s" if duration else "∞"
     iter_str = f"{max_iters:,}"
 
-    # Label: whitebox targets with coverage_enabled → "greybox fuzzer",
-    # blackbox behavioral targets → "blackbox fuzzer"
     tracking_mode = str(config.get("tracking_mode", "behavioral")).strip().lower()
     if config.get("coverage_enabled") or tracking_mode == "code_execution":
+        fuzzer_label = "whitebox fuzzer"
+    elif tracking_mode == "code_execution":
         fuzzer_label = "greybox fuzzer"
     else:
         fuzzer_label = "blackbox fuzzer"
@@ -248,23 +346,8 @@ def _cp(s: str, w: int, c_fn=None) -> str:
     return c_fn(padded) if c_fn else padded
 
 _STATUS_LINES = 23
-_status_reserved = False
+_status_drawn = False
 stdout_lock = threading.Lock()
-
-
-def _reserve_status_block() -> None:
-    """
-    Print _STATUS_LINES blank lines immediately after the banner so the
-    terminal has a fixed region that print_fuzz_status can always overwrite
-    with \033[{N}A. Must be called exactly once per fuzz run, right after
-    print_banner(). This is the only correct way to ensure the cursor is
-    always exactly _STATUS_LINES below the top of the block.
-    """
-    global _status_reserved
-    sys.stdout.write("\n" * _STATUS_LINES)
-    sys.stdout.flush()
-    _status_reserved = True
-
 
 def print_fuzz_status(
     config: dict,
@@ -390,11 +473,16 @@ def print_fuzz_status(
         len(lines) == _STATUS_LINES
     ), f"_STATUS_LINES mismatch: expected {_STATUS_LINES}, got {len(lines)}"
 
-    final_output = f"\033[?25l\033[{_STATUS_LINES}A\r" + "\n".join(lines) + "\n\033[?25h"
+    global _status_drawn
+    prefix = f"\033[{_STATUS_LINES}A\r" if _status_drawn else ""
+
+    final_output = f"\033[?25l{prefix}" + "\n".join(lines) + "\n\033[?25h"
 
     with stdout_lock:
         sys.stdout.write(final_output)
         sys.stdout.flush()
+
+    _status_drawn = True
 
 
 def print_seed_result(
@@ -440,7 +528,7 @@ def print_summary(
 
 class ReportRefresher(threading.Thread):
     """
-    Daemon thread that regenerates report.html every REPORT_INTERVAL seconds.
+    Daemon thread that regenerates the configured report path every REPORT_INTERVAL seconds.
     Keeps the report warm during long fuzz runs so Ctrl+C exit is fast.
     """
 
@@ -462,8 +550,9 @@ class ReportRefresher(threading.Thread):
     def _refresh(self, final: bool = False) -> None:
         try:
             rg = self._rg
-            all_data = rg.load_all(self.targets, use_firestore=final)
-            all_coverage = rg.load_all_coverage(self.targets)
+            run_ids = rg.resolve_latest_run_ids(self.targets)
+            all_data = rg.load_all(self.targets, use_firestore=final, run_ids=run_ids)
+            all_coverage = rg.load_all_coverage(self.targets, run_ids=run_ids)
             rg.generate_report(all_data, all_coverage, self.targets, self.out_path)
             self.last_run = time.monotonic()
         except Exception as e:
@@ -491,9 +580,17 @@ def run_seed_mode(config: dict) -> None:
     Uses inline classifier — does not require output_parser.py.
     Useful for sanity-checking a new target config.
     """
-    seeds = load_seeds(config["seeds_path"])
+    seeds = _load_static_seeds(config)
     if not seeds:
-        print(C.yellow("  [warn] no seeds found — check seeds_path in YAML"))
+        seeds = generate_seeds_from_yaml(config, DEFAULT_GENERATED_SEEDS)
+    seeds = _dedupe_preserve_order(seeds)
+
+    if not seeds:
+        print(
+            C.yellow(
+                "  [warn] no seeds available — set seeds_path or provide input grammar"
+            )
+        )
         return
 
     print_banner(config, mode="seed", duration=None, max_iters=len(seeds))
@@ -510,7 +607,7 @@ def run_seed_mode(config: dict) -> None:
     target = config.get("name", "unknown")
 
     for idx, seed in enumerate(seeds, 1):
-        buggy_result, ref = run_both(config, seed, strategy="seed")
+        buggy_result, ref, _ = run_both(config, seed, strategy="seed")
         bug = oracle.classify(buggy_result, seed, target, config, ref)
         if bug.is_bug():
             total_bugs += 1
@@ -539,15 +636,15 @@ def _fuzz_one_iteration(
     energy: dict,
     engine: MutationEngine,
     timeout: int,
-) -> tuple[BugResult, bool, int, float]:
+) -> tuple[BugResult, bool, int, float, float]:
     """
     Execute one fuzzing iteration: pick seed, mutate, run, classify, update coverage.
     
-    Returns: (bug_result, found_new, child_depth, exec_time_ms)
+    Returns: (bug_result, found_new, child_depth, run_time_s, generation_time_s)
     
     Thread-safe: only acquires lock for corpus/energy reads and updates + engine operations.
     """
-    global _corpus_energy_lock, _engine_lock
+    global _corpus_energy_lock, _engine_lock, _energy_decay_counter
     
     # ── 1. pick seed and mutate (needs lock for corpus/energy and engine)
     with _corpus_energy_lock:
@@ -556,17 +653,19 @@ def _fuzz_one_iteration(
         seed, seed_depth = corpus[corpus_idx]
     
     with _engine_lock:
+        gen_t0 = time.monotonic()
         mutated = engine.mutate(seed)
+        generation_time = time.monotonic() - gen_t0
         strategy = engine.get_last_strategy()
     
     child_depth = seed_depth + 1
 
     # ── 2. run target (I/O bound, no lock needed)
     t0 = time.monotonic()
-    buggy_result, reference_result = run_both(
-        config, mutated, strategy=strategy, use_coverage=config.get("coverage_enabled", False), timeout=timeout
+    buggy_result, reference_result, instrumentation_coverage_text = run_both(
+        config, mutated, strategy=strategy, use_coverage=True, timeout=timeout
     )
-    exec_time = time.monotonic() - t0
+    run_time = time.monotonic() - t0
 
     # ── 3. classify (no lock needed)
     bug = oracle.classify(
@@ -577,9 +676,16 @@ def _fuzz_one_iteration(
         ref=reference_result,
     )
     bug.strategy = strategy
+    bug.exec_time_ms = run_time * 1000.0
 
     # ── 4. coverage tracking (has internal lock)
-    found_new = coverage_tracker.update(bug, config, input_depth=child_depth, reference_result=reference_result)
+    found_new = coverage_tracker.update(
+        bug,
+        config,
+        input_depth=child_depth,
+        reference_result=reference_result,
+        instrumentation_coverage_text=instrumentation_coverage_text,
+    )
     
     # ── 5. corpus growth + energy boost (needs lock)
     if found_new:
@@ -600,21 +706,33 @@ def _fuzz_one_iteration(
             engine.boost(strategy)
     else:
         with _corpus_energy_lock:
-            energy[seed] = max(0.1, energy.get(seed, 1.0) * 0.95)
+            energy[seed] = max(ENERGY_MIN, energy.get(seed, 1.0) * 0.95)
 
     # AFL-style energy decay
     with _engine_lock:
+        _maybe_apply_plateau_escalation(config, engine)
         engine.decay()
     
     with _corpus_energy_lock:
-        for s in energy:
-            energy[s] = max(0.1, energy[s] * 0.999)
+        _energy_decay_counter += 1
+        if _energy_decay_counter % ENERGY_DECAY_INTERVAL == 0:
+            decay_factor = ENERGY_DECAY_PER_ITER ** ENERGY_DECAY_INTERVAL
+            for s in list(energy.keys()):
+                energy[s] = max(ENERGY_MIN, energy[s] * decay_factor)
 
-    # ── 6. log bugs (has internal lock)
-    if bug.is_bug():
-        bug_logger.log(bug, config)
+    # ── 6. log run (has internal lock)
+    with _corpus_energy_lock:
+        corpus_size = len(corpus)
+    bug_logger.log(
+        bug,
+        config,
+        corpus_size=corpus_size,
+        generation_time_ms=generation_time * 1000.0,
+        execution_time_ms=run_time * 1000.0,
+        is_new_coverage=found_new,
+    )
 
-    return (bug, found_new, child_depth, exec_time)
+    return (bug, found_new, child_depth, run_time, generation_time)
 
 def run_fuzz_mode(
     config: dict,
@@ -640,32 +758,42 @@ def run_fuzz_mode(
         be used as seeds for further mutation (greybox fuzzing).
 
     Background reporting:
-        ReportRefresher regenerates report.html every REPORT_INTERVAL seconds
+        ReportRefresher regenerates report_<target_name>.html every REPORT_INTERVAL seconds
         in a daemon thread. Final refresh happens on shutdown.
     """
 
-    seeds = load_seeds(config["seeds_path"])
-    if not seeds:
-        print(C.yellow("  [warn] no seeds found — check seeds_path in YAML"))
-        return
+    # Reset draw flag so the first status block of this run prints fresh
+    global _status_drawn
+    _status_drawn = False
+
+    seeds = _load_static_seeds(config)
+    if not seeds and config.get("seeds_path"):
+        print(C.yellow("  [warn] seeds_path provided but no seeds found — using grammar generation"))
 
     # Get the input spec from the config (the 'input:' section of YAML)
     grammar_spec = config.get("input", {})
 
     engine = MutationEngine(
-        input_format=get_input_type(config), grammar_spec=grammar_spec
+        input_format=get_input_type(config),
+        grammar_spec=grammar_spec,
+        mutation_dictionary=config.get("mutation_dictionary"),
+        enabled_strategies=config.get("enabled_strategies"),
+        disabled_strategies=config.get("disabled_strategies"),
     )
     oracle = BugOracle()
     # Corpus stores (input_str, depth) tuples; seeds start at depth 1
     corpus: list[tuple[str, int]] = [(s, 1) for s in seeds]
     target = config.get("name", "unknown")
-    out_path = report_generator.RESULTS_DIR / f"{target}_report.html"
+    out_path = report_generator.RESULTS_DIR / f"report_{target}.html"
 
     # Track which corpus indices have been used as mutation parents
     used_as_parent: set[int] = set()
 
     # ── energy scheduling state ───────────────────────────────
-    energy = {s: 1.0 for s in corpus}
+    energy = {s[0]: 1.0 for s in corpus}
+
+    global _energy_decay_counter
+    _energy_decay_counter = 0
 
     def pick_seed(corpus, energy):
         # We extract the string (s[0]) from the (str, depth) tuple for the energy lookup
@@ -673,28 +801,30 @@ def run_fuzz_mode(
         return random.choices(range(len(corpus)), weights=weights, k=1)[0]
 
     # ── seed corpus initialisation ────────────────────────────────────────
-    # Augment static seeds.txt with dynamically generated seeds using the grammar defined in config["input"].
-    if config.get("input"):
-        try:
-            from engine.seed_generator import generate_from_spec
+    # Augment static seeds with grammar-generated seeds up to DEFAULT_GENERATED_SEEDS.
+    generated = generate_seeds_from_yaml(config, max(0, DEFAULT_GENERATED_SEEDS - len(seeds)))
+    if generated:
+        for g in generated:
+            corpus.append((g, 1))
+            energy[g] = 1.0
 
-            input_spec = config["input"]
-            generated = []
-            for _ in range(30 - len(seeds)):
-                seed = generate_from_spec(input_spec)
-                # generate_from_spec may return non-str (e.g. dict, list) — coerce
-                if not isinstance(seed, str):
-                    seed = str(seed)
-                generated.append(seed)
-            for g in generated:
-                corpus.append((g, 1))
-                energy[g] = 1.0
-        except Exception as e:
-            print(
-                C.yellow(
-                    f"  [warn] seed_generator failed: {e} — using static seeds only"
-                )
+    deduped_corpus: list[tuple[str, int]] = []
+    seen_seed_values: set[str] = set()
+    for seed_value, depth in corpus:
+        if seed_value in seen_seed_values:
+            continue
+        seen_seed_values.add(seed_value)
+        deduped_corpus.append((seed_value, depth))
+    corpus = deduped_corpus
+    energy = {seed_value: energy.get(seed_value, 1.0) for seed_value, _ in corpus}
+
+    if not corpus:
+        print(
+            C.yellow(
+                "  [warn] no seeds available — set seeds_path or provide input grammar"
             )
+        )
+        return
 
     # Reset per-target state in module-level wrappers
     bug_logger.reset()
@@ -723,7 +853,6 @@ def run_fuzz_mode(
                 print(C.yellow(f"  [warn] could not reset coverage file: {e}"))
 
     print_banner(config, mode="fuzz", duration=duration, max_iters=max_iters)
-    _reserve_status_block()  # carve out fixed region for in-place status redraws
 
     # ── background report refresher ───────────────────────────────────────
     # Report on all known targets so the HTML always shows the full picture,
@@ -754,12 +883,13 @@ def run_fuzz_mode(
     iteration = 0
 
     try:
-        # ── parallel fuzzing with 2 worker threads ──────────────────────
+        # ── parallel fuzzing with configurable worker threads ────────────
         exec_time_window = []
         completed_iterations = 0  # Tracks actual completed work for calibration
         MAX_WINDOW = 100
+        parallel_workers = get_parallel_workers(config)
         
-        with ThreadPoolExecutor(max_workers=2) as executor:
+        with ThreadPoolExecutor(max_workers=parallel_workers) as executor:
             futures = {}
             next_iter = 1
             pending_futures = set()
@@ -795,12 +925,12 @@ def run_fuzz_mode(
                 for future in done_set:
                     iteration = futures[future]
                     try:
-                        bug, found_new, child_depth, exec_time = future.result()
+                        bug, found_new, child_depth, run_time, _generation_time = future.result()
                         
                         # ── Update stats with lock ────────────────────────────────────
                         with _stats_lock:
                             completed_iterations += 1
-                            exec_time_window.append(exec_time)
+                            exec_time_window.append(run_time)
                             if len(exec_time_window) > MAX_WINDOW:
                                 exec_time_window.pop(0)
                         
@@ -848,21 +978,21 @@ def run_fuzz_mode(
                     with _stats_lock:
                         current_completed = completed_iterations
                     execs_sec = current_completed / elapsed if elapsed > 0 else 0.0
-                    print_fuzz_status.last_draw = time.monotonic()
-                    print_fuzz_status(
-                        config=config,
-                        iteration=current_completed,
-                        total_bugs=total_bugs,
-                        new_paths=new_paths,
-                        corpus_len=len(corpus),
-                        execs_sec=execs_sec,
-                        elapsed=elapsed,
-                        duration=duration,
-                        max_iters=max_iters,
-                        last_bug=last_bug,
-                        last_report=refresher.elapsed_since_last(time.monotonic()),
-                        strategy_counts=strategy_counts,
-                    )
+                    # print_fuzz_status.last_draw = time.monotonic()
+                    # print_fuzz_status(
+                    #     config=config,
+                    #     iteration=current_completed,
+                    #     total_bugs=total_bugs,
+                    #     new_paths=new_paths,
+                    #     corpus_len=len(corpus),
+                    #     execs_sec=execs_sec,
+                    #     elapsed=elapsed,
+                    #     duration=duration,
+                    #     max_iters=max_iters,
+                    #     last_bug=last_bug,
+                    #     last_report=refresher.elapsed_since_last(time.monotonic()),
+                    #     strategy_counts=strategy_counts,
+                    # )
 
     finally:
         # ── shutdown sequence ─────────────────────────────────────────────
@@ -872,20 +1002,22 @@ def run_fuzz_mode(
         with _stats_lock:
             current_completed = completed_iterations
         execs_sec = current_completed / elapsed if elapsed > 0 else 0.0
-        print_fuzz_status(
-            config=config,
-            iteration=current_completed,
-            total_bugs=total_bugs,
-            new_paths=new_paths,
-            corpus_len=len(corpus),
-            execs_sec=execs_sec,
-            elapsed=elapsed,
-            duration=duration,
-            max_iters=max_iters,
-            last_bug=last_bug,
-            last_report=refresher.elapsed_since_last(time.monotonic()),
-            strategy_counts=strategy_counts,
-        )
+        # print_fuzz_status(
+        #     config=config,
+        #     iteration=current_completed,
+        #     total_bugs=total_bugs,
+        #     new_paths=new_paths,
+        #     corpus_len=len(corpus),
+        #     execs_sec=execs_sec,
+        #     elapsed=elapsed,
+        #     duration=duration,
+        #     max_iters=max_iters,
+        #     last_bug=last_bug,
+        #     last_report=refresher.elapsed_since_last(time.monotonic()),
+        #     strategy_counts=strategy_counts,
+        # )
+
+        coverage_tracker.flush()
 
         # Stop refresher → triggers final report generation
         sys.stdout.write(f"\n{C.dim('  stopping report refresher...')}\n")
@@ -924,8 +1056,6 @@ def _collect_yamls(explicit: str | None, run_all: bool) -> list[str]:
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
-
-
 def _preflight(all_targets: list[str]) -> None:
     """
     Run once before any fuzz target starts.
@@ -1052,7 +1182,7 @@ def main() -> None:
             all_targets.append(load_config(yp).get("name", "unknown"))
         except Exception:
             pass
-
+    
     # Connect to Firestore + warm cache before any banner or fuzzing starts
     if not args.seed:
         _preflight(all_targets)

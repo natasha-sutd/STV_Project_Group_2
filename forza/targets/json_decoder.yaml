@@ -3,11 +3,13 @@ name: json_decoder
 # commands
 buggy_cmd:
   windows: ["python", "json_decoder_stv.py", "--str-json", "{input}"]
-  mac: ["uv", "run", "json_decoder_stv.py", "--str-json", "{input}"]
+  linux: ["python3", "json_decoder_stv.py", "--str-json", "{input}"]
+  mac: ["python3", "json_decoder_stv.py", "--str-json", "{input}"]
 buggy_cwd: "../../json-decoder"
 
 reference_cmd:
   windows: ["python", "-c", "import json, sys; print(json.loads(sys.argv[1]))", "{input}"]
+  linux: ["python3", "-c", "import json, sys; print(json.loads(sys.argv[1]))", "{input}"]
   mac: ["python3", "-c", "import json, sys; print(json.loads(sys.argv[1]))", "{input}"]
 reference_cwd: "../../json-decoder"
 
@@ -18,20 +20,28 @@ input:
   options:
     - type: object
       max_fields: 10
-      key: { type: string, min: 1, max: 20 }
-      value:
-        type: one_of
-        options:
-          - { type: int, min: -2147483648, max: 2147483647 }
-          - { type: float, min: -1.7e+308, max: 1.7e+308 }
-          - { type: string, min: 0, max: 100 }
-          - { type: boolean }
-          - { type: null }
-          - { type: array, min_length: 0, max_length: 10, element: { type: any } }
-          - { type: object, max_fields: 5, key: { type: string, min: 1, max: 20 }, value: { type: any } }
+      key: { type: string, min_length: 1, max_length: 20 }
+      value: { type: any }
     - type: string
-      min: 0
-      max: 100
+      min_length: 0
+      max_length: 100
+any:
+  max_depth: 3
+  options:
+    - { type: int, min: -2147483648, max: 2147483647 }
+    - { type: float, min: -1.7976931348623157e+308, max: 1.7976931348623157e+308 }
+    - { type: string, min_length: 0, max_length: 100 }
+    - { type: boolean }
+    - { type: null }
+    - type: array
+      min_length: 0
+      max_length: 10
+      element: { type: any }
+    - type: object
+      max_fields: 5
+      key: { type: string, min_length: 1, max_length: 20 }
+      value: { type: any }
+parallel_workers: 4
 seeds_path: "../inputs/json_decoder/seeds.txt"
 
 # special bug keywords
@@ -45,5 +55,8 @@ reference_output_pattern: "{value}"
 # coverage
 coverage_enabled: true
 coverage_flag: "--show-coverage"
+coverage_file_flag: "--coverage-file"
+coverage_file_template: ".coverage_buggy_json.{pid}.{thread}.{time_ns}"
+coverage_file_cleanup: true
 tracking_mode: code_execution
  

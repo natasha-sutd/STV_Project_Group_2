@@ -8,7 +8,6 @@ import json as _json_mod
 
 import argparse
 import csv
-import os
 import webbrowser
 from collections import Counter
 from datetime import datetime
@@ -22,27 +21,51 @@ _CACHE_PATH = RESULTS_DIR / "firestore_cache.json"
 KNOWN_TARGETS = ["json_decoder", "cidrize", "ipv4_parser", "ipv6_parser"]
 
 # Data loading
-
-
-def load_csv(target: str) -> list[dict]:
-    csv_path = RESULTS_DIR / f"{target}_bugs.csv"
+def _read_csv_rows(csv_path: Path) -> list[dict]:
     if not csv_path.exists():
         return []
     with open(csv_path, newline="", encoding="utf-8", errors="replace") as f:
         return list(csv.DictReader(f))
 
 
-def load_coverage_csv(target: str) -> list[dict]:
+def resolve_latest_run_id(target: str) -> str:
+    coverage_rows = _read_csv_rows(RESULTS_DIR / f"{target}_coverage.csv")
+    coverage_run_ids = [str(r.get("run_id", "")) for r in coverage_rows if r.get("run_id")]
+    if coverage_run_ids:
+        return max(coverage_run_ids)
+
+    bug_rows = _read_csv_rows(RESULTS_DIR / f"{target}_bugs.csv")
+    bug_run_ids = [str(r.get("run_id", "")) for r in bug_rows if r.get("run_id")]
+    if bug_run_ids:
+        return max(bug_run_ids)
+
+    return ""
+
+
+def resolve_latest_run_ids(targets: list[str]) -> dict[str, str]:
+    return {t: resolve_latest_run_id(t) for t in targets}
+
+
+def load_csv(target: str, run_id: str | None = None) -> list[dict]:
+    csv_path = RESULTS_DIR / f"{target}_bugs.csv"
+    rows = _read_csv_rows(csv_path)
+    if run_id is None:
+        run_id = resolve_latest_run_id(target)
+    if run_id:
+        return [r for r in rows if str(r.get("run_id", "")) == run_id]
+    return rows
+
+
+def load_coverage_csv(target: str, run_id: str | None = None) -> list[dict]:
     csv_path = RESULTS_DIR / f"{target}_coverage.csv"
-    if not csv_path.exists():
-        return []
-    with open(csv_path, newline="", encoding="utf-8", errors="replace") as f:
-        rows = list(csv.DictReader(f))
+    rows = _read_csv_rows(csv_path)
     if not rows:
         return []
-    # Filter to only the latest run_id
-    latest_run = max(r.get("run_id", "") for r in rows)
-    return [r for r in rows if r.get("run_id") == latest_run]
+    if run_id is None:
+        run_id = resolve_latest_run_id(target)
+    if run_id:
+        return [r for r in rows if str(r.get("run_id", "")) == run_id]
+    return rows
 
 
 def _normalise_row(row: dict) -> dict:
@@ -55,7 +78,10 @@ def _normalise_row(row: dict) -> dict:
     return row
 
 
-def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int] | None:
+def _load_from_firestore(
+    targets: list[str],
+    run_ids: dict[str, str] | None = None,
+) -> tuple[dict[str, list[dict]], int] | None:
     """
     Fetch bugs from Firestore using a local cache to minimise reads.
 
@@ -107,13 +133,14 @@ def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int
             dt = datetime.fromisoformat(
                 last_timestamp).replace(tzinfo=timezone.utc)
             try:
-                from google.cloud.firestore_v1.base_query import FieldFilter
+                from google.cloud.firestore_v1.base_query import FieldFilter  # type: ignore[import-not-found]
                 query = query.where(filter=FieldFilter("timestamp", ">", dt))
             except ImportError:
                 query = query.where("timestamp", ">", dt)
 
         new_docs = list(query.stream())
-        # Intentionally no print here — called from background thread during fuzzing
+        print(f"[report_generator] Fetched {len(new_docs)} new bugs from Firestore "
+              f"(cache has {sum(len(v) for v in cached_bugs.values())})")
 
         # merge new docs into result, counting only new unique bug_keys
         result: dict[str, list[dict]] = {
@@ -144,7 +171,20 @@ def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int
                 "total_ever": total_ever,
             }, f)
 
-        return result, total_ever
+        filtered = result
+        if run_ids:
+            filtered = {}
+            for t in targets:
+                selected_run = run_ids.get(t, "")
+                rows_for_target = result.get(t, [])
+                if selected_run:
+                    rows_for_target = [
+                        r for r in rows_for_target if str(r.get("run_id", "")) == selected_run
+                    ]
+                filtered[t] = rows_for_target
+
+        print(f"[report_generator] Total ever: {total_ever} unique bugs (by bug_key)")
+        return filtered, total_ever
 
     except Exception as e:
         print(f"[report_generator] Firestore fetch failed: {e}")
@@ -155,24 +195,34 @@ def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int
 _total_ever: int | None = None
 
 
-def load_all(targets: list[str], use_firestore: bool = True) -> dict[str, list[dict]]:
+def load_all(
+    targets: list[str],
+    use_firestore: bool = True,
+    run_ids: dict[str, str] | None = None,
+) -> dict[str, list[dict]]:
     """Try Firestore first, fall back to local CSVs if unavailable."""
     global _total_ever
+    selected_run_ids = run_ids or resolve_latest_run_ids(targets)
+    _total_ever = None
     if use_firestore:
-        firestore_result = _load_from_firestore(targets)
+        firestore_result = _load_from_firestore(targets, run_ids=selected_run_ids)
         if firestore_result is not None:
-            data, total_ever = firestore_result
-            _total_ever = total_ever
+            data, _ = firestore_result
             return data
-    return {t: load_csv(t) for t in targets}
+    return {t: load_csv(t, run_id=selected_run_ids.get(t, "")) for t in targets}
 
 
-def load_all_coverage(targets: list[str]) -> dict[str, list[dict]]:
-    return {t: load_coverage_csv(t) for t in targets}
+def load_all_coverage(
+    targets: list[str],
+    run_ids: dict[str, str] | None = None,
+) -> dict[str, list[dict]]:
+    selected_run_ids = run_ids or resolve_latest_run_ids(targets)
+    return {
+        t: load_coverage_csv(t, run_id=selected_run_ids.get(t, ""))
+        for t in targets
+    }
 
 # Aggregation
-
-
 def summarise(rows: list[dict]) -> dict:
     total = len(rows)
     by_type = Counter(r.get("bug_type", "unknown") for r in rows)
@@ -192,8 +242,6 @@ def summarise(rows: list[dict]) -> dict:
     )
 
 # HTML helper functions
-
-
 def _esc(s) -> str:
     s = str(s) if not isinstance(s, str) else s
     return (s.replace("&", "&amp;").replace("<", "&lt;")
@@ -239,6 +287,154 @@ def _bar_row(key: str, count: int, maximum: int) -> str:
         f'  <span class="breakdown-count">{count}</span>'
         f'</div>'
     )
+
+
+def _to_float(row: dict, key: str) -> float | None:
+    val = row.get(key)
+    if val is None:
+        return None
+    try:
+        return float(val)
+    except (TypeError, ValueError):
+        return None
+
+
+def _to_bool(row: dict, key: str) -> bool | None:
+    val = row.get(key)
+    if val is None:
+        return None
+    text = str(val).strip().lower()
+    if text in {"1", "true", "yes", "y"}:
+        return True
+    if text in {"0", "false", "no", "n"}:
+        return False
+    return None
+
+
+def _render_coverage_quality_panel(all_coverage: dict[str, list[dict]], targets: list[str]) -> str:
+    fallback_sources = {"reference_percentages", "proxy_none", "buggy_output"}
+    mode_tracking_tip = (
+        "How coverage_source is tracked: "
+        "whitebox_target/instrumented = direct target code percentages; "
+        "instrumentation_edges = blackbox edge-frequency instrumentation (drives map density, not code %); "
+        "reference_percentages = reference-implementation fallback observed for diagnostics only, not binary code coverage; "
+        "buggy_output = percentages parsed directly from target output; "
+        "behavioral_signature = behavioral class fingerprinting for blackbox novelty; "
+        "proxy/proxy_none = no valid percentage signal this iteration."
+    )
+    rows_html = ""
+
+    for t in targets:
+        rows = all_coverage.get(t, [])
+        if not rows:
+            continue
+
+        source_counts: Counter = Counter()
+        error_counts: Counter = Counter()
+        fallback_count = 0
+        invalid_count = 0
+
+        for row in rows:
+            source = str(row.get("coverage_source") or "unknown").strip() or "unknown"
+            source_counts[source] += 1
+            if source.lower() in fallback_sources:
+                fallback_count += 1
+
+            valid = _to_bool(row, "coverage_data_valid")
+            if valid is None:
+                valid = source.lower() not in {"proxy_none", "proxy"}
+            if not valid:
+                invalid_count += 1
+
+            err = str(row.get("instrumentation_error") or "").strip()
+            if err:
+                error_counts[err] += 1
+
+        total = len(rows)
+        fallback_pct = round(fallback_count / total * 100) if total else 0
+        invalid_pct = round(invalid_count / total * 100) if total else 0
+        top_sources = ", ".join(
+            f"{_esc(src)}:{cnt}" for src, cnt in source_counts.most_common(3)
+        )
+        top_error = _esc(error_counts.most_common(1)[0][0]) if error_counts else "—"
+
+        rows_html += (
+            f"<tr>"
+            f"<td>{_target_label(t)}</td>"
+            f"<td class='mono num'>{total}</td>"
+            f"<td class='mono num'>{fallback_count} ({fallback_pct}%)</td>"
+            f"<td class='mono num'>{invalid_count} ({invalid_pct}%)</td>"
+            f"<td class='mono'>{top_sources or '—'}</td>"
+            f"<td class='mono'>{top_error}</td>"
+            f"</tr>"
+        )
+
+    if not rows_html:
+        return ""
+
+    return f"""
+<div class="chart-box" style="grid-column:1/-1;">
+  <div class="chart-label">
+    coverage quality and fallback diagnostics
+    <span class="chart-tooltip" data-tip="{_esc(mode_tracking_tip)}">ⓘ</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>target</th><th>points</th><th>fallback rows</th><th>invalid rows</th><th>top coverage sources</th><th>top instrumentation error</th></tr></thead>
+      <tbody>{rows_html}</tbody>
+    </table>
+  </div>
+</div>"""
+
+
+def _looks_like_combined_proxy(rows: list[dict]) -> bool:
+    """Heuristically detect function coverage values derived from combined coverage.
+
+    combined coverage is a weighted blend of statement and branch coverage, so
+    function values sourced from combined typically:
+    1) stay between statement and branch on almost all points, and
+    2) produce a near-constant blend factor across points.
+    """
+    valid = []
+    midpoint_blend_factors = []
+    between_count = 0
+    distinct_midpoint_count = 0
+
+    for row in rows:
+        statement = _to_float(row, "statement_coverage")
+        branch = _to_float(row, "branch_coverage")
+        function = _to_float(row, "function_coverage")
+        if statement is None or branch is None or function is None:
+            continue
+
+        valid.append((statement, branch, function))
+        lo = min(statement, branch)
+        hi = max(statement, branch)
+        if lo - 1e-6 <= function <= hi + 1e-6:
+            between_count += 1
+
+        # A midpoint distinct from both anchors is stronger evidence of a blend.
+        is_midpoint = abs(function - statement) > 0.01 and abs(function - branch) > 0.01
+        if is_midpoint:
+            distinct_midpoint_count += 1
+
+            if abs(statement - branch) > 1e-9:
+                alpha = (function - branch) / (statement - branch)
+                if 0.0 <= alpha <= 1.0:
+                    midpoint_blend_factors.append(alpha)
+
+    if len(valid) < 5:
+        return False
+
+    between_ratio = between_count / len(valid)
+    if between_ratio < 0.98 or distinct_midpoint_count < 5:
+        return False
+
+    if len(midpoint_blend_factors) < 5:
+        return False
+
+    # For a true combined proxy, the blend factor should stay nearly constant.
+    return (max(midpoint_blend_factors) - min(midpoint_blend_factors)) <= 0.06
 
 
 # Section renderers
@@ -430,7 +626,50 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
         ),
     }
 
+    direct_percentage_sources = {
+        "whitebox_target",
+        "instrumented",
+        "buggy_output",
+        "instrumented_percentages",
+    }
+
+    def _source_name(row: dict) -> str:
+        return str(row.get("coverage_source") or "").strip().lower()
+
+    direct_codecov_targets = {
+        t
+        for t in targets
+        if any(_source_name(row) in direct_percentage_sources for row in all_coverage.get(t, []))
+    }
+    fallback_only_targets = [
+        t
+        for t in targets
+        if all_coverage.get(t, []) and t not in direct_codecov_targets
+    ]
+    fallback_only_labels = ", ".join(_target_label(t) for t in fallback_only_targets)
+
+    function_proxy_targets = [
+        t for t in targets if _looks_like_combined_proxy(all_coverage.get(t, []))
+    ]
+    has_function_proxy = bool(function_proxy_targets)
+    proxy_target_labels = ", ".join(_target_label(t) for t in function_proxy_targets)
+
+    reference_fallback_targets = [
+        t
+        for t in targets
+        if any(
+            str(row.get("coverage_source") or "").strip().lower()
+            == "reference_percentages"
+            for row in all_coverage.get(t, [])
+        )
+    ]
+    has_reference_fallback = bool(reference_fallback_targets)
+    reference_fallback_labels = ", ".join(
+        _target_label(t) for t in reference_fallback_targets
+    )
+
     palette = ["#00ff88", "#45aaf2", "#ffd32a", "#ff4757"]
+    quality_panel_html = _render_coverage_quality_panel(all_coverage, targets)
 
     # Define all metrics — map_density first (always shown), then code coverage
     all_metrics = [
@@ -439,19 +678,23 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
         ("branch_coverage",      "branch coverage (%)"),
         ("function_coverage",    "function coverage (%)"),
     ]
-    rows_html = ""
 
-    for i, t in enumerate(targets):
-        t_rows = all_coverage[t]
-        if not t_rows:
-            continue
-        col = palette[i % len(palette)]
+    charts_html = ""
+    rendered_code_chart = False
+    for metric, metric_label in all_metrics:
+        chart_id = f"cov_{metric}"
+        datasets = []
+        has_nonzero = False
 
-        metric_cards = ""
-        for metric, metric_label in all_metrics:
+        for i, t in enumerate(targets):
+            if metric != "map_density" and t not in direct_codecov_targets:
+                continue
+            rows = all_coverage[t]
+            if not rows:
+                continue
+            col = palette[i % len(palette)]
             data_pts = []
-            has_nonzero = False
-            for r in t_rows:
+            for r in rows:
                 try:
                     y_val = round(float(r.get(metric, 0)), 4)
                     data_pts.append({"x": float(r.get("total_inputs", 0)),
@@ -462,41 +705,73 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
                     continue
             if not data_pts:
                 continue
-            
-            chart_id = f"cov_{t}_{metric}"
-            dataset = {
-                "label": metric_label,
+            datasets.append({
+                "label": _target_label(t),
                 "data":  data_pts,
                 "borderColor": col,
                 "backgroundColor": col + "22",
                 "fill": True, "tension": 0.35,
                 "pointRadius": 2, "borderWidth": 1.5,
-            }
+            })
 
-            # Skip code-coverage charts (statement, branch, function) if all values are 0
-            # This hides them for blackbox targets where they don't exist.
-            # map_density is always shown.
-            if metric != "map_density" and not has_nonzero:
-                continue
+        # Skip code-coverage charts (statement, branch, function) if all values are 0
+        # This hides them for blackbox targets where they don't exist.
+        # map_density is always shown.
+        if metric != "map_density" and not has_nonzero:
+            continue
 
-            if not dataset:
-                continue
+        if not datasets:
+            continue
 
-            dataset_js = _json.dumps([dataset])
+        datasets_js = _json.dumps(datasets)
 
-            all_y = [pt["y"] for pt in data_pts]
-            if all_y:
-                y_min = max(0.0, round(min(all_y) - 5, 1))
-                y_max = min(100.0, round(max(all_y) + 5, 1))
-            else:
-                y_min, y_max = 0, 100
+        # Dynamic y-axis range with padding to highlight differences
+        all_y = [pt["y"] for ds in datasets for pt in ds["data"]]
+        if all_y:
+            y_min = max(0.0, round(min(all_y) - 5, 1))
+            y_max = min(100.0, round(max(all_y) + 5, 1))
+        else:
+            y_min, y_max = 0, 100
 
-            tip_text = _esc(tooltips.get(metric, ""))
+        # Tooltip hint for this metric
+        effective_metric_label = metric_label
+        tip_text_value = tooltips.get(metric, "")
 
-            metric_cards += f"""
+        if metric != "map_density" and fallback_only_targets:
+            tip_text_value = (
+                "Fallback-only blackbox targets are hidden from this code-coverage chart and are "
+                "represented via map density instead. "
+                f"Hidden here: {fallback_only_labels}. "
+                + tip_text_value
+            )
+
+        if metric == "function_coverage" and has_function_proxy:
+            effective_metric_label = "function / combined proxy coverage (%)"
+            tip_text_value = (
+                "Explicit function coverage is unavailable for at least one target in this chart, "
+                "so the series is derived from combined coverage as a proxy. "
+                f"Proxy detected for: {proxy_target_labels}. "
+                + tip_text_value
+            )
+        if metric in {"statement_coverage", "branch_coverage", "function_coverage"} and has_reference_fallback:
+            effective_metric_label = f"{effective_metric_label} (fallback rows carried forward)"
+            tip_text_value = (
+                "At least one series encountered reference-script fallback rows. "
+                "Those points carry forward the last valid target measurement instead of "
+                "injecting reference-script percentages into the binary coverage chart. "
+                f"Fallback detected for: {reference_fallback_labels}. "
+                + tip_text_value
+            )
+
+        if metric != "map_density":
+            rendered_code_chart = True
+
+        tip_text = _esc(tip_text_value)
+
+        charts_html += f"""
 <div class="chart-box">
   <div class="chart-label">
-    {metric_label} vs inputs tested
+    {effective_metric_label} vs inputs tested
     <span class="chart-tooltip" data-tip="{tip_text}">ⓘ</span>
   </div>
   <div style="position:relative;height:220px;">
@@ -509,10 +784,12 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
   if (!ctx) return;
   new Chart(ctx, {{
     type: 'line',
-    data: {{ datasets: {dataset_js} }},
+    data: {{ datasets: {datasets_js} }},
     options: {{
       responsive: true, maintainAspectRatio: false, parsing: false,
-      plugins: {{ legend: {{ display: false }} }},
+      plugins: {{
+        legend: {{ labels: {{ color: '#c8d6e5', font: {{ family: "'Share Tech Mono'" }}, boxWidth: 12 }} }}
+      }},
       scales: {{
         x: {{
           type: 'linear',
@@ -531,18 +808,26 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
 }})();
 </script>"""
 
-        if not metric_cards:
-            continue
-
-        rows_html += f"""
-<div>
-  <div class="coverage-row-title">{_target_label(t)}</div>
-  <div class="coverage-row">{metric_cards}</div>
-</div>"""
+    code_mode_note = ""
+    if not rendered_code_chart:
+        code_mode_note = (
+            "<div class=\"no-coverage-msg\" style=\"grid-column:1/-1;\">"
+            "<span class=\"nc-icon\">◇</span>"
+            "<div>"
+            "<div class=\"nc-title\">code-coverage charts hidden (no direct instrumentation percentages)</div>"
+            "<div class=\"nc-sub\">"
+            "This report is in blackbox mode for the selected targets. "
+            "Use <code>map density</code> for growth trends. "
+            "If source-level coverage is required, run a whitebox target with <code>coverage_enabled: true</code>"
+            " and <code>coverage_flag</code>."
+            "</div>"
+            "</div>"
+            "</div>"
+        )
 
     return f"""
 <div class="section-title">coverage over time</div>
-<div class="coverage-grid">{rows_html}</div>"""
+<div class="coverage-grid">{quality_panel_html}{code_mode_note}{charts_html}</div>"""
 
 
 def render_bug_table(rows: list[dict], target: str) -> str:
@@ -555,7 +840,7 @@ def render_bug_table(rows: list[dict], target: str) -> str:
         f"<tr>"
         f"<td>{_pill(r)}</td>"
         f'<td class="input-cell mono" title="{_esc((r.get("input_data") or "")[:80])}">{_esc((r.get("input_data") or "")[:80])}</td>'
-        f"<td class='mono'>{_esc(r.get('strategy', '') or '\u2014')}</td>"
+        f"<td class='mono'>{_esc(r.get('strategy', '') or '—')}</td>"
         f"<td class='mono num'>{_esc(str(r.get('returncode', '')))}</td>"
         f'<td class="ts-cell mono">{_esc((r.get("timestamp") or "")[:19])}</td>'
         f"</tr>"
@@ -693,38 +978,38 @@ _CSS = """
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:9999}
-.header{border-bottom:1px solid var(--border);padding:3rem 4rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:relative;overflow:hidden}
+.header{border-bottom:1px solid var(--border);padding:2.5rem 3rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:relative;overflow:hidden}
 .header::after{content:'FUZZER';position:absolute;right:-1rem;top:-1.5rem;font-family:var(--sans);font-weight:800;font-size:9rem;color:rgba(255,255,255,.018);user-select:none;letter-spacing:-4px;white-space:nowrap}
 .label{font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
-h1{font-family:var(--sans);font-weight:800;font-size:3rem;color:#fff;line-height:1.1}
-.header-right{font-family:var(--mono);font-size:.85rem;color:var(--text-dim);text-align:right;line-height:1.8}
+h1{font-family:var(--sans);font-weight:800;font-size:2.2rem;color:#fff;line-height:1.1}
+.header-right{font-family:var(--mono);font-size:.75rem;color:var(--text-dim);text-align:right;line-height:1.8}
 .header-right span{color:var(--text)}
-.container{max-width:100%;margin:0 auto;padding:2.5rem 4rem 5rem}
-.section-title{font-family:var(--mono);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;color:#fff;margin:3rem 0 1.25rem;display:flex;align-items:center;gap:.75rem}
+.container{max-width:1300px;margin:0 auto;padding:2rem 3rem 4rem}
+.section-title{font-family:var(--mono);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin:3rem 0 1rem;display:flex;align-items:center;gap:.75rem}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 .global-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2rem}
-.stat-cell{background:var(--surface);padding:2rem 2rem;display:flex;flex-direction:column;gap:.35rem}
-.stat-cell .val{font-family:var(--mono);font-size:3rem;color:#fff;line-height:1}
+.stat-cell{background:var(--surface);padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:.25rem}
+.stat-cell .val{font-family:var(--mono);font-size:2.2rem;color:#fff;line-height:1}
 .stat-cell .val.danger{color:var(--accent2)}.stat-cell .val.warn{color:var(--accent3)}.stat-cell .val.info{color:var(--accent4)}.stat-cell .val.ok{color:var(--accent)}
 .stat-cell .lbl{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
-.cards{display:grid;grid-template-columns:1fr;gap:1.5rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(540px,1fr));gap:1.5rem}
 .card{background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column}
 .card-accent-bar{height:3px;background:var(--accent)}
 .card.has-bugs .card-accent-bar{background:var(--accent2)}
 .card.no-data .card-accent-bar{background:var(--muted)}
 .card-header{padding:1.2rem 1.5rem .8rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--border)}
-.card-title{font-weight:700;font-size:1.3rem;color:#fff}
+.card-title{font-weight:700;font-size:1rem;color:#fff}
 .card-target-id{font-family:var(--mono);font-size:.65rem;color:var(--muted);margin-top:.2rem}
 .badge{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border:1px solid currentColor;white-space:nowrap;align-self:flex-start}
 .badge.danger{color:var(--accent2)}.badge.warn{color:var(--accent3)}.badge.ok{color:var(--accent)}.badge.muted{color:var(--muted)}
 .card-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
 .cs{background:var(--surface);padding:.8rem 1rem;display:flex;flex-direction:column;gap:.15rem}
-.cs .v{font-family:var(--mono);font-size:1.8rem;color:#fff}
+.cs .v{font-family:var(--mono);font-size:1.3rem;color:#fff}
 .cs .v.d{color:var(--accent2)}.cs .v.w{color:var(--accent3)}
 .cs .l{font-family:var(--mono);font-size:.55rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 .breakdown{padding:1rem 1.5rem;flex:1}
-.breakdown-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem;font-family:var(--mono);font-size:.85rem}
-.breakdown-key{color:var(--text-dim);min-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breakdown-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.55rem;font-family:var(--mono);font-size:.72rem}
+.breakdown-key{color:var(--text-dim);min-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .breakdown-bar-wrap{flex:1;height:4px;background:var(--border)}
 .breakdown-bar{height:100%;background:var(--accent)}
 .card.has-bugs .breakdown-bar{background:var(--accent2)}
@@ -732,9 +1017,7 @@ h1{font-family:var(--sans);font-weight:800;font-size:3rem;color:#fff;line-height
 .no-data-msg{padding:2rem 1.5rem;font-family:var(--mono);font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:.6rem}
 .no-data-msg::before{content:'//';color:var(--border)}
 .ablation-wrap{background:var(--surface);border:1px solid var(--border);padding:1.5rem}
-.coverage-grid{display:flex;flex-direction:column;gap:2.5rem}
-.coverage-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
-.coverage-row-title{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent4);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.coverage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:1.5rem}
 .chart-box{background:var(--surface);border:1px solid var(--border);padding:1.2rem 1.5rem}
 .chart-label{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
 .chart-tooltip{position:relative;cursor:help;color:var(--text-dim);font-size:.75rem;line-height:1;flex-shrink:0;text-transform:none;letter-spacing:0}
@@ -746,13 +1029,13 @@ h1{font-family:var(--sans);font-weight:800;font-size:3rem;color:#fff;line-height
 .nc-sub{color:var(--muted);line-height:1.7}
 .nc-sub code{color:var(--text-dim)}
 .table-wrap{overflow-x:auto;border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.85rem}
+table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.72rem}
 thead tr{background:#0d1017;border-bottom:1px solid var(--border)}
-thead th{padding:.8rem 1.25rem;text-align:left;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:400;white-space:nowrap}
+thead th{padding:.6rem 1rem;text-align:left;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-weight:400;white-space:nowrap}
 tbody tr{border-bottom:1px solid var(--border)}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:rgba(255,255,255,.02)}
-tbody td{padding:.7rem 1.25rem;color:var(--text);vertical-align:top}
+tbody td{padding:.55rem 1rem;color:var(--text);vertical-align:top}
 .num{text-align:right}.mono{font-family:var(--mono)}
 .no-data-msg-td{color:var(--muted);padding:1.2rem 1rem;font-family:var(--mono);font-size:.72rem}
 .pill{display:inline-block;padding:.1rem .45rem;font-size:.6rem;border-radius:2px;letter-spacing:.05em;font-family:var(--mono)}
@@ -761,7 +1044,7 @@ tbody td{padding:.7rem 1.25rem;color:var(--text);vertical-align:top}
 .pill-keyword{background:rgba(0,255,136,.1);color:var(--accent)}
 .pill-diff{background:rgba(69,170,242,.12);color:var(--accent4)}
 .pill-error{background:rgba(100,100,100,.15);color:var(--muted)}
-.input-cell{max-width:400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-dim)}
+.input-cell{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-dim)}
 .ts-cell{color:var(--muted);white-space:nowrap}
 .bug-reports-list{display:flex;flex-direction:column;gap:1.5rem}
 .bug-report-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent2)}
@@ -781,7 +1064,7 @@ tbody td{padding:.7rem 1.25rem;color:var(--text);vertical-align:top}
 code{font-family:var(--mono);font-size:.75rem;color:var(--text-dim);background:#0d1017;padding:.05rem .35rem;border:1px solid var(--border)}
 .dim{color:var(--muted)}
 em{color:var(--accent4);font-style:normal}
-.footer{border-top:1px solid var(--border);padding:1.5rem 4rem;font-family:var(--mono);font-size:.65rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.footer{border-top:1px solid var(--border);padding:1.5rem 3rem;font-family:var(--mono);font-size:.65rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
 """
 
 _JS_ANIMATE = """
@@ -811,45 +1094,26 @@ def generate_report(
     targets: list[str],
     out_path: Path,
 ) -> Path:
-    """Legacy: generate a combined report for all targets. Delegates to generate_target_report."""
-    # out_path is ignored here; each target writes its own file.
-    # Returns the path of the last file written (backward-compat).
-    last_path = out_path
-    for t in targets:
-        last_path = generate_target_report(
-            target=t,
-            rows=all_data[t],
-            coverage_rows=all_coverage[t],
-            out_path=out_path.parent / f"{t}_report.html",
-        )
-    return last_path
-
-
-def generate_target_report(
-    target: str,
-    rows: list[dict],
-    coverage_rows: list[dict],
-    out_path: Path,
-) -> Path:
-    """Generate a single-target HTML report and write it to out_path."""
     now = datetime.now()
     ts = now.strftime("%Y-%m-%d %H:%M:%S")
 
-    summary = summarise(rows)
-    total_bugs = summary["total"]
-    total_timeouts = summary["timeouts"]
-    has_data = len(rows) > 0
-
-
-    single_data = {target: rows}
-    single_coverage = {target: coverage_rows}
+    total_bugs = sum(len(v) for v in all_data.values())
+    total_timeouts = sum(summarise(v)["timeouts"] for v in all_data.values())
+    targets_run = sum(1 for v in all_data.values() if v)
+    global_stats = f"""
+<div class="global-stats">
+  <div class="stat-cell"><div class="val {"danger" if total_bugs else "ok"}" data-count="{total_bugs}">{total_bugs}</div><div class="lbl">total bugs</div></div>
+  <div class="stat-cell"><div class="val {"warn" if total_timeouts else "ok"}" data-count="{total_timeouts}">{total_timeouts}</div><div class="lbl">timeouts</div></div>
+  <div class="stat-cell"><div class="val info" data-count="{targets_run}">{targets_run}</div><div class="lbl">targets with data</div></div>
+  <div class="stat-cell"><div class="val" data-count="{len(targets)}">{len(targets)}</div><div class="lbl">targets total</div></div>
+</div>"""
 
     html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Fuzzer Report — {_target_label(target)} — {ts}</title>
+<title>Fuzzer Report — {ts}</title>
 <style>{_CSS}</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
@@ -857,25 +1121,27 @@ def generate_target_report(
 <header class="header">
   <div>
     <div class="label">// fuzzer output</div>
-    <h1>{_target_label(target)}</h1>
+    <h1>Bug Report</h1>
   </div>
   <div class="header-right">
     generated &nbsp;<span>{ts}</span><br/>
-    target &nbsp;&nbsp;&nbsp;&nbsp;<span>{target}</span><br/>
+    targets &nbsp;&nbsp;&nbsp;<span>{", ".join(targets)}</span><br/>
     total bugs&nbsp;<span>{total_bugs}</span>
   </div>
 </header>
 <main class="container">
-  <div class="section-title">target summary</div>
-  <div class="cards">{render_overview_card(target, rows)}</div>
-  {render_ablation_section(single_data, [target])}
-  {render_coverage_section(single_coverage, [target])}
-  <div class="section-title">recent bugs</div>
-  {render_bug_table(rows, target)}
-  {render_bug_reports(single_data, [target])}
+  <div class="section-title">overview</div>
+  {global_stats}
+  <div class="section-title">per-target summary</div>
+  <div class="cards">{"".join(render_overview_card(t, all_data[t]) for t in targets)}</div>
+  {render_ablation_section(all_data, targets)}
+  {render_coverage_section(all_coverage, targets)}
+  <div class="section-title">recent bugs by target</div>
+  {"".join(render_bug_table(all_data[t], t) for t in targets)}
+  {render_bug_reports(all_data, targets)}
 </main>
 <footer class="footer">
-  <span>fuzzer report — {_target_label(target)} — generated {ts}</span>
+  <span>fuzzer report — generated {ts}</span>
   <span>results/ → {out_path.name}</span>
 </footer>
 <script>{_JS_ANIMATE}</script>
@@ -883,12 +1149,7 @@ def generate_target_report(
 </html>"""
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    # Write atomically: build in memory → write to .tmp → rename into place.
-    # This gives Live Server (and any other file watcher) a single filesystem
-    # event instead of firing on every incremental write() call.
-    tmp_path = out_path.with_suffix(".tmp")
-    tmp_path.write_text(html, encoding="utf-8")
-    tmp_path.replace(out_path)
+    out_path.write_text(html, encoding="utf-8")
     return out_path
 
 # ---------------------------------------------------------------------------
@@ -898,45 +1159,34 @@ def generate_target_report(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Generate per-target HTML fuzzing reports from bug + coverage CSVs."
+        description="Generate an HTML fuzzing report from bug + coverage CSVs."
     )
     parser.add_argument("--target", "-t", nargs="+", metavar="TARGET",
                         help=f"Targets to include. Default: all ({', '.join(KNOWN_TARGETS)})")
-    parser.add_argument("--out-dir", "-o", default=str(RESULTS_DIR),
-                        metavar="DIR", help="Output directory for report files (default: results/)")
+    parser.add_argument("--out", "-o", default=str(RESULTS_DIR / "report.html"),
+                        metavar="PATH", help="Output HTML file (default: results/report.html)")
     parser.add_argument("--no-open", action="store_true",
-                        help="Don't auto-open the reports in a browser")
+                        help="Don't auto-open the report in a browser")
     args = parser.parse_args()
 
     targets = args.target if args.target else KNOWN_TARGETS
-    out_dir = Path(args.out_dir).resolve()
+    out_path = Path(args.out).resolve()
+    run_ids = resolve_latest_run_ids(targets)
 
     print(f"[report_generator] Loading data for: {', '.join(targets)}")
-    all_data = load_all(targets)
-    all_coverage = load_all_coverage(targets)
+    all_data = load_all(targets, run_ids=run_ids)
+    all_coverage = load_all_coverage(targets, run_ids=run_ids)
 
     for t in targets:
         print(f"  {'v' if all_data[t] else '.'} {t:<20} "
               f"{len(all_data[t])} bugs  |  {len(all_coverage[t])} coverage snapshots")
 
-    print()
-    written: list[Path] = []
-    for t in targets:
-        out_path = out_dir / f"{t}_report.html"
-        print(f"[report_generator] Writing {t} -> {out_path}")
-        generate_target_report(
-            target=t,
-            rows=all_data[t],
-            coverage_rows=all_coverage[t],
-            out_path=out_path,
-        )
-        written.append(out_path)
-
+    print(f"\n[report_generator] Writing -> {out_path}")
+    generate_report(all_data, all_coverage, targets, out_path)
     print("[report_generator] Done.")
 
     if not args.no_open:
-        for p in written:
-            webbrowser.open(p.as_uri())
+        webbrowser.open(out_path.as_uri())
 
 
 if __name__ == "__main__":

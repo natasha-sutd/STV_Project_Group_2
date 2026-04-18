@@ -2,37 +2,60 @@ name: ipv6_parser
 
 # commands
 buggy_cmd: 
-  windows: ["../IPv4-IPv6-parser-main/bin/win-ipv4-parser.exe", "--ipstr", "{input}"]
+  windows: ["../IPv4-IPv6-parser-main/bin/win-ipv6-parser.exe", "--ipstr", "{input}"]
+  linux: ["./bin/linux-ipv6-parser", "--ipstr", "{input}"]
   mac: ["./bin/mac-ipv6-parser", "--ipstr", "{input}"]
 buggy_cwd: "../../IPv4-IPv6-parser-main"
 
 reference_cmd:
   windows: ["python", "ipyparse/src/ipv6_parser.py", "{input}"]
+  linux: ["python3", "ipyparse/src/ipv6_parser.py", "{input}"]
   mac: ["python3", "ipyparse/src/ipv6_parser.py", "{input}"]
 reference_cwd: "../../IPv4-IPv6-parser-main"
 
 # input
 input_mode: arg
 input:
-  type: sequence
-  separator: ":"
-  count: 8
-  element:
-    type: hex
-    min: 0
-    max: 0xFFFF
+  type: one_of
+  options:
+    - type: sequence
+      separator: ":"
+      min_count: 1
+      max_count: 8
+      element: { type: hex, min: 0, max: 0xFFFF }
+
+    - type: concat
+      parts:
+        - type: sequence
+          separator: ":"
+          min_count: 0
+          max_count: 6
+          element: { type: hex, min: 0, max: 0xFFFF }
+        - type: one_of
+          options:
+            - { type: literal, value: "::" }
+            - { type: literal, value: ":" }
+        - type: one_of
+          options:
+          - type: sequence
+            separator: ":"
+            min_count: 0
+            max_count: 6
+            element: { type: hex, min: 0, max: 0xFFFF }
+          - type: sequence
+            separator: "."
+            min_count: 4
+            max_count: 4
+            element: { type: int, min: 0, max: 255 }
+parallel_workers: 4
 seeds_path: "../inputs/ipv6_parser/seeds.txt"
-seed_count: 30
 
 # execution
 timeout: 60
 
-# bug detection
-detection_mode: keyword
+# special bug keywords
 bug_keywords:
-  - "invalidity"
-  - "bonus"
-  - "Traceback (most recent call last)"
+  - "ParseException"
 
 # differential output comparison
 buggy_output_pattern: "Output: [{value}]"
@@ -40,4 +63,34 @@ reference_output_pattern: "Output: [{value}]"
 
 # coverage
 coverage_enabled: false
-tracking_mode: behavioral
+tracking_mode: code_execution
+blackbox_instrumentation:
+  enabled: true
+  kind: afl_showmap
+  kind_windows: frida_stalker
+  frida_config:
+    target_module: "win-ipv6-parser.exe"
+    use_call_summary: true
+    flush_event_count: 4096
+    capture_target_output: false
+    parallel_with_buggy: true
+    parallel_with_reference: true
+    attach_retries: 3
+    attach_retry_delay_ms: 20
+    fail_fast_on_setup_error: true
+    arg_null_policy: escape
+    arg_null_replacement: "\\x00"
+    exclude_modules:
+      - "ntdll.dll"
+      - "kernel32.dll"
+      - "kernelbase.dll"
+      - "ucrtbase.dll"
+  cmd:
+    windows:
+      ["wsl", "--cd", "{buggy_cwd_wsl}", "afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/linux-ipv6-parser", "--ipstr", "{input}"]
+    linux:
+      ["afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/linux-ipv6-parser", "--ipstr", "{input}"]
+    mac:
+      ["afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/mac-ipv6-parser", "--ipstr", "{input}"]
+  timeout: 20
+  timeout_windows: 60

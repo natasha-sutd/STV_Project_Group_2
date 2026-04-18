@@ -17,14 +17,17 @@ input:
   # available options:
   # - type: int, min: _, max: _
   # - type: float, min: _, max: _
-  # - type: string, min: _, max: _
+  # - type: hex, min: _, max: _
+  # - type: string, min_length: _, max_length: _
+  # - type: literal, value: "_"
   # - type: boolean
   # - type: null
-  # - type: array, min_length: _, max_length: _, element: { type : any }
-  # - type: object (dictionary), max_fields: _, key: { type: string, min: _, max: _ }, value: { type: any }
+  # - type: array, min_length: _, max_length: _, element: { type : _ }
+  # - type: object (dictionary), max_fields: _, key: { type: string, min_length: _, max_length: _ }, value: { type: _ }
+  # - type: sequence, separator: "_", min_count: _, max_count: _, element: { type: _ }
+  # - type: concat, parts: [ { type: _ }, { type: _ }, ... ]
   # - type: one_of, options: [ { type: _ }, { type: _ }, ... ] (for union types)
-  # - type: sequence, parts: [ { type: _ }, { type: _ }, ... ], separator: "_" 
-  # - type: any
+  # - any: options: [ { type: _ }, { type: _ }, ... ] (for recursive types)
 
 seeds_path: "_"
 
