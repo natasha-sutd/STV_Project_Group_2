@@ -1,4 +1,9 @@
+# target
 name: ipv6_parser
+target_module: 
+    windows: "win-ipv6-parser.exe"
+    linux: "linux-ipv6-parser"
+    mac: "mac-ipv6-parser"
 
 # commands
 buggy_cmd: 
@@ -20,34 +25,44 @@ input:
   options:
     - type: sequence
       separator: ":"
-      min_count: 1
+      min_count: 8
       max_count: 8
       element: { type: hex, min: 0, max: 0xFFFF }
 
+    # Compressed with :: (left side only)
     - type: concat
       parts:
         - type: sequence
           separator: ":"
-          min_count: 0
+          min_count: 1
           max_count: 6
           element: { type: hex, min: 0, max: 0xFFFF }
-        - type: one_of
-          options:
-            - { type: literal, value: "::" }
-            - { type: literal, value: ":" }
-        - type: one_of
-          options:
-          - type: sequence
-            separator: ":"
-            min_count: 0
-            max_count: 6
-            element: { type: hex, min: 0, max: 0xFFFF }
-          - type: sequence
-            separator: "."
-            min_count: 4
-            max_count: 4
-            element: { type: int, min: 0, max: 255 }
-parallel_workers: 4
+        - { type: literal, value: "::" }
+
+    # Compressed with :: (both sides, total groups <= 6)
+    - type: concat
+      parts:
+        - type: sequence
+          separator: ":"
+          min_count: 1
+          max_count: 3
+          element: { type: hex, min: 0, max: 0xFFFF }
+        - { type: literal, value: "::" }
+        - type: sequence
+          separator: ":"
+          min_count: 1
+          max_count: 3
+          element: { type: hex, min: 0, max: 0xFFFF }
+
+    # IPv4-mapped: ::ffff:d.d.d.d
+    - type: concat
+      parts:
+        - { type: literal, value: "::ffff:" }
+        - type: sequence
+          separator: "."
+          min_count: 4
+          max_count: 4
+          element: { type: int, min: 0, max: 255 }
 seeds_path: "../inputs/ipv6_parser/seeds.txt"
 
 # execution
@@ -64,33 +79,3 @@ reference_output_pattern: "Output: [{value}]"
 # coverage
 coverage_enabled: false
 tracking_mode: code_execution
-blackbox_instrumentation:
-  enabled: true
-  kind: afl_showmap
-  kind_windows: frida_stalker
-  frida_config:
-    target_module: "win-ipv6-parser.exe"
-    use_call_summary: true
-    flush_event_count: 4096
-    capture_target_output: false
-    parallel_with_buggy: true
-    parallel_with_reference: true
-    attach_retries: 3
-    attach_retry_delay_ms: 20
-    fail_fast_on_setup_error: true
-    arg_null_policy: escape
-    arg_null_replacement: "\\x00"
-    exclude_modules:
-      - "ntdll.dll"
-      - "kernel32.dll"
-      - "kernelbase.dll"
-      - "ucrtbase.dll"
-  cmd:
-    windows:
-      ["wsl", "--cd", "{buggy_cwd_wsl}", "afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/linux-ipv6-parser", "--ipstr", "{input}"]
-    linux:
-      ["afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/linux-ipv6-parser", "--ipstr", "{input}"]
-    mac:
-      ["afl-showmap", "-Q", "-m", "none", "-o", "{map_file}", "--", "./bin/mac-ipv6-parser", "--ipstr", "{input}"]
-  timeout: 20
-  timeout_windows: 60

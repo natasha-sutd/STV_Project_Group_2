@@ -41,6 +41,8 @@ def _extract_output(stdout: str, pattern: str) -> Optional[str]:
     if not pattern or "{value}" not in pattern:
         return None
     if pattern == "{value}":
+        if "\t<cov_lines>" in stdout:
+            return stdout.split("\t<cov_lines>")[0].strip()
         return stdout.strip()
     regex = re.escape(pattern).replace(r"\{value\}", r"(.+?)")
     regex = regex.replace(r"\ ", r"\s*")
@@ -77,20 +79,14 @@ class BugOracle:
         self,
         raw: RawResult,
         input_data: str,
-        target: str,
-        config: dict = None,
+        config: dict,
         ref: Optional[RawResult] = None,
     ) -> BugResult:
-        config = config or {}
+        target = config.get("name")
         stdout = raw.stdout
         stderr = raw.stderr
         combined = stdout + "\n" + stderr
         lower = combined.lower()
-
-        # for analysis:
-        # matches = self._TRACEBACK_LINE_RE.findall(combined)
-        # print(f"[DEBUG] traceback line matches: {matches}")
-        # print(f"[DEBUG] fingerprint: {self._extract_line_number(combined)}")
 
         bug_keywords = config.get("bug_keywords", [])
 
@@ -152,7 +148,7 @@ class BugOracle:
             )
 
         # 6. FUNCTIONAL
-        if "functional" in lower and "FunctionalBug" in lower:
+        if "functional" in lower or "FunctionalBug" in lower:
             return self._make_result(
                 bug_type=BugType.FUNCTIONAL,
                 raw_key=("functional", "FunctionalBug", line_num),
@@ -237,7 +233,7 @@ class BugOracle:
         return match.group(1) if match else "UnknownError"
 
     @classmethod
-    def _extract_line_number(cls, text: str, max_frames: int = 2) -> str:
+    def _extract_line_number(cls, text: str, max_frames: int = 3) -> str:
         matches = cls._TRACEBACK_LINE_RE.findall(text)
         if matches:
             return ":".join(matches[-max_frames:])

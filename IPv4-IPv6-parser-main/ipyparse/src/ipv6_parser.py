@@ -10,7 +10,12 @@ def main():
 
     ip_to_test = sys.argv[1]
 
-    cov = coverage.Coverage(source=["ipyparse"], branch=True)
+    cov = coverage.Coverage(
+        data_file=".coverage_ipv4_parser",
+        source=["ipyparse"],
+        branch=True
+    )
+    cov.load() 
     cov.start()
 
     try:
@@ -25,20 +30,7 @@ def main():
 
     stream = StringIO()
     cov.report(file=stream, show_missing=False)
-    report = stream.getvalue()
-
-    line_match = re.search(r"TOTAL\s+\d+\s+\d+\s+\d+\s+\d+\s+(\d+)%", report)
-    simple_match = re.search(r"TOTAL\s+\d+\s+\d+\s+(\d+)%", report)
-
-    if line_match:
-        pct = line_match.group(1)
-    elif simple_match:
-        pct = simple_match.group(1)
-    else:
-        pct = "0"
-
-    print(f"line coverage     : {pct}%")
-    print(f"branch coverage   : {pct}%")
+    cov.save()
 
 
 if __name__ == "__main__":

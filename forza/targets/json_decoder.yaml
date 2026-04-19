@@ -1,4 +1,9 @@
+# target
 name: json_decoder
+target_module: 
+    windows: "json_decoder_stv.py"
+    linux: "json_decoder_stv.py"
+    mac: "json_decoder_stv.py"
 
 # commands
 buggy_cmd:
@@ -41,7 +46,6 @@ any:
       max_fields: 5
       key: { type: string, min_length: 1, max_length: 20 }
       value: { type: any }
-parallel_workers: 4
 seeds_path: "../inputs/json_decoder/seeds.txt"
 
 # special bug keywords
@@ -55,8 +59,5 @@ reference_output_pattern: "{value}"
 # coverage
 coverage_enabled: true
 coverage_flag: "--show-coverage"
-coverage_file_flag: "--coverage-file"
-coverage_file_template: ".coverage_buggy_json.{pid}.{thread}.{time_ns}"
-coverage_file_cleanup: true
 tracking_mode: code_execution
  

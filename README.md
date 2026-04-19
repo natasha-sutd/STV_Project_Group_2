@@ -273,6 +273,11 @@ Place `firebase-credentials.json` and `firebase-credentials-current.json` in the
 
 ### Running the Fuzzer
 
+Note: Run the following command before every fuzzing session
+```bash
+rm ../json-decoder/logs/bug_counts.csv
+```
+
 ```bash
 # Single target
 python3 fuzzer.py --target targets/json_decoder.yaml --duration 3600

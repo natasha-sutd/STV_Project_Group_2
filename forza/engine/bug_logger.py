@@ -1,11 +1,5 @@
 """
 Saves every unique bug found to disk and to a CSV file.
-
-Files written to results/<target>/<run_id>/:
-    - all_runs.csv: every execution (input, bug_type, is_new)
-    - bugs.csv: deduplicated unique bugs found
-    - stats.csv: time-series snapshot of coverage/throughput
-    - tracebacks.log: raw stdout for anything that is not NORMAL
 """
 
 import threading
@@ -106,8 +100,6 @@ class FuzzLogger:
         # Only these representative bugs are surfaced in report.html.
         self._first_by_type: dict[BugType, BugResult] = {}
 
-        print(f"[logger] Writing results to: {run_dir}")
-
         firestore_client.clear_current_db(run_id)
 
     # Public API
@@ -198,7 +190,7 @@ class FuzzLogger:
                     result, run_id=self._run_id, is_representative=True
                 )
 
-            if result.bug_type not in (BugType.NORMAL,):
+            if result.bug_type != BugType.NORMAL:
                 with open(self._tb_path, "a", encoding="utf-8") as f:
                     f.write(f"\n{'='*60}\n")
                     f.write(
@@ -301,7 +293,6 @@ _logger_lock = threading.Lock()
 def log(
     bug: BugResult,
     config: dict,
-    *,
     corpus_size: int = 0,
     generation_time_ms: float = 0.0,
     execution_time_ms: float = 0.0,

@@ -143,7 +143,7 @@ def generate_from_spec(spec: Any, current_depth: int = 0, max_depth: int = 5) ->
     elif t == "sequence":
         sep = str(spec.get("separator", ""))
         element_spec = spec.get("element", {"type": "int", "min": 0, "max": 9})
-        count = random.randint(spec.get("min_count", 1), spec.get("max_count", 8))
+        count = random.randint(spec.get("min_length", 1), spec.get("max_length", 8))
         result = sep.join(
             str(generate_from_spec(element_spec, current_depth + 1, max_depth))
             for _ in range(count)
@@ -449,6 +449,10 @@ def generate_invalid_value(spec: dict) -> str:
                 "-inf",
             ]
         )
+    
+    if t == "literal":
+        expected = str(spec.get("value", ""))
+        return random.choice(string.ascii_letters - set(expected))
 
     if t == "any":
         return random.choice(
@@ -513,15 +517,15 @@ def violate_tree(node: CFGNode) -> CFGNode:
         return node
 
     if t == "sequence":
-        min_count = node.spec.get("min_count", 1)
-        max_count = node.spec.get("max_count", 8)
-        exceed_min = max(0, min_count - random.randint(1, 3))
-        exceed_max = random.randint(1, 3) + max_count
-        valid = set(range(min_count, max_count + 1))
+        min_length = node.spec.get("min_length", 1)
+        max_length = node.spec.get("max_length", 8)
+        exceed_min = max(0, min_length - random.randint(1, 3))
+        exceed_max = random.randint(1, 3) + max_length
+        valid = set(range(min_length, max_length + 1))
         all_vals = set(range(exceed_min, exceed_max + 1))
         invalid = list(all_vals - valid)
 
-        wrong_count = random.choice(invalid) if invalid else min_count
+        wrong_count = random.choice(invalid) if invalid else min_length
         element_spec = node.spec["element"]
         node.children = [build_tree_from_spec(element_spec) for _ in range(wrong_count)]
         return node

@@ -24,7 +24,7 @@ input:
   # - type: null
   # - type: array, min_length: _, max_length: _, element: { type : _ }
   # - type: object (dictionary), max_fields: _, key: { type: string, min_length: _, max_length: _ }, value: { type: _ }
-  # - type: sequence, separator: "_", min_count: _, max_count: _, element: { type: _ }
+  # - type: sequence, separator: "_", min_length: _, max_length: _, element: { type: _ }
   # - type: concat, parts: [ { type: _ }, { type: _ }, ... ]
   # - type: one_of, options: [ { type: _ }, { type: _ }, ... ] (for union types)
   # - any: options: [ { type: _ }, { type: _ }, ... ] (for recursive types)
