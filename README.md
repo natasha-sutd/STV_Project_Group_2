@@ -32,15 +32,16 @@ forza/
 │   ├── types.py               # Shared types: BugType enum, BugResult dataclass
 │   ├── target_runner.py       # Subprocess runner — executes targets, captures output
 │   ├── mutation_engine.py     # AFL-style weighted mutation with grammar support
-│   ├── seed_generator.py      # Grammar-based seed generation from YAML spec
-│   ├── bug_oracle.py          # Classifies output into bug types
-│   ├── coverage_tracker.py    # Tracks coverage (instrumented or behavioral proxy)
+│   ├── seed_generator.py      # Grammar-based seed generation and CFG tree mutations
+│   ├── bug_oracle.py          # Classifies raw output into structured BugResult types
+│   ├── coverage_tracker.py    # AFL-compatible bitmap tracker (behavioral + code_execution)
 │   ├── bug_logger.py          # Writes bugs to CSV and uploads to Firestore
 │   ├── firestore_client.py    # Firebase Firestore client (archive + current DBs)
 │   └── report_generator.py    # Generates per-target report.html from CSV/Firestore data
 ├── results/
 │   ├── *_bugs.csv             # Deduplicated bug log per target
 │   ├── *_coverage.csv         # Coverage snapshots per target
+|   ├── */<run_id>/            # Per-run directory: all_runs.csv, stats.csv, tracebacks.log, bug_inputs/
 │   └── *_report.html          # Generated HTML report per target
 
 ```
@@ -71,10 +72,10 @@ Our fuzzer's overall design is as follows:
 
 | Libraries/Tools       | Description                                                                           |
 | --------------------- | ------------------------------------------------------------------------------------- |
-| `Radamsa`             | Specializes in generating extreme cases without needing to know code structure        |
-| `PyPYAML`             | Defines how each target is executed in separate YAML files. Promotes extensibility by allowing new targets to be added without modifying the core fuzzer logic  |
-| `Frida`               | Dynamic instrumentation toolkit that acts as an “external” entity injected into a running process to hook functions, trace code, and modify behavior at runtime  |
-| `firebase-admin`      | Bridge between fuzzer & Google Cloud
+| `Radamsa`             | A high-performance test case generator used to create "extreme" mutated inputs from our seeds without requiring knowledge of the program's internal logic.
+| `PyPYAML`             | Defines how each target is executed in separate YAML files. Promotes extensibility by allowing new targets to be added without modifying the core fuzzer logic.
+| `Coverage`            | Analyzes the source code of our Python targets to identify which lines and branches are executed, helping the fuzzer decide which inputs are "interesting" enough to keep in the corpus.
+| `firebase-admin`      | The bridge between our fuzzer and Google Cloud, enabling firestore_client.py to upload bugs and coverage snapshots to our "Archive" and "Current" databases.
 
 ---
 
@@ -82,16 +83,16 @@ Our fuzzer's overall design is as follows:
 
 Every component in `engine/` was written from scratch:
 
-| Component             | Description                                                                           |
-| --------------------- | ------------------------------------------------------------------------------------- |
+| Component             | Description |
+|-----------------------|-------------|
 | `mutation_engine.py`  | AFL-style weighted strategy selection, energy boosting/decay, grammar-aware mutations |
-| `seed_generator.py`   | Grammar-driven seed generation and constraint violation from YAML spec                |
-| `bug_oracle.py`       | Multi-stage classifier: timeout → crash → keyword → differential → normal             |
-| `coverage_tracker.py` | Dual-mode tracker (instrumented for json_decoder, behavioral proxy for blackbox)      |
-| `bug_logger.py`       | Per-run deduplication using MD5 hash keys, CSV logging, Firestore upload              |
-| `firestore_client.py` | Dual Firestore setup (archive + current), singleton pattern                           |
-| `report_generator.py` | Full HTML report with RQ1 charts, coverage graphs, ablation study, bug reports        |
-| `fuzzer.py`           | Main loop with AFL-style terminal UI, graceful shutdown, background report refresh    |
+| `seed_generator.py`   | CFG derivation tree for grammar-driven seed generation, tree mutation, and constraint violation |
+| `bug_oracle.py`       | Ten-stage classifier: timeout → keyword detection → crash → differential → normal |
+| `coverage_tracker.py` | Dual-mode tracker: AFL 64 KB bitmap with bucket novelty detection; behavioral proxy for blackbox targets |
+| `bug_logger.py`       | Per-run deduplication using MD5 hash keys, structured CSV logging, Firestore upload |
+| `firestore_client.py` | Dual Firestore setup (archive + current), singleton pattern, graceful fallback when credentials absent |
+| `report_generator.py` | Self-contained HTML report with ablation study, coverage graphs, and per-target bug cards |
+| `fuzzer.py`           | Main loop with AFL-style terminal UI, corpus growth, graceful shutdown, background report refresh |
 
 ---
 
@@ -290,6 +291,7 @@ Early versions counted every unique input triggering a bug as a separate bug, pr
 
 ## Lessons Learned
 
+- Our team had several issues with bug deduplication across project meetings 2 and 3 as we did not understand how we should define ‘deduplication’ correctly according to what our professor is looking for. Our first approach was to hash the input data to identify unique bugs, but that turned out to be wrong. A single ParseException would get triggered by hundreds of different inputs, each producing a slightly different error message, and we ended up with hundreds of “unique” bugs. What we learned after project meeting 3 was that what makes two bugs the same is not the input that triggers them, but the code path they exercise. Hence we switched to hashing (bug_type, exception_class, line_number) instead. That collapsed everything down to a much more honest count. In hindsight, we should have thought and clarified what “uniqueness” actually means at the start as this should be one of the first design decisions we nail down, not something we fix halfway through.
 
 
 ---
