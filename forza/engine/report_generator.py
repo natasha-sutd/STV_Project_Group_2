@@ -18,7 +18,7 @@ PROJECT_DIR = ENGINE_DIR.parent
 RESULTS_DIR = PROJECT_DIR / "results"
 _CACHE_PATH = RESULTS_DIR / "firestore_cache.json"
 
-KNOWN_TARGETS = ["json_decoder", "cidrize", "ipv4_parser", "ipv6_parser"]
+KNOWN_TARGETS = [f.name for f in sorted(TARGETS_DIR.glob("*.yaml"))]
 
 # Data loading
 def load_csv(target: str) -> list[dict]:

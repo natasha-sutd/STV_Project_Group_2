@@ -104,7 +104,7 @@ class BugOracle:
             )
 
         # 2. PERFORMANCE
-        if "performance bug" in lower or "PerformanceBug" in combined:
+        if "performance" in lower or "PerformanceBug" in combined:
             return self._make_result(
                 bug_type=BugType.PERFORMANCE,
                 raw_key=("performance", "PerformanceBug", line_num),

@@ -25,6 +25,10 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 _ARCHIVE_CREDS_PATH = _PROJECT_ROOT / "firebase-credentials.json"
 _CURRENT_CREDS_PATH = _PROJECT_ROOT / "firebase-credentials-current.json"
 
+# Kill switch — set to True to disable all Firestore reads and writes.
+# CSV logging continues normally. Flip back to False to re-enable Firestore.
+FIRESTORE_DISABLED = True
+
 # Singleton Firestore clients
 _archive_db = None
 _current_db = None
@@ -39,6 +43,9 @@ def _init_firebase_archive() -> bool:
     Returns True if successful, False otherwise.
     """
     global _archive_db, _archive_initialized
+
+    if FIRESTORE_DISABLED:
+        return False
 
     if _archive_initialized:
         return _archive_db is not None
@@ -66,6 +73,9 @@ def _init_firebase_current() -> bool:
     Returns True if successful, False otherwise.
     """
     global _current_db, _current_initialized
+
+    if FIRESTORE_DISABLED:
+        return False
 
     if _current_initialized:
         return _current_db is not None
@@ -129,6 +139,10 @@ def clear_current_db(run_id: str) -> bool:
     """
     global _current_run_id
 
+    if FIRESTORE_DISABLED:
+        _current_run_id = run_id
+        return True
+
     db = get_current_db()
     if db is None:
         return False
@@ -159,6 +173,9 @@ def upload_bug(result: BugResult, run_id: str = "", is_representative: bool = Fa
 
     Returns the document ID from archive if successful, None otherwise.
     """
+    if FIRESTORE_DISABLED:
+        return None
+
     archive_db, current_db = get_both_dbs()
 
     doc_data = {
@@ -213,6 +230,9 @@ def upload_stats(
 
     Collection: 'stats'
     """
+    if FIRESTORE_DISABLED:
+        return None
+
     archive_db, current_db = get_both_dbs()
 
     doc_data = {
@@ -255,6 +275,9 @@ def upload_crash(
     """
     Upload crash/timeout data to both Archive and Current 'crashes' collection.
     """
+    if FIRESTORE_DISABLED:
+        return None
+
     archive_db, current_db = get_both_dbs()
 
     doc_data = {
@@ -304,6 +327,9 @@ def upload_coverage(
 
     Collection: 'coverage'
     """
+    if FIRESTORE_DISABLED:
+        return None
+
     archive_db, current_db = get_both_dbs()
 
     doc_data = {

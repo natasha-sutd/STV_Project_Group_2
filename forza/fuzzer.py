@@ -414,7 +414,7 @@ def run_seed_mode(config: dict) -> None:
     for idx, seed in enumerate(seeds, 1):
         buggy_result, ref = run_both(
             config=config, 
-            seed=seed, 
+            input_str=seed, 
             use_coverage=False,
             strategy="seed")
         bug = oracle.classify(buggy_result, seed, config, ref)

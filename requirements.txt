@@ -1,0 +1,7 @@
+firebase-admin>=6.0.0
+google-cloud-firestore>=2.11.0
+PyYAML>=6.0
+coverage>=7.0.0
+pandas>=2.0.0
+pyparsing>=3.0.0
+frida>=15.0.0
