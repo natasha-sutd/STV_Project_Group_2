@@ -317,6 +317,9 @@ xdg-open results/<target>_report.html       # Linux
 
 # Or use VS Code Live Server extension
 ```
+* Additionally, the results of the 5 * 6 hour runs per target are archived under the empirical_evaluation/, containing 
+*\_bugs\_{name}.csv, *\_coverage\_{name}.csv, and *\_report\_{name}.html for each target. evaluation.ipynb contains 
+the graphs plotted for empirical evaluation. 
 
 ### Output Files
 
