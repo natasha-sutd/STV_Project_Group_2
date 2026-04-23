@@ -1,0 +1,321 @@
+run_id,iteration,target,bug_type,bug_key,input_data,stdout,stderr,returncode,timed_out,crashed,strategy,timestamp,is_representative
+20260421_103813,1,cidrize,SYNTACTIC,916873d4343b3bff,1.116.73.95.23,"Running cidrize function with the arguments: ipstr: 1.116.73.95.23 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, 'invalid IPNetwork 1.116.73.95.23', 'netaddr\\ip\\__init__.py', 1045): ","Traceback (most recent call last):
+  File ""netaddr\strategy\ipv4.py"", line 128, in str_to_int
+  File ""netaddr\fbsocket.py"", line 147, in inet_pton
+  File ""netaddr\fbsocket.py"", line 135, in _inet_pton_af_inet
+OSError: illegal IP address string '1.116.73.95.23'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""netaddr\ip\__init__.py"", line 346, in __init__
+  File ""netaddr\strategy\ipv4.py"", line 132, in str_to_int
+netaddr.c",0,FALSE,FALSE,constraint_violation,21/4/26 10:38,TRUE
+20260421_103813,5,cidrize,SYNTACTIC,4f9ccecad997f4ea,98.24.1932.118-46,"Running cidrize function with the arguments: ipstr: 98.24.1932.118-46 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, ""failed to detect a valid IP address from '98.24.1932.118'"", 'netadd","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 461, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 262, in parse_hyphen
+  File ""netaddr\ip\__init__.py"", line 1475, in __init__
+  File ""netaddr\ip\__init__.py"", line 341, in __init__
+netaddr.core.AddrFormatError: failed to detect a valid IP address from '98.24.1932.118'
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in",0,FALSE,FALSE,byte_insert,21/4/26 10:39,FALSE
+20260421_103813,8,cidrize,FUNCTIONAL,04d990da15ef86fc,2.149.110.12[132-105],"Running cidrize function with the arguments: ipstr: 2.149.110.12[132-105] strict: False raise-errors: True
+A functional bug has been triggered: 1-indexing used instead of 0-indexing.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>, '1-inde","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 240, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: 1-indexing used instead of 0-indexing.
+",0,FALSE,FALSE,radamsa,21/4/26 10:41,TRUE
+20260421_103813,9,cidrize,SYNTACTIC,9b3889c4f38ba8bf,195.116.180.243-147,"Running cidrize function with the arguments: ipstr: 195.116.180.243-147 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, 'lower bound IP greater than upper bound!', 'netaddr\\ip\\__init__","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 461, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 262, in parse_hyphen
+  File ""netaddr\ip\__init__.py"", line 1479, in __init__
+netaddr.core.AddrFormatError: lower bound IP greater than upper bound!
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 461, in cidrize
+ ",0,FALSE,FALSE,radamsa,21/4/26 10:41,FALSE
+20260421_103813,12,cidrize,SYNTACTIC,671e9a8d9e49cb64,111.97.94.90-125.37.731.254,"Running cidrize function with the arguments: ipstr: 111.97.94.90-125.37.731.254 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, ""base address '125.37.731.254' is not IPv4"", 'netaddr\\ip\","Traceback (most recent call last):
+  File ""netaddr\strategy\ipv4.py"", line 128, in str_to_int
+  File ""netaddr\fbsocket.py"", line 147, in inet_pton
+  File ""netaddr\fbsocket.py"", line 131, in _inet_pton_af_inet
+OSError: illegal IP address string '125.37.731.254'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""netaddr\ip\__init__.py"", line 346, in __init__
+  File ""netaddr\strategy\ipv4.py"", line 132, in str_to_int
+netaddr.c",0,FALSE,FALSE,byte_insert,21/4/26 10:42,FALSE
+20260421_103813,13,cidrize,SYNTACTIC,aa65bcb768c149a1,143.50.6665.*,"Running cidrize function with the arguments: ipstr: 143.50.6665.* strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, ""not a recognised IP glob range: '143.50.6665.*'!"", 'netaddr\\ip\\glob.p","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 468, in cidrize
+  File ""netaddr\ip\glob.py"", line 281, in __init__
+  File ""netaddr\ip\glob.py"", line 79, in glob_to_iptuple
+netaddr.core.AddrFormatError: not a recognised IP glob range: '143.50.6665.*'!
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 468, in cidrize
+  File",0,FALSE,FALSE,repeat_chunk,21/4/26 10:42,FALSE
+20260421_103813,19,cidrize,SYNTACTIC,50bbc6c1c4d7b492,608.1.86.89,"Running cidrize function with the arguments: ipstr: 608.1.86.89 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, 'invalid IPNetwork 608.1.86.89', 'netaddr\\ip\\__init__.py', 1045): 1})
+S","Traceback (most recent call last):
+  File ""netaddr\strategy\ipv4.py"", line 128, in str_to_int
+  File ""netaddr\fbsocket.py"", line 147, in inet_pton
+  File ""netaddr\fbsocket.py"", line 131, in _inet_pton_af_inet
+OSError: illegal IP address string '608.1.86.89'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""netaddr\ip\__init__.py"", line 346, in __init__
+  File ""netaddr\strategy\ipv4.py"", line 132, in str_to_int
+netaddr.core",0,FALSE,FALSE,swap_chars,21/4/26 10:45,FALSE
+20260421_103813,20,cidrize,FUNCTIONAL,bcd393837ba16f68,152.92.231.142[25],"Running cidrize function with the arguments: ipstr: 152.92.231.142[25] strict: False raise-errors: True
+A functional bug has been triggered: Unhandled case where bracket number is two digits.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('functional', <class 'buggy_cidrize.cidrize_stv.FunctionalBug'>","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 232, in parse_brackets
+buggy_cidrize.cidrize_stv.FunctionalBug: Unhandled case where bracket number is two digits.
+",0,FALSE,FALSE,radamsa,21/4/26 10:45,FALSE
+20260421_103813,33,cidrize,SYNTACTIC,394712178edc063c,147.183.3.69-2.4.210.174,"Running cidrize function with the arguments: ipstr: 147.183.3.69-2.4.210.174 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, 'lower bound IP greater than upper bound!', 'netaddr\\ip\\__i","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 451, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 275, in parse_range
+  File ""netaddr\ip\__init__.py"", line 1479, in __init__
+netaddr.core.AddrFormatError: lower bound IP greater than upper bound!
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 451, in cidrize
+  ",0,FALSE,FALSE,radamsa,21/4/26 10:49,FALSE
+20260421_103813,44,cidrize,MISMATCH,108ce678417f0e65,111.97.94.90-125.37.31.254,"Running cidrize function with the arguments: ipstr: 111.97.94.90-125.37.31.254 strict: False raise-errors: True
+Output: [IPNetwork('111.97.94.90/31'), IPNetwork('111.97.94.92/30'), IPNetwork('111.97.94.96/27'), IPNetwork('111.97.94.128/25'), IPNetwork('111.97.95.0/24'), IPNetwork('111.97.96.0/19'), IPNetwork('111.97.128.0/17'), IPNetwork('111.98.0.0/15'), IPNetwork('111.100.0.0/14'), IPNetwork('111.104.0.0/13'), IPNetwork('111.112.0.0/12'), IPNetwork('111.128.0.0/9'), IPNetwork('112.0.0.0/5'), ",,0,FALSE,FALSE,radamsa,21/4/26 10:53,TRUE
+20260421_103813,55,cidrize,MISMATCH,412bac0582d945d9,44.250.242.161-201.108.185.222,"Running cidrize function with the arguments: ipstr: 44.250.242.161-201.108.185.222 strict: False raise-errors: True
+Output: [IPNetwork('44.250.242.161/32'), IPNetwork('44.250.242.162/31'), IPNetwork('44.250.242.164/30'), IPNetwork('44.250.242.168/29'), IPNetwork('44.250.242.176/28'), IPNetwork('44.250.242.192/26'), IPNetwork('44.250.243.0/24'), IPNetwork('44.250.244.0/22'), IPNetwork('44.250.248.0/21'), IPNetwork('44.251.0.0/16'), IPNetwork('44.252.0.0/14'), IPNetwork('45.0.0.0/8'), IPNetwork('",,0,FALSE,FALSE,radamsa,21/4/26 10:57,FALSE
+20260421_103813,107,cidrize,BONUS,5d06634b11eda194,912.0.2.756[8],"Running cidrize function with the arguments: ipstr: 912.0.2.756[8] strict: False raise-errors: True
+An unknown exception has been triggered. cannot access local variable 'first' where it is not associated with a value
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'UnboundLocalError'>,","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 242, in parse_brackets
+UnboundLocalError: cannot access local variable 'first' where it is not associated with a value
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize\cidrize_s",0,FALSE,FALSE,swap_chars,21/4/26 11:15,TRUE
+20260421_103813,122,cidrize,RELIABILITY,11d1848ce5bcadf6,111.97.94.90-125.37.31.254,,,-1,FALSE,TRUE,insert_special_char,21/4/26 11:20,TRUE
+20260421_103813,184,cidrize,BONUS,5611841e961a732c,98.24.193.118/../-46,"Running cidrize function with the arguments: ipstr: 98.24.193.118/../-46 strict: False raise-errors: True
+An unknown exception has been triggered. IPAddress() does not support netmasks or subnet prefixes! See documentation for details.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'Va","Traceback (most recent call last):
+  File ""netaddr\ip\__init__.py"", line 907, in parse_ip_network
+ValueError: invalid literal for int() with base 10: '../-46'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 481, in cidrize
+  File ""netaddr\ip\__init__.py"", line 1034, in __init__
+  File ""netaddr\ip\__init__.py"", line 914, in parse_ip_n",0,FALSE,FALSE,insert_special_char,21/4/26 11:45,FALSE
+20260421_103813,185,cidrize,SYNTACTIC,d366bd970bc86b04,111.917.94.90-125.37.731.254,"Running cidrize function with the arguments: ipstr: 111.917.94.90-125.37.731.254 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, ""failed to detect a valid IP address from '111.917.94.90'","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 451, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 275, in parse_range
+  File ""netaddr\ip\__init__.py"", line 1475, in __init__
+  File ""netaddr\ip\__init__.py"", line 341, in __init__
+netaddr.core.AddrFormatError: failed to detect a valid IP address from '111.917.94.90'
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <",0,FALSE,FALSE,byte_insert,21/4/26 11:45,FALSE
+20260421_103813,187,cidrize,MISMATCH,30f8b7b52110ef02,"111.97.94.90,125.37.31.254","Running cidrize function with the arguments: ipstr: 111.97.94.90,125.37.31.254 strict: False raise-errors: True
+Output: [IPNetwork('111.97.94.90/32'), IPNetwork('125.37.31.254/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,FALSE,FALSE,bit_flip,21/4/26 11:47,FALSE
+20260421_103813,204,cidrize,BONUS,9231e256791b49fc,192.0.2.8[0-5][0-5][0-5][0-5][0-5][0-5][0-5][0-5],"Running cidrize function with the arguments: ipstr: 192.0.2.8[0-5][0-5][0-5][0-5][0-5][0-5][0-5][0-5] strict: False raise-errors: True
+An unknown exception has been triggered. too many values to unpack (expected 2)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'ValueError'>, 'too many","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 225, in parse_brackets
+ValueError: too many values to unpack (expected 2)
+Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 474, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 225, in parse_brackets
+ValueErr",0,FALSE,FALSE,repeat_chunk,21/4/26 11:54,FALSE
+20260421_103813,236,cidrize,SYNTACTIC,cb8b377f7507dcf3,"111.97.94.;0,125.37.31.254","Running cidrize function with the arguments: ipstr: 111.97.94.;0,125.37.31.254 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, 'invalid IPNetwork 111.97.94.;0', 'netaddr\\ip\\__init__.py","Traceback (most recent call last):
+  File ""netaddr\fbsocket.py"", line 126, in _inet_pton_af_inet
+ValueError: invalid literal for int() with base 10: ';0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""netaddr\strategy\ipv4.py"", line 128, in str_to_int
+  File ""netaddr\fbsocket.py"", line 147, in inet_pton
+  File ""netaddr\fbsocket.py"", line 128, in _inet_pton_af_inet
+OSError: illegal IP address string '111.97.94.;0'
+
+Duri",0,FALSE,FALSE,bit_flip,21/4/26 12:05,FALSE
+20260421_103813,255,cidrize,MISMATCH,3cf95c63d4ebef45,111.232.94.90-125.37.31.254,"Running cidrize function with the arguments: ipstr: 111.232.94.90-125.37.31.254 strict: False raise-errors: True
+Output: [IPNetwork('111.232.94.90/31'), IPNetwork('111.232.94.92/30'), IPNetwork('111.232.94.96/27'), IPNetwork('111.232.94.128/25'), IPNetwork('111.232.95.0/24'), IPNetwork('111.232.96.0/19'), IPNetwork('111.232.128.0/17'), IPNetwork('111.233.0.0/16'), IPNetwork('111.234.0.0/15'), IPNetwork('111.236.0.0/14'), IPNetwork('111.240.0.0/12'), IPNetwork('112.0.0.0/5'), IPNetwork('120.0.0.",,0,FALSE,FALSE,grammar_mutate,21/4/26 12:13,FALSE
+20260421_103813,345,cidrize,INVALIDITY,eeb441f0738292ed,111.97.94.-09125.37.731.254,"Running cidrize function with the arguments: ipstr: 111.97.94.-09125.37.731.254 strict: False raise-errors: True
+An invalidity bug has been triggered: Missing digit before hyphen.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, '","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 451, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 274, in parse_range
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: Missing digit before hyphen.
+",0,FALSE,FALSE,swap_chars,21/4/26 12:51,TRUE
+20260421_103813,428,cidrize,SYNTACTIC,fa6c1e335c57866d,"111.97.949.0,125.37.31.254","Running cidrize function with the arguments: ipstr: 111.97.949.0,125.37.31.254 strict: False raise-errors: True
+Syntax error caught for ipstr.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('syntactic', <class 'netaddr.core.AddrFormatError'>, 'invalid IPNetwork 111.97.949.0', 'netaddr\\ip\\__init__.py","Traceback (most recent call last):
+  File ""netaddr\strategy\ipv4.py"", line 128, in str_to_int
+  File ""netaddr\fbsocket.py"", line 147, in inet_pton
+  File ""netaddr\fbsocket.py"", line 131, in _inet_pton_af_inet
+OSError: illegal IP address string '111.97.949.0'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""netaddr\ip\__init__.py"", line 346, in __init__
+  File ""netaddr\strategy\ipv4.py"", line 132, in str_to_int
+netaddr.cor",0,FALSE,FALSE,swap_chars,21/4/26 13:20,FALSE
+20260421_103813,576,cidrize,MISMATCH,5b7462c0b82e4b4c,"110.97.94.90,125.37.31.254","Running cidrize function with the arguments: ipstr: 110.97.94.90,125.37.31.254 strict: False raise-errors: True
+Output: [IPNetwork('110.97.94.90/32'), IPNetwork('125.37.31.254/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,FALSE,FALSE,bit_flip,21/4/26 14:15,FALSE
+20260421_103813,646,cidrize,MISMATCH,10186ab4c0104e9e,111.97.94.90-125.37.31.226,"Running cidrize function with the arguments: ipstr: 111.97.94.90-125.37.31.226 strict: False raise-errors: True
+Output: [IPNetwork('111.97.94.90/31'), IPNetwork('111.97.94.92/30'), IPNetwork('111.97.94.96/27'), IPNetwork('111.97.94.128/25'), IPNetwork('111.97.95.0/24'), IPNetwork('111.97.96.0/19'), IPNetwork('111.97.128.0/17'), IPNetwork('111.98.0.0/15'), IPNetwork('111.100.0.0/14'), IPNetwork('111.104.0.0/13'), IPNetwork('111.112.0.0/12'), IPNetwork('111.128.0.0/9'), IPNetwork('112.0.0.0/5'), ",,0,FALSE,FALSE,grammar_mutate,21/4/26 14:41,FALSE
+20260421_103813,657,cidrize,MISMATCH,3c55a9aa517df2c5,"111.17.94.90,125.37.31.254","Running cidrize function with the arguments: ipstr: 111.17.94.90,125.37.31.254 strict: False raise-errors: True
+Output: [IPNetwork('111.17.94.90/32'), IPNetwork('125.37.31.254/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,FALSE,FALSE,bit_flip,21/4/26 14:45,FALSE
+20260421_103813,673,cidrize,MISMATCH,34ea8366fcaa02cb,65.222.140.32-144.122.17.91,"Running cidrize function with the arguments: ipstr: 65.222.140.32-144.122.17.91 strict: False raise-errors: True
+Output: [IPNetwork('65.222.140.32/27'), IPNetwork('65.222.140.64/26'), IPNetwork('65.222.140.128/25'), IPNetwork('65.222.141.0/24'), IPNetwork('65.222.142.0/23'), IPNetwork('65.222.144.0/20'), IPNetwork('65.222.160.0/19'), IPNetwork('65.222.192.0/18'), IPNetwork('65.223.0.0/16'), IPNetwork('65.224.0.0/11'), IPNetwork('66.0.0.0/7'), IPNetwork('68.0.0.0/6'), IPNetwork('72.0.0.0/5'), IP",,0,FALSE,FALSE,grammar_mutate,21/4/26 14:50,FALSE
+20260421_103813,679,cidrize,RELIABILITY,61b34ab8ce040d3a,"111.97.94.90,125.37
+.31.254","Running cidrize function with the arguments: ipstr: 111.97.94.90,125.37
+.31.254 strict: False raise-errors: True
+A reliability bug has been triggered: Unhandled whitespace in IP string which is passed.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('reliability', <class 'buggy_cidrize.cidrize_stv.Rel","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 407, in cidrize
+  File ""buggy_cidrize\cidrize_stv.py"", line 302, in parse_commas
+buggy_cidrize.cidrize_stv.ReliabilityBug: Unhandled whitespace in IP string which is passed.
+",0,FALSE,FALSE,insert_special_char,21/4/26 14:53,FALSE
+20260421_103813,688,cidrize,MISMATCH,d2a59c8b3445ea23,"111.97.34.90,125.97.31.254","Running cidrize function with the arguments: ipstr: 111.97.34.90,125.97.31.254 strict: False raise-errors: True
+Output: [IPNetwork('111.97.34.90/32'), IPNetwork('125.97.31.254/32')]
+No bugs found. Skipping CSV creation
+Final bug count: defaultdict(<class 'int'>, {})
+Saved bug count report and tracebacks for the bugs encountered!
+",,0,FALSE,FALSE,swap_chars,21/4/26 14:55,FALSE
+20260421_103813,744,cidrize,INVALIDITY,22b8b29fb95d7016,192.0.20.64/26/26/26/26,"Running cidrize function with the arguments: ipstr: 192.0.20.64/26/26/26/26 strict: False raise-errors: True
+An invalidity bug has been triggered: There are too many /
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_cidrize.cidrize_stv.InvalidCidrFormatError'>, 'There are to","Traceback (most recent call last):
+  File ""cidrize_runner_stv.py"", line 247, in <module>
+  File ""buggy_cidrize\cidrize_stv.py"", line 444, in cidrize
+buggy_cidrize.cidrize_stv.InvalidCidrFormatError: There are too many /
+",0,FALSE,FALSE,repeat_chunk,21/4/26 15:15,FALSE
+20260421_103813,908,cidrize,MISMATCH,f64064f5aa7a63d7,44.250.212.164-201.108.185.222,"Running cidrize function with the arguments: ipstr: 44.250.212.164-201.108.185.222 strict: False raise-errors: True
+Output: [IPNetwork('44.250.212.164/30'), IPNetwork('44.250.212.168/29'), IPNetwork('44.250.212.176/28'), IPNetwork('44.250.212.192/26'), IPNetwork('44.250.213.0/24'), IPNetwork('44.250.214.0/23'), IPNetwork('44.250.216.0/21'), IPNetwork('44.250.224.0/19'), IPNetwork('44.251.0.0/16'), IPNetwork('44.252.0.0/14'), IPNetwork('45.0.0.0/8'), IPNetwork('46.0.0.0/7'), IPNetwork('48.0.0.0/",,0,FALSE,FALSE,swap_chars,21/4/26 16:13,FALSE
+20260421_103813,951,cidrize,MISMATCH,fdb92e864a1a305f,219.35.118.62-229.87.224.97,"Running cidrize function with the arguments: ipstr: 219.35.118.62-229.87.224.97 strict: False raise-errors: True
+Output: [IPNetwork('219.35.118.62/31'), IPNetwork('219.35.118.64/26'), IPNetwork('219.35.118.128/25'), IPNetwork('219.35.119.0/24'), IPNetwork('219.35.120.0/21'), IPNetwork('219.35.128.0/17'), IPNetwork('219.36.0.0/14'), IPNetwork('219.40.0.0/13'), IPNetwork('219.48.0.0/12'), IPNetwork('219.64.0.0/10'), IPNetwork('219.128.0.0/9'), IPNetwork('220.0.0.0/6'), IPNetwork('224.0.0.0/6'), I",,0,FALSE,FALSE,swap_chars,21/4/26 16:31,FALSE
+20260421_103813,968,cidrize,MISMATCH,0901ad28744aea1e,219.35.148.62-229.87.221.97,"Running cidrize function with the arguments: ipstr: 219.35.148.62-229.87.221.97 strict: False raise-errors: True
+Output: [IPNetwork('219.35.148.62/31'), IPNetwork('219.35.148.64/26'), IPNetwork('219.35.148.128/25'), IPNetwork('219.35.149.0/24'), IPNetwork('219.35.150.0/23'), IPNetwork('219.35.152.0/21'), IPNetwork('219.35.160.0/19'), IPNetwork('219.35.192.0/18'), IPNetwork('219.36.0.0/14'), IPNetwork('219.40.0.0/13'), IPNetwork('219.48.0.0/12'), IPNetwork('219.64.0.0/10'), IPNetwork('219.128.0.",,0,FALSE,FALSE,radamsa,21/4/26 16:37,FALSE

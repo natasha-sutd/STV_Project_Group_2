@@ -1,0 +1,135 @@
+run_id,iteration,target,bug_type,bug_key,input_data,stdout,stderr,returncode,timed_out,crashed,strategy,timestamp,is_representative
+"20260421_163416","1","ipv6_parser","BONUS","4715b72a7bc54f63","2001:db8::1:192.0.2.33333333","Running the IPv6 parser with ipstr: 2001:db8::1:192.0.2.33333333
+An unknown exception has been triggered. Expected end of text, found '333333'  (at char 22), (line:1, col:23)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pypar","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '333333'  (at char 22), (line:1, col:23)
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected end of text, found '333333'  (at char 22), (line:1, col:23)
+","0","False","False","repeat_chunk","2026-04-21 16:34:16","True"
+"20260421_163416","6","ipv6_parser","INVALIDITY","796036eba32826d9","ed63:43e1:6fff:d9f1:63b:3481:1456:62e5:e413","Running the IPv6 parser with ipstr: ed63:43e1:6fff:d9f1:63b:3481:1456:62e5:e413
+An invalidity bug has been triggered: Number of tokens passed exceeds the permitted number of hexes.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <c","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 989, in _parseNoCache
+  File ""pyparsing/core.py"", line 284, in wrapper
+  File ""buggy_ipyparse/ipv6_mstv.py"", line 132, in convert_ipv6
+buggy_ipyparse.ipv6_mstv.InvalidityBug: Number of tokens passed exceeds the permitted number of hexes.
+","0","False","False","grammar_mutate","2026-04-21 16:35:39","True"
+"20260421_163416","9","ipv6_parser","BONUS","95b948850af70940","ed63:43e","Running the IPv6 parser with ipstr: ed63:43e
+An unknown exception has been triggered. Expected ':', found end of text  (at char 8), (line:1, col:9)
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'pyparsing.exceptions.ParseExcept","Traceback (most recent call last):
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 2771, in parseImpl
+IndexError: string index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1340, in parse_string
+pyparsing.exceptions.ParseException: Expected ':', found end of text  (at char 8), (line:1, col:9)
+Traceback ","0","False","False","truncate","2026-04-21 16:36:14","False"
+"20260421_163416","18","ipv6_parser","RELIABILITY","b9a8c9db3190e79d","2001:db81:::192.0.2.33333333","Running the IPv6 parser with ipstr: 2001:db81:::192.0.2.33333333
+A reliability bug has been triggered: Incorrect token length.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('reliability', <class 'buggy_ipyparse.ipv6_mstv.ReliabilityBug'>, 'Inc","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 989, in _parseNoCache
+  File ""pyparsing/core.py"", line 284, in wrapper
+  File ""buggy_ipyparse/ipv6_mstv.py"", line 126, in convert_ipv6
+buggy_ipyparse.ipv6_mstv.ReliabilityBug: Incorrect token length.
+","0","False","False","swap_chars","2026-04-21 16:38:53","True"
+"20260421_163416","55","ipv6_parser","INVALIDITY","b018f51c54ba1402","2001:db8::1:192db8::1:192.0.2.33333333","Running the IPv6 parser with ipstr: 2001:db8::1:192db8::1:192.0.2.33333333
+An invalidity bug has been triggered: Hex of length more than 4 found.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv6_mstv.Inva","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4754, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4634, in parseImpl
+  File ""pyparsing/core.py"", line 989, in _parseNoCache
+  File ""pyparsing/core.py"", line 281, in wrapper
+  File ""buggy_ipyparse/ipv6_mstv.py"", lin","0","False","False","repeat_chunk","2026-04-21 17:00:28","False"
+"20260421_163416","95","ipv6_parser","INVALIDITY","8df19cc9676783de","2001:db8::1:192.02..33","Running the IPv6 parser with ipstr: 2001:db8::1:192.02..33
+An unknown exception has been triggered. One of the octets are empty ('')
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'buggy_ipyparse.ipv4_mstv.InvalidityBug'>, ""One ","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4754, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4634, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 5155, in parseImpl
+  File ""pyparsing/core.py"", line 950, ","0","False","False","swap_chars","2026-04-21 17:11:06","False"
+"20260421_163416","107","ipv6_parser","INVALIDITY","1abe59a3aaeb102e","::ffff575.2:3.238.8.176","Running the IPv6 parser with ipstr: ::ffff575.2:3.238.8.176
+An invalidity bug has been triggered: Hex of length more than 4 found.
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('invalidity', <class 'buggy_ipyparse.ipv6_mstv.InvalidityBug'>, 'H","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4754, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4634, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 5943, in parseImpl
+  File ""pyparsing/core.py"", line 950, ","0","False","False","swap_chars","2026-04-21 17:13:41","False"
+"20260421_163416","109","ipv6_parser","RELIABILITY","11d1848ce5bcadf6","::19 2.0.2.33","","","-1","False","True","insert_special_char","2026-04-21 17:13:55","False"
+"20260421_163416","158","ipv6_parser","INVALIDITY","c2a01e4f3b9047c1","2001:db8::1:2:.92.0.2133","Running the IPv6 parser with ipstr: 2001:db8::1:2:.92.0.2133
+An unknown exception has been triggered. One of the octets are empty ('')
+============================================================
+TRACEBACK
+============================================================
+============================================================
+Saved bug count report and tracebacks for the bugs encountered!
+Final bug count: defaultdict(<class 'int'>, {('bonus', <class 'buggy_ipyparse.ipv4_mstv.InvalidityBug'>, ""On","Traceback (most recent call last):
+  File ""ipv6_parser_stv.py"", line 219, in <module>
+  File ""pyparsing/core.py"", line 1328, in parse_string
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4754, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 4634, in parseImpl
+  File ""pyparsing/core.py"", line 950, in _parseNoCache
+  File ""pyparsing/core.py"", line 5155, in parseImpl
+  File ""pyparsing/core.py"", line 950, ","0","False","False","swap_chars","2026-04-21 17:26:51","False"
