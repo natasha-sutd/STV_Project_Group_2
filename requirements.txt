@@ -5,3 +5,5 @@ coverage>=7.0.0
 pandas>=2.0.0
 pyparsing>=3.0.0
 frida>=15.0.0
+netaddr
+requests
