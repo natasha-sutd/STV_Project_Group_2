@@ -30,6 +30,7 @@ KNOWN_TARGETS = ["json_decoder", "cidrize", "ipv4_parser", "ipv6_parser"]
 # Data loading
 # ---------------------------------------------------------------------------
 
+
 def load_csv_all_runs(target: str) -> list[dict]:
     """Load ALL bugs ever recorded for a target, deduped by bug_key across all runs."""
     csv_path = RESULTS_DIR / f"{target}_bugs.csv"
@@ -90,7 +91,9 @@ def _normalise_row(row: dict) -> dict:
     return row
 
 
-def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int] | None:
+def _load_from_firestore(
+    targets: list[str],
+) -> tuple[dict[str, list[dict]], int] | None:
     try:
         from engine.firestore_client import get_archive_db
     except ImportError:
@@ -127,6 +130,7 @@ def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int
             dt = datetime.fromisoformat(last_timestamp).replace(tzinfo=timezone.utc)
             try:
                 from google.cloud.firestore_v1.base_query import FieldFilter
+
                 query = query.where(filter=FieldFilter("timestamp", ">", dt))
             except ImportError:
                 query = query.where("timestamp", ">", dt)
@@ -150,12 +154,15 @@ def _load_from_firestore(targets: list[str]) -> tuple[dict[str, list[dict]], int
         total_ever = len(seen_keys)
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         with open(_CACHE_PATH, "w", encoding="utf-8") as f:
-            _json_mod.dump({
-                "bugs": {t: result[t] for t in targets},
-                "last_timestamp": newest_ts,
-                "seen_keys": list(seen_keys),
-                "total_ever": total_ever,
-            }, f)
+            _json_mod.dump(
+                {
+                    "bugs": {t: result[t] for t in targets},
+                    "last_timestamp": newest_ts,
+                    "seen_keys": list(seen_keys),
+                    "total_ever": total_ever,
+                },
+                f,
+            )
 
         return result, total_ever
 
@@ -169,7 +176,9 @@ def load_all(targets: list[str], use_firestore: bool = True) -> dict[str, list[d
     return {t: load_csv_all_runs(t) for t in targets}
 
 
-def load_all_current_run(targets: list[str]) -> tuple[dict[str, list[dict]], dict[str, str | None]]:
+def load_all_current_run(
+    targets: list[str],
+) -> tuple[dict[str, list[dict]], dict[str, str | None]]:
     """Load current-run bugs and run_ids for each target."""
     rows_map: dict[str, list[dict]] = {}
     run_ids: dict[str, str | None] = {}
@@ -183,9 +192,11 @@ def load_all_current_run(targets: list[str]) -> tuple[dict[str, list[dict]], dic
 def load_all_coverage_current_run(targets: list[str]) -> dict[str, list[dict]]:
     return {t: load_coverage_csv_current_run(t)[0] for t in targets}
 
+
 def load_all_coverage(targets: list[str]) -> dict[str, list[dict]]:
     """Alias for backward compatibility."""
     return load_all_coverage_current_run(targets)
+
 
 def load_total_executions(target: str) -> int:
     """Sum the total inputs run across all run directories for a target."""
@@ -228,14 +239,15 @@ def summarise(rows: list[dict]) -> dict:
     )
 
 
-# ---------------------------------------------------------------------------
 # HTML helpers
-# ---------------------------------------------------------------------------
-
 def _esc(s) -> str:
     s = str(s) if not isinstance(s, str) else s
-    return (s.replace("&", "&amp;").replace("<", "&lt;")
-             .replace(">", "&gt;").replace('"', "&quot;"))
+    return (
+        s.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
 
 
 def _pill(row: dict) -> str:
@@ -273,17 +285,16 @@ def _bar_row(key: str, count: int, maximum: int) -> str:
         f'  <span class="breakdown-key">{_esc(key)}</span>'
         f'  <div class="breakdown-bar-wrap">'
         f'    <div class="breakdown-bar" style="width:{pct}%"></div>'
-        f'  </div>'
+        f"  </div>"
         f'  <span class="breakdown-count">{count}</span>'
-        f'</div>'
+        f"</div>"
     )
 
 
-# ---------------------------------------------------------------------------
 # Section renderers
-# ---------------------------------------------------------------------------
-
-def render_overview_card(target: str, all_rows: list[dict], current_rows: list[dict], run_id: str | None) -> str:
+def render_overview_card(
+    target: str, all_rows: list[dict], current_rows: list[dict], run_id: str | None
+) -> str:
     """
     Overview card showing:
     - all-time unique bugs (deduped across all runs)
@@ -299,7 +310,11 @@ def render_overview_card(target: str, all_rows: list[dict], current_rows: list[d
     cur_timeouts = cur_summary["timeouts"]
     cur_crashes = cur_summary["crashes"]
 
-    card_cls = "card has-bugs" if total_alltime > 0 else ("card no-data" if not has_data else "card")
+    card_cls = (
+        "card has-bugs"
+        if total_alltime > 0
+        else ("card no-data" if not has_data else "card")
+    )
     badge = _badge(total_alltime, has_data)
 
     run_label = run_id if run_id else "—"
@@ -320,12 +335,13 @@ def render_overview_card(target: str, all_rows: list[dict], current_rows: list[d
     breakdown = (
         f'<div class="breakdown">'
         f'  <div class="breakdown-label">all-time bug type breakdown</div>'
-        f'  {type_rows}'
-        f'</div>'
-        if type_rows else (
+        f"  {type_rows}"
+        f"</div>"
+        if type_rows
+        else (
             '<div class="no-data-msg">no CSV data found for this target</div>'
-            if not has_data else
-            '<div class="no-data-msg">no bugs detected</div>'
+            if not has_data
+            else '<div class="no-data-msg">no bugs detected</div>'
         )
     )
 
@@ -367,13 +383,15 @@ def render_ablation_section(all_data: dict[str, list[dict]], targets: list[str])
     for i, t in enumerate(targets):
         c = per_target_strategy[t]
         col = palette[i % len(palette)]
-        datasets.append({
-            "label": _target_label(t),
-            "data": [c.get(s, 0) for s in strategies],
-            "backgroundColor": col + "cc",
-            "borderColor": col,
-            "borderWidth": 1,
-        })
+        datasets.append(
+            {
+                "label": _target_label(t),
+                "data": [c.get(s, 0) for s in strategies],
+                "backgroundColor": col + "cc",
+                "borderColor": col,
+                "borderWidth": 1,
+            }
+        )
     datasets_js = _json.dumps(datasets)
 
     table_rows = ""
@@ -430,7 +448,11 @@ def render_ablation_section(all_data: dict[str, list[dict]], targets: list[str])
 </script>"""
 
 
-def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[str], run_ids: dict[str, str | None]) -> str:
+def render_coverage_section(
+    all_coverage: dict[str, list[dict]],
+    targets: list[str],
+    run_ids: dict[str, str | None],
+) -> str:
     """Coverage over time — current run only."""
     import json as _json
 
@@ -471,8 +493,12 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
             data_pts = []
             for r in t_rows:
                 try:
-                    data_pts.append({"x": float(r.get("total_inputs", 0)),
-                                     "y": round(float(r.get(metric, 0)), 2)})
+                    data_pts.append(
+                        {
+                            "x": float(r.get("total_inputs", 0)),
+                            "y": round(float(r.get(metric, 0)), 2),
+                        }
+                    )
                 except (ValueError, TypeError):
                     continue
             if not data_pts:
@@ -484,8 +510,10 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
                 "data": data_pts,
                 "borderColor": col,
                 "backgroundColor": col + "22",
-                "fill": True, "tension": 0,
-                "pointRadius": 0, "borderWidth": 1.5,
+                "fill": True,
+                "tension": 0,
+                "pointRadius": 0,
+                "borderWidth": 1.5,
             }
             dataset_js = _json.dumps([dataset])
 
@@ -545,7 +573,9 @@ def render_coverage_section(all_coverage: dict[str, list[dict]], targets: list[s
 <div class="coverage-grid">{rows_html}</div>"""
 
 
-def render_bug_table(rows: list[dict], target: str, scope_label: str = "current run") -> str:
+def render_bug_table(
+    rows: list[dict], target: str, scope_label: str = "current run"
+) -> str:
     """Recent bugs table — newest first, max 50 rows."""
     if not rows:
         return ""
@@ -570,7 +600,9 @@ def render_bug_table(rows: list[dict], target: str, scope_label: str = "current 
 </div>"""
 
 
-def _render_target_bug_reports(t: str, rows: list[dict], bug_num_start: int) -> tuple[str, int]:
+def _render_target_bug_reports(
+    t: str, rows: list[dict], bug_num_start: int
+) -> tuple[str, int]:
     cards = ""
     bug_num = bug_num_start
     seen_types: set[str] = set()
@@ -593,15 +625,25 @@ def _render_target_bug_reports(t: str, rows: list[dict], bug_num_start: int) -> 
         timed = str(r.get("timed_out", "")).lower() == "true"
 
         impact = (
-            "Process crashed (non-zero/negative return code)." if crashed
-            else "Execution timed out — possible infinite loop or hang." if timed
-            else "Output keyword matched a known bug signature."
+            "Process crashed (non-zero/negative return code)."
+            if crashed
+            else (
+                "Execution timed out — possible infinite loop or hang."
+                if timed
+                else "Output keyword matched a known bug signature."
+            )
         )
         repro_cmd = f'python3 fuzzer.py --target {t} --input "{_esc(inp[:60])}"'
-        out_block = (f'<div class="code-block">{_esc(stdout[:300])}</div>'
-                     if stdout.strip() else '<span class="dim">— empty —</span>')
-        err_block = (f'<div class="code-block">{_esc(stderr[:300])}</div>'
-                     if stderr.strip() else '<span class="dim">— empty —</span>')
+        out_block = (
+            f'<div class="code-block">{_esc(stdout[:300])}</div>'
+            if stdout.strip()
+            else '<span class="dim">— empty —</span>'
+        )
+        err_block = (
+            f'<div class="code-block">{_esc(stderr[:300])}</div>'
+            if stderr.strip()
+            else '<span class="dim">— empty —</span>'
+        )
 
         cards += f"""
 <div class="bug-report-card">
@@ -671,9 +713,7 @@ def render_bug_reports(all_data: dict[str, list[dict]], targets: list[str]) -> s
 {all_sections}"""
 
 
-# ---------------------------------------------------------------------------
 # CSS + JS
-# ---------------------------------------------------------------------------
 _CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -794,11 +834,12 @@ document.addEventListener('DOMContentLoaded', () => {
 # Report generation
 # ---------------------------------------------------------------------------
 
+
 def generate_target_report(
     target: str,
-    all_rows: list[dict],          # all-time deduped bugs
-    current_rows: list[dict],      # current run bugs
-    coverage_rows: list[dict],     # current run coverage
+    all_rows: list[dict],  # all-time deduped bugs
+    current_rows: list[dict],  # current run bugs
+    coverage_rows: list[dict],  # current run coverage
     run_id: str | None,
     out_path: Path,
 ) -> Path:
@@ -879,20 +920,30 @@ def generate_report(
     return last_path
 
 
-# ---------------------------------------------------------------------------
-# Entry point
-# ---------------------------------------------------------------------------
-
+# Main entry point
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate per-target HTML fuzzing reports from bug + coverage CSVs."
     )
-    parser.add_argument("--target", "-t", nargs="+", metavar="TARGET",
-                        help=f"Targets to include. Default: all ({', '.join(KNOWN_TARGETS)})")
-    parser.add_argument("--out-dir", "-o", default=str(RESULTS_DIR),
-                        metavar="DIR", help="Output directory for report files (default: results/)")
-    parser.add_argument("--no-open", action="store_true",
-                        help="Don't auto-open the reports in a browser")
+    parser.add_argument(
+        "--target",
+        "-t",
+        nargs="+",
+        metavar="TARGET",
+        help=f"Targets to include. Default: all ({', '.join(KNOWN_TARGETS)})",
+    )
+    parser.add_argument(
+        "--out-dir",
+        "-o",
+        default=str(RESULTS_DIR),
+        metavar="DIR",
+        help="Output directory for report files (default: results/)",
+    )
+    parser.add_argument(
+        "--no-open",
+        action="store_true",
+        help="Don't auto-open the reports in a browser",
+    )
     args = parser.parse_args()
 
     targets = args.target if args.target else KNOWN_TARGETS
@@ -905,12 +956,18 @@ def main() -> None:
     all_coverage = load_all_coverage_current_run(targets)
 
     for t in targets:
-        all_unique = len({r.get("bug_key", "") for r in all_data[t] if r.get("bug_key")})
-        cur_unique = len({r.get("bug_key", "") for r in current_data[t] if r.get("bug_key")})
-        print(f"  {'v' if all_data[t] else '.'} {t:<20} "
-              f"all-time unique={all_unique}  |  this run unique={cur_unique}  |  "
-              f"run_id={run_ids.get(t) or 'n/a'}  |  "
-              f"{len(all_coverage[t])} coverage snapshots")
+        all_unique = len(
+            {r.get("bug_key", "") for r in all_data[t] if r.get("bug_key")}
+        )
+        cur_unique = len(
+            {r.get("bug_key", "") for r in current_data[t] if r.get("bug_key")}
+        )
+        print(
+            f"  {'v' if all_data[t] else '.'} {t:<20} "
+            f"all-time unique={all_unique}  |  this run unique={cur_unique}  |  "
+            f"run_id={run_ids.get(t) or 'n/a'}  |  "
+            f"{len(all_coverage[t])} coverage snapshots"
+        )
 
     print()
     written: list[Path] = []

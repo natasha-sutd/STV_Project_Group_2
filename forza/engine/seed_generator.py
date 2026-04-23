@@ -23,7 +23,6 @@ import os
 import random
 import json
 import string
-import yaml
 from typing import Any
 import copy
 import ast
@@ -449,7 +448,7 @@ def generate_invalid_value(spec: dict) -> str:
                 "-inf",
             ]
         )
-    
+
     if t == "literal":
         expected = str(spec.get("value", ""))
         return random.choice(string.ascii_letters - set(expected))
