@@ -1,6 +1,7 @@
 # 50.053 SOFTWARE TESTING AND VERIFICATION PROJECT GROUP 2
+# Forza
 
-A fuzzer built from scratch to detect seeded bugs in four Python targets: `json_decoder`, `cidrize`, `ipv4_parser`, and `ipv6_parser`. The fuzzer implements AFL-style energy-based mutation, grammar-aware seed generation, differential oracle testing, and HTML reporting backed by Firebase Firestore.
+Forza is built from scratch to detect seeded bugs in four Python targets: json_decoder, cidrize, ipv4_parser, and ipv6_parser. It implements AFL-style energy-based mutation, grammar-aware seed generation via a Context-Free Grammar (CFG)Tree, differential oracle testing, and HTML reporting backed by Firebase Firestore. It is designed to be sufficiently general, and can be used to fuzz any target provided their target specific YAML configuration (not tested).
 
 ---
 
@@ -13,36 +14,41 @@ A fuzzer built from scratch to detect seeded bugs in four Python targets: `json_
 5. [Implementation Challenges](#implementation-challenges)
 6. [Experiments & Results](#experiments--results)
 7. [Lessons Learned](#lessons-learned)
-8. [Setup & Usage](#setup--usage)
+8. [Future Improvements](#future-improvements)
+9. [Setup & Usage](#setup--usage)
 
 ---
+
+## Project Structure
 
 ## Project Structure
 
 ```
 forza/
 ├── fuzzer.py                  # Main entry point — orchestrates the full pipeline
-├── targets/
-│   ├── json_decoder.yaml      # Target config: commands, seeds, coverage flags
+├── targets/                   # Target configs: commands, seeds, coverage flags
+│   ├── json_decoder.yaml
 │   ├── cidrize.yaml
 │   ├── ipv4_parser.yaml
-|   ├── ipv6_parser.yaml
-│   └── sample.yaml            # Sample yaml structure for new target
+|   └── ipv6_parser.yaml
+│    
 ├── engine/
 │   ├── types.py               # Shared types: BugType enum, BugResult dataclass
-│   ├── target_runner.py       # Subprocess runner — executes targets, captures output
+│   ├── seed_generator.py      # Grammar-based seed generation and CFG tree mutations
 │   ├── mutation_engine.py     # AFL-style weighted mutation with grammar support
-│   ├── seed_generator.py      # Grammar-based seed generation from YAML spec
-│   ├── bug_oracle.py          # Classifies output into bug types
-│   ├── coverage_tracker.py    # Tracks coverage (instrumented or behavioral proxy)
+│   ├── target_runner.py       # Subprocess runner — executes targets, captures output
+│   ├── bug_oracle.py          # Classifies raw output into structured BugResult types
+│   ├── coverage_tracker.py    # AFL-compatible bitmap tracker (behavioral + code_execution)
 │   ├── bug_logger.py          # Writes bugs to CSV and uploads to Firestore
 │   ├── firestore_client.py    # Firebase Firestore client (archive + current DBs)
-│   └── report_generator.py    # Generates report.html from CSV/Firestore data
+│   └── report_generator.py    # Generates per-target report.html from CSV/Firestore data
 ├── results/
 │   ├── *_bugs.csv             # Deduplicated bug log per target
 │   ├── *_coverage.csv         # Coverage snapshots per target
+|   ├── */<run_id>/            # Per-run directory: all_runs.csv, stats.csv, tracebacks.log, bug_inputs/
 │   └── *_report.html          # Generated HTML report per target
-
+├── sample.yaml                # Sample yaml structure for new targets
+└── fuzzer.py                  # Main orchestrator
 ```
 
 ---
@@ -150,13 +156,23 @@ Bug deduplication uses a stable 12-char MD5 hash of `(bug_type, exception_type)`
 
 ### 5. Coverage Tracker (`coverage_tracker.py`)
 
-Two modes controlled by `tracking_mode` in the YAML:
+The `CoverageTracker` serves as the single point of truth for all novelty decisions in the fuzzing loop. Operating on the text outputs (stdout and stderr) captured from the target subprocess, the tracker evaluates execution results and emits a `new_path_found` boolean. This feedback directly drives the fuzzer's adaptive mutation: if true, the input is saved to the corpus and the mutation strategy that produced it receives an energy boost.
 
-**`code_execution` (json_decoder):**
-Real coverage via Python's `coverage` library. `json_decoder` is run with `--show-coverage` which prints accumulated line/branch/combined percentages after each execution. These are parsed by `_extract_coverage_percentages()` using regex and logged as `instrumented` data. Coverage is cumulative — each input adds to a shared `.coverage_buggy_json` file.
+Controlled by the `tracking_mode` flag in the YAML config, the tracker operates in one of two fundamental modes:
 
-**`behavioral` (ipv4, ipv6, cidrize):**
-Blackbox proxy — counts unique bug keys seen so far as a diversity metric. Not true code coverage. The formula `min(100, unique_bugs × 2.0)` is a rough estimate only and is clearly labelled `proxy` in the CSV.
+* **`code_execution` mode:** Used when source-level instrumentation is available (e.g., the whitebox `json_decoder` target). 
+  * It extracts real statement, branch, and function coverage percentages from Python's `coverage` module. 
+  * These percentages are safely isolated from standard output using a tab-separated `\t<cov_lines>` sentinel protocol. 
+  * Novelty is determined via a monotone threshold (checking if the new statement percentage strictly exceeds the highest seen so far) alongside an AFL-style frequency bucket progression.
+  * *Greybox Fallback:* If the buggy binary lacks instrumentation but a reference binary has it, this mode can dynamically route to read the reference binary's stdout as a semantic proxy for coverage.
+
+* **`behavioral` mode:** Used for blackbox compiled binaries (like `ipv4_parser`, `ipv6_parser`, and `cidrize`) where true code coverage is inaccessible.
+  * It relies on a "behavioral proxy" metric, determining novelty by hashing a computed output signature fingerprint.
+  * This fingerprint abstracts raw text into a canonical string containing the exit code bucket and the behavioral class of the stdout/stderr messages.
+  * This abstraction (e.g., classifying specific IP addresses into a generic `output:bracketed` class) focuses the fuzzer on distinct structural paths while preventing the corpus from exploding with semantically equivalent inputs.
+
+**State & Persistence**
+Internally, the tracker maintains a simulated 64 KB AFL-style bitmap to compute standard metrics like map density and count coverage. To ensure no data is lost, it persists findings redundantly: appending metrics to a local CSV every iteration, saving periodic bitmap snapshots, and asynchronously uploading telemetry to Firebase Firestore.
 
 ### 6. Bug Logger (`bug_logger.py`)
 
